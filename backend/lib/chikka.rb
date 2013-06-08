@@ -18,15 +18,18 @@ def create_payload(http_params)
   URI.encode_www_form(http_params)
 end
 
-def sms(number, message)
-  
+def sms(number, trans_id, message, new=false)
   uri = '/request'
   username = 'jeodn'
   password = 'DnBJvXym'
   message_id = Time.now.to_i.to_s
-  transaction_id = message_id.rjust(128, '0')
+  transaction_id = trans_id
   message_type = 'PULL'
-  sub_type = 'FREE'
+  if new
+    sub_type = 'START'
+  else
+    sub_type = 'FREE'
+  end
   encoding = 'SMS'
   service = 'DEMO'
   suffix = '8823'
