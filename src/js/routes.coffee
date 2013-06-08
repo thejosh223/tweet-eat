@@ -18,6 +18,10 @@ module.config ["$routeProvider", ($routeProvider) ->
     templateUrl: "/html/profile.html"
     controller: "ProfileCtrl"
 
+  $routeProvider.when "/profile/:id",
+    templateUrl: "/html/public-profile.html"
+    controller: "PublicProfileCtrl"
+
   $routeProvider.when "/accepted-errands",
     templateUrl: "/html/runner.html"
     controller: "AcceptedErrandsCtrl"

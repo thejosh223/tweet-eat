@@ -67,6 +67,7 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
   $scope.errand =
     deadline: null
+    location: CurrentUser.data()?.location
   isDefault = not CurrentUser.data()?.latitude?
   lat = CurrentUser.data()?.latitude ? 14.566
   long = CurrentUser.data()?.longitude ? 121.034

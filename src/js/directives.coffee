@@ -51,7 +51,23 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) ->
       errand.errand_requests = removeErrands(request) for request in errand.errand_requests
       errand
     ), ->
-      console.log "errand", scope.errand
       if currentBox.id == scope.errand.id
         currentBox.errand = scope.errand
     , true
+
+module.directive 'rsRating', -> 
+  scope:
+    rating: '='
+  template: '''
+  <div class="rating-box">
+    <div class="title">{{ rating.title }}</div>
+    <div class="comment">{{ rating.comment }}</div>
+    <div class="pull-right muted">- {{ rating.citation }}</div>
+    <div class="score">
+      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= rating.score] }}'></span>
+    </div>
+    <div class='clearfix'></div>
+  </div>
+'''
+  link: (scope, element, attrs) ->
+    scope.stars = [1,2,3,4,5]

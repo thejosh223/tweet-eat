@@ -17,7 +17,7 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
 
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toastr) ->
   $scope.user = CurrentUser.data()
-  $scope.errands = Errand.query (errands) ->
+  $scope.errands = Errand.query {exclude_self: true}, (errands) ->
     filterErrands()
 
   filterErrands = ->

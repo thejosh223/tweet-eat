@@ -13,13 +13,16 @@ class SessionsController < ApplicationController
   def create
     fb_id = params[:id]
     user = User.where(:fb_id => fb_id).first
+    user_new = false
     if user.nil?
+      user_new = true
       # create a new user
       user = User.new
       user.email = params[:email]
       user.password = "skdlfjdslkfjdslkfjslkXXjerwipfXXjipfdpjXXokdjcfpo;';'dmXXcdkopjfXXsdklXXf--=-=+hdosnqp1"
       user.first_name = params[:first_name]
       user.last_name = params[:last_name]
+      user.verification_code = Random.rand(0...9999).to_s.rjust(4, '0')
       user.fb_id = fb_id
       user.save!
     else
@@ -29,10 +32,8 @@ class SessionsController < ApplicationController
       user.last_name = params[:last_name] or user.last_name
       user.save!
     end
-    puts env['warden'].user
     env['warden'].set_user user
-    puts env['warden'].user
-    render json: { :ok => true, :user => user.as_json }, status: :ok
+    render json: { :ok => true, :user => user.as_json, :new => user_new }, status: :ok
   end
 
   def update
