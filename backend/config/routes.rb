@@ -5,6 +5,7 @@ Backend::Application.routes.draw do
     resources :errands do
       collection do
         get :accepted
+        get :mine
       end
       member do
         post :apply

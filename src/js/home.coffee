@@ -2,6 +2,18 @@ module = angular.module 'tamad.home', [
   'tamad.auth'
 ]
 
+module.controller 'HomeCtrl', ($scope, CurrentUser) ->
+  setHomeUrl = ->
+    if CurrentUser.loggedIn()
+      $scope.homeUrl = '/html/home_logged_in.html'
+    else
+      $scope.homeUrl = '/html/home_anon.html'
+
+  $scope.$on 'login-changed', (event) ->
+    setHomeUrl()
+
+  setHomeUrl()
+
 
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
   $scope.user = CurrentUser.data
@@ -25,25 +37,17 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
   $scope.$watch 'errands', filterErrands
   $scope.$watch 'searchText', filterErrands
   $scope.$watch (-> CurrentUser.data().user.latitude), filterErrands
-  $scope.run = (eid) ->
-    console.log "you chose to run errand id: ", eid
-    $http.post('/api/errands/apply',
-      id: eid
-    ).success (response) ->
+  $scope.run = (errand) ->
+    console.log "you chose to run errand:", errand
+    $http.post("/api/errands/#{errand.id}/apply").success (response) ->
       console.log "success", response
     .error (response) ->
       console.log "didn't finish run successfully", response
 
-module.controller 'HomeAnonCtrl', ($scope) ->
+module.controller 'HomeAnonCtrl', ($scope, Errand) ->
   $scope.sampleErrands = [
     {
-      fb_id: 100000775753811
-      title: 'My Job'
-      price: 10.0
-    }
-    {
-      fb_id: 643054116
-      title: 'Other Job'
-      price: 20.0
+      title: 'Blah'
+      price: 100.00
     }
   ]

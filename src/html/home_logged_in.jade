@@ -1,0 +1,11 @@
+#home-page.row(ng-controller='HomeLoggedInCtrl', ng-if='CurrentUser.loggedIn()')
+  .span12.row
+    form.form-search
+      .input-append
+        input(type='text', ng-model='searchText', placeholder='Search for errands').search-query.input-medium
+    button.btn.pull-right
+      i.icon-location-arrow
+      |  Set your location
+  ul.span12.row.errands
+    li(ng-repeat='errand in filteredErrands')
+      div(rs-errand, errand="errand", user="CurrentUser", run="run(errandId)")
