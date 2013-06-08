@@ -1,6 +1,6 @@
-# Angular Momentum
+# Juan Tamad
 
-The start-up code for the MIT AITI Philippines 2013 class.
+Vivace's AngelHack Manila 2013 project!
 
 # Set-up
 
