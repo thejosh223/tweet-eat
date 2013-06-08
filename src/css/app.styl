@@ -1,5 +1,6 @@
 border-color = #ccc
 border-width = 1px
+true_blue = #003399
 
 body
   color: #333333;
@@ -94,7 +95,7 @@ header.navbar
       overflow hidden
   i
     font-size 32px
-    color #990000
+    color true-blue
     &:hover
       color #669933
   i.icon-facebook-sign
@@ -118,3 +119,25 @@ header.navbar
 #set-location
   height 300px
   width 100%
+
+#banner
+  box-shadow 2px 2px 5px #ccc
+
+#teasers
+  list-style-type none
+  li
+    float left
+    margin 10px
+    box-shadow 2px 2px 5px #ccc
+    &:first-child
+      margin-left 0
+    &:last-child
+      margin-right 0
+
+#login-btn
+  background true_blue
+
+.brand img
+  max-width none
+  width auto
+  height 80px
