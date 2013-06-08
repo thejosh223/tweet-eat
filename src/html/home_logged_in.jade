@@ -13,8 +13,8 @@
     .modal-header
       button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
       h3 Set your location
-    form(ng-click='setLocation()')
+    form(ng-submit='setLocation()')
       .modal-body
         #set-location-wrapper
       .modal-footer
-        button.btn(type='submit', data-dismiss='modal') Set Location
+        button.btn(type='submit') Set Location

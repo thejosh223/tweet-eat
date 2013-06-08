@@ -27,7 +27,7 @@ class ErrandsController < ApplicationController
     end
 
 
-    if not env['warden'].user.nil? and not env['warden'].user.location
+    if not env['warden'].user.nil?
       env['warden'].user.location = params['location']
       env['warden'].user.longitude = params['longitude'].to_f
       env['warden'].user.latitude = params['latitude'].to_f
