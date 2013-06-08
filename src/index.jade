@@ -25,16 +25,18 @@ html(ng-app="tamad")
             a.brand(href='/#/')
               img(src='/img/logo.png', alt='RedSwift')
             .wrapper
-              ul.nav
+              ul.nav(ng-controller='NotificationCtrl')
                 li
                   a(href='/#/', title='Home')
                     i.icon-home
                 li
                   a(href='/#/my-errands', title='My Errands')
                     i.icon-briefcase 
+                    span.notification(ng-show="pendingRequests.length > 0") {{ pendingRequests.length }}
                 li
                   a(href='/#/accepted-errands', title='Accepted Errands')
                     i.icon-check
+                    span.notification(ng-show="acceptedRequests.length > 0") {{ acceptedRequests.length }}
               .pull-right
                 .progress
                   .bar#progress-bar
