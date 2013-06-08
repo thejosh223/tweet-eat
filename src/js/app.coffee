@@ -10,4 +10,5 @@ module = angular.module "tamad", [
   'tamad.directives'
   'tamad.runner'
   "ngResource"
+  '$strap.directives'
 ]
