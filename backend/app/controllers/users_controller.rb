@@ -30,12 +30,6 @@ class UsersController < ApplicationController
     render json: ratings
   end
 
-  def errands
-    #errands = Errand.joins([:user, :errand_requests]).where('errands.finished = true and errands.finished is not null and errand_requests.user_id = ?', params[:id]).all
-    errands = Errand.joins([:user]).all
-    render json: errands, :include => [:user]
-  end
-
   def safe_params
     ['first_name', 'last_name', 'location', 'latitude', 'longitude']
   end

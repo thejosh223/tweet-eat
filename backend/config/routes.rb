@@ -17,8 +17,6 @@ Backend::Application.routes.draw do
     resources :users do
       member do
         get :ratings
-        get :errands
-        get :requests
       end
     end
 
