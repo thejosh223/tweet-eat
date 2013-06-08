@@ -21,23 +21,25 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
     filterErrands()
 
   filterErrands = ->
-    $scope.filteredErrands = $scope.errands
+    filteredErrands = $scope.errands
     if $scope.searchText
-      $scope.filteredErrands = _.filter $scope.filteredErrands, (errand) ->
+      filteredErrands = _.filter $scope.filteredErrands, (errand) ->
         errand.body.indexOf($scope.searchText) != -1 and errand.title.indexOf($scope.searchText)
-    lat = CurrentUser.data()?.user?.latitude
-    long = CurrentUser.data()?.user?.longitude
+    console.log(CurrentUser.data()?.latitude)
+    lat = CurrentUser.data()?.latitude
+    long = CurrentUser.data()?.longitude
     if lat? and long?
       latLng = new L.LatLng(lat, long)
-      $scope.filteredErrands = _.sortBy $scope.filteredErrands, (errand) ->
+      filteredErrands = _.sortBy filteredErrands, (errand) ->
         if errand.latitude? and errand.longitude?
           latLng.distanceTo(new L.LatLng(+errand?.latitude, +errand.longitude))
         else
           1e9        
+    $scope.filteredErrands = filteredErrands
 
   $scope.$watch 'errands', filterErrands
   $scope.$watch 'searchText', filterErrands
-  $scope.$watch (-> CurrentUser.data()?.user?.latitude), filterErrands
+  $scope.$watch (-> CurrentUser.data()?.latitude), filterErrands
   $scope.run = (errand) ->
     console.log "you chose to run errand:", errand
     $http.post("/api/errands/#{errand.id}/apply").success (response) ->

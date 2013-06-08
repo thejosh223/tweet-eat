@@ -25,7 +25,7 @@ module.directive 'rsErrand', ->
         <div class="title">{{ errand.title }}</div>
         <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
         <div class="price">&#8369; {{ errand.price | number:2 }}</div>
-        <div class="location">{{ errand.location }}<span ng-show="user">  {{errand|distance:user}}</span></div>
+        <div class="location">{{ errand.location }}<span ng-show="user"> ({{errand|distance:user}})</span></div>
       </div>
       <div class="body">{{ errand.body }}</div>
     </div>

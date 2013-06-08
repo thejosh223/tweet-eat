@@ -16,12 +16,16 @@ class UsersController < ApplicationController
 
   def update
     user = User.find(params[:id])
-    user.update_attributes(params)
+    user.update_attributes(params.select {|k,v| safe_params.include? k })
     render json: user
   end
 
   def destroy
     user = User.find(params[:id])
     user.delete!
+  end
+
+  def safe_params
+    ['first_name', 'last_name', 'location', 'latitude', 'longitude']
   end
 end
