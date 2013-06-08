@@ -13,4 +13,8 @@ module.filter 'distance', ->
 
 module.filter "photo", ->
   (fbid) ->
-    "https://graph.facebook.com/#{fbid}/picture?type=large" # options later
+    if fbid?
+      "https://graph.facebook.com/#{fbid}/picture?type=large" # options later
+    else
+      # find a better default 'no picture' icon
+      ""
