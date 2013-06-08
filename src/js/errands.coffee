@@ -17,7 +17,6 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
 
   $scope.doAction = (action, errand, request) ->
     # add toastr here!!!!
-    # add requery in here
     switch action
       when "accept" # you want this runner to do your task
         $http.put("/api/errand_requests/#{request.id}").success (response) ->

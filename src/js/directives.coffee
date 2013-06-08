@@ -24,9 +24,9 @@ module.directive 'rsErrand', ->
             <span class="text-info" ng-show="request.finished && !errand.finished">{{ request.user.first_name}} marked this task as finished</span>
             <span class="text-success" ng-show="errand.finished">This task is finished</span>
           </div>
-          <button ng-show="request.finished" class="btn btn-success" ng-click="_action('acknowledge', request)">Acknowledge</button>
-          <button ng-show="request.finished" class="btn btn-error" ng-click="_action('reject', request)">Reject</button>
-          <button ng-hide="request.finished" class="btn btn-info" ng-click="_action('cancel', request)">Cancel</button>
+          <button ng-show="!errand.finished && request.finished" class="btn btn-success" ng-click="_action('acknowledge', request)">Acknowledge</button>
+          <button ng-show="!errand.finished && request.finished" class="btn btn-error" ng-click="_action('reject', request)">Reject</button>
+          <button ng-show="!errand.finished && !request.finished" class="btn btn-info" ng-click="_action('cancel', request)">Cancel</button>
         </div>
       </div>
     </div>
