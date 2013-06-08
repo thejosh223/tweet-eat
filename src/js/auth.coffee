@@ -25,9 +25,11 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
         _.extend data, fbData
         $http.post('/api/session',
           data
-        ).success (user) ->
-          data = new User _.extend(data, user)
-          loadResponse.resolve user
+        ).success (resp) ->
+          console.log "got user info", resp.user
+          data = new User _.extend(data, resp.user)
+          loadResponse.resolve resp.user
+          service.save()
         .error (err) ->
           console.log "Failed (loadData)", err
           loadResponse.reject err
@@ -47,6 +49,9 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
       .error (err) ->
         console.log "Failed (loadRemote)", err
         service.save()
+    saveRemote: ->
+      $http.put("/api/users/#{service.data().id}", service.data())
+      service.save()
     set: (user) ->
       data = new User(user)
       service.save()
