@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608105842) do
+ActiveRecord::Schema.define(:version => 20130608140058) do
 
   create_table "errand_requests", :force => true do |t|
     t.integer  "errand_id"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20130608105842) do
     t.text     "location"
     t.float    "latitude"
     t.float    "longitude"
+    t.boolean  "finished"
   end
 
   create_table "ratings", :force => true do |t|
