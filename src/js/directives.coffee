@@ -21,19 +21,19 @@ module.directive 'rsErrand', (CurrentUser) ->
         <div ng-show="request.id == errand.errand_request_id">
           <div>
             You assigned {{request.user.first_name}} to do this task.
-            <span class="text-success" ng-show="request.finished && !errand.finished">{{ request.user.first_name}} marked this task as finished</span>
+            <span class="text-info" ng-show="request.finished && !errand.finished">{{ request.user.first_name}} marked this task as finished</span>
             <span class="text-success" ng-show="errand.finished">This task is finished</span>
           </div>
           <button ng-show="request.finished" class="btn btn-success" ng-click="_action('acknowledge', request)">Acknowledge</button>
-          <button ng-show="request.finished" class="btn btn-success" ng-click="_action('reject', request)">Reject</button>
-          <button ng-hide="request.finished" class="btn btn-success" ng-click="_action('cancel', request)">Cancel</button>
+          <button ng-show="request.finished" class="btn btn-error" ng-click="_action('reject', request)">Reject</button>
+          <button ng-hide="request.finished" class="btn btn-info" ng-click="_action('cancel', request)">Cancel</button>
         </div>
       </div>
     </div>
     <div ng-hide="errand.errand_request_id">
       <div ng-repeat='request in errand.errand_requests'>
         <div>
-          User {{request.user.first_name}} wants to do this task.
+          Runner {{request.user.first_name}} wants to do this task.
           <span class="text-error" ng-show="request.declined">You declined.</span>
         </div>
         <button ng-hide="request.declined" class="btn btn-success" ng-click="_action('accept', request)">Accept</button>
