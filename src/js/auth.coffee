@@ -68,6 +68,7 @@ module.value 'PublicRoutes', [
   '/'
   ''
   '/404'
+  '/my-errands'
 ]
 
 module.run [

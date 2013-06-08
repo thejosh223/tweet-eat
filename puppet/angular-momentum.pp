@@ -53,7 +53,7 @@ class webserver {
   # This tells nginx that the backend server for momentum is at localhost:8080
   nginx::resource::upstream { 'momentum-backend':
     members => [
-      'localhost:8080'
+      'localhost:3000'
     ]
   }
 

@@ -1,9 +1,9 @@
 class CreateRatings < ActiveRecord::Migration
   def change
     create_table :ratings do |t|
-      t.int :for_user_id
-      t.int :by_user_id
-      t.int :score
+      t.integer :for_user_id
+      t.integer :by_user_id
+      t.integer :score
       t.text :body
 
       t.timestamps
