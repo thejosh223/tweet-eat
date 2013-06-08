@@ -6,7 +6,7 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
   data = {}
   service =
     data: -> data
-    loggedIn: ->  data.facebook?
+    loggedIn: -> data.facebook?
     # Load from localStorage
     load: -> 
       data = new User(angular.fromJson(localStorage['userData']) ? {})
@@ -14,6 +14,7 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
         @loadData response.authResponse
       , (response) ->
         data.facebook = null      
+        service.save()
     
     loadData: (authResponse) ->
       $http.get "https://graph.facebook.com/me?access_token=#{authResponse.accessToken}",
@@ -42,7 +43,7 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
         console.log "Failed (loadRemote)", err
         service.save()
     set: (user) ->
-      data = new Data(user)
+      data = new User(user)
       service.save()
     save: -> localStorage['userData'] = angular.toJson(data)
   service.load()
