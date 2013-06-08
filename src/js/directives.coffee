@@ -2,10 +2,10 @@ module = angular.module 'tamad.directives', [
 
 ]
 
-module.directive 'rsErrand', (CurrentUser) -> 
+module.directive 'rsErrand', -> 
   scope:
     errand: '='
-    user: '=?'
+    user: '='
     run: '&'
     action: '&'
   template: '''
@@ -15,8 +15,8 @@ module.directive 'rsErrand', (CurrentUser) ->
     <div class="price"><i class="icon-money"></i> PHP {{ errand.price | number:2 }}</div>
     <div class="location"><i class="icon-location-arrow"></i> {{ errand.location }}<span ng-show="user">  {{errand|distance:user}}</span></div>
     <div class="body">{{ errand.body }}</div>
-    <button class="btn btn-success" ng-click="_run()" ng-show="user">Apply</button>
-    <div ng-show="errand.errand_request_id">
+    <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Apply</button>
+    <div ng-show="showManage && errand.errand_request_id">
       <div ng-repeat='request in errand.errand_requests'>
         <div ng-show="request.id == errand.errand_request_id">
           <div>
@@ -30,7 +30,7 @@ module.directive 'rsErrand', (CurrentUser) ->
         </div>
       </div>
     </div>
-    <div ng-hide="errand.errand_request_id">
+    <div ng-show="showManage && !errand.errand_request_id">
       <div ng-repeat='request in errand.errand_requests'>
         <div>
           Runner {{request.user.first_name}} wants to do this task.
@@ -41,17 +41,21 @@ module.directive 'rsErrand', (CurrentUser) ->
         <button ng-show="request.declined" class="btn btn-info" ng-click="_action('undodecline', request)">Undo Decline</button>
       </div>
     </div>
-    <div ng-repeat='request in errand.errand_requests'>
-      <div ng-show="request.user_id == CurrentUser.id">
+    <div ng-show="showFinish" ng-repeat='request in errand.errand_requests'>
+      <div ng-show="request.user_id == user.user.id">
         You are assigned to do this task.
         <span class="text-success" ng-show="errand.finished">This task is finished</span>
         <span class="text-success" ng-show="request.finished && !errand.finished">You marked this task as finished</span>
-        <button class="btn btn-success" ng-hide="request.finished">Mark as finished</button>
+        <button class="btn btn-success" ng-hide="request.finished" ng-click="_action('finish', request)">Mark as finished</button>
+        <button class="btn btn-info" ng-show="request.finished" ng-click="_action('reject', request)">Mark as unfinished</button>
       </div>
     </div>
   </div>
   '''
   link: (scope, element, attrs) ->
+    scope.showApply = attrs.showApply?
+    scope.showManage = attrs.showManage?
+    scope.showFinish = attrs.showFinish?
     scope._action = (name, request) ->
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->

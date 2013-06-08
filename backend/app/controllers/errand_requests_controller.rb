@@ -1,11 +1,11 @@
 class ErrandRequestsController < ApplicationController
   def index
     requests = ErrandRequest.joins(:errand).where("(errands.finished is null or not errands.finished) AND errands.errand_request_id is not null AND errand_requests.user_id = ?", current_user.id).all
-    render json: requests
+    render json: requests, :include => [:errand, :user]
   end
   def pending
     requests = ErrandRequest.joins(:errand).where("errand_request_id = ? AND errands.user_id = ?", nil, current_user.id).all
-    render json: requests
+    render json: requests, :include => [:errand, :user]
   end
 
   def update
@@ -43,7 +43,7 @@ class ErrandRequestsController < ApplicationController
   end
   def reject
     request = ErrandRequest.find params[:id]
-    if not request.nil? and request.errand.user_id == current_user.id
+    if not request.nil? and (request.errand.user_id == current_user.id or request.user_id == current_user.id) # both can reject
       request.finished = false
       request.save!
       render json: {ok: true}
