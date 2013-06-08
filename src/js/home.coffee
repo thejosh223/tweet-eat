@@ -29,6 +29,8 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser) ->
         fb_id: 643054116
     }
   ]
+  $scope.run = (eid) ->
+    console.log "you chose to run errand id: ", eid
 
 module.controller 'HomeAnonCtrl', ($scope) ->
   $scope.sampleErrands = [
