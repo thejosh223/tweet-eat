@@ -1,33 +1,4 @@
 #my-errands.row
-  .span12.content(ng-controller='ErrandCreationCtrl')
-    form.span12.search-bar.row(ng-submit='submit()')
-      div
-        label
-          | Title 
-        input(type='text', ng-model='errand.title', required, placeholder='Title')
-      div
-        label
-          | Description 
-        textarea(ng-model='errand.body', required, placeholder='Description')
-      div
-        label
-          | Deadline
-        div
-          input(type='text', ng-model='time', required, bs-timepicker, placeholder='HH:MM:SS')
-        div
-          input(type='text', ng-model='date', required, bs-datepicker, placeholder='YYYY-mm-dd', data-date-startdate='{{today}}')
-      div
-        label
-          | Location
-        input(type='text', ng-model='errand.location', required, placeholder='Brief location (e.g., Manila)')
-      #location-map
-         
-      div
-        label
-          | Price
-        input(type='text', ng-model='errand.price', required, placeholder='Price (in PHP)')
-      div
-        button(type='submit') Submit
-    ul.span12.row.errands
-      li(ng-repeat='errand in errands')
-        div(rs-errand, errand="errand")
+  ul.span12.row.errands
+    li(ng-repeat='errand in errands')
+      div(rs-errand, errand="errand")

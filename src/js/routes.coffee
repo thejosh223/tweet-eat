@@ -5,7 +5,6 @@ module.config ["$routeProvider", ($routeProvider) ->
 
   $routeProvider.when "/",
     templateUrl: "/html/home.html"
-    controller: "HomeCtrl"
 
   $routeProvider.when "/my-errands",
     templateUrl: "/html/my-errands.html"
