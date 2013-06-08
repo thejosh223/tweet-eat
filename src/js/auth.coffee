@@ -8,7 +8,7 @@ module.service 'CurrentUser', ['$http', ($http) ->
   data = null
   service = {
     data: -> data
-    loggedIn: -> data?
+    loggedIn: -> false # for now
     # Load from localStorage
     load: -> data = angular.fromJson(localStorage['userData']) ? {}
     # Load from /api/session
@@ -51,4 +51,19 @@ module.controller 'SessionCtrl', ['$scope', '$http', 'CurrentUser', ($scope, $ht
       CurrentUser.set null
 
   CurrentUser.loadRemote()
+]
+
+module.value 'PublicRoutes', [
+  '/home'
+  '/'
+  ''
+  '/404'
+]
+
+module.run ['$rootScope', '$location', 'CurrentUser', 'PublicRoutes', ($rootScope, $location, CurrentUser, PublicRoutes) ->
+  $rootScope.$on '$routeChangeStart', ->
+    if not CurrentUser.loggedIn() and $location.path() not in PublicRoutes
+      # redirect path
+      $location.path '/'
+    
 ]
