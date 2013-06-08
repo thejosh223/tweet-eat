@@ -6,7 +6,7 @@ module = angular.module 'tamad.auth', [
 
 module.service 'CurrentUser', ['$http', ($http) ->
   data = null
-  service = {
+  service =
     data: -> data
     loggedIn: -> false # for now
     # Load from localStorage
@@ -23,7 +23,6 @@ module.service 'CurrentUser', ['$http', ($http) ->
       data = user
       service.save()
     save: -> localStorage['userData'] = angular.toJson(data)
-  }
   service.load()
   service
 ]
@@ -33,17 +32,10 @@ module.controller 'SessionCtrl', [
  ($scope, $http, CurrentUser, Facebook) ->
   $scope.CurrentUser = CurrentUser
   $scope.logIn = ->
-    email = prompt('Email')
-    password = prompt('Password')
-    $http.post('/api/session', # replace this, backend guy
-      email: email
-      password: password
-    ).success (user) ->
-      console.log 'Success', user
-      CurrentUser.set user
-    .error (err) ->
-      console.log 'Failure', err
-      CurrentUser.set null
+    Facebook.login().then (response) ->
+      console.log "success login", response
+    , (error) ->
+      console.log "error login", error
   $scope.logOut = ->
     $http.delete('/api/session').success (user) ->
       console.log 'Success'
