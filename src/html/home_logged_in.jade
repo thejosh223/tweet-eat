@@ -1,23 +1,27 @@
 #home-page.row(ng-controller='HomeLoggedInCtrl')
+  form.span12.search-bar.form-inline.row
+      label
+        | Errand 
+        input(type='text', ng-model='errand')
+      label
+        | Price 
+        input(type='text', ng-model='price')
+      button(type='submit') Search
   .span8.content
-    form.span8.search-bar.form-inline.row
-        label
-          | Errand 
-          input(type='text', ng-model='errand')
-        label
-          | Price 
-          input(type='text', ng-model='price')
-        button(type='submit') Search
     ul.span8.row.errands
       li(ng-repeat='errand in errands')
-        img(ng-src='{{errand.user.fb_id | photo}}')
-        div {{ errand.title }}
-        div
-          .icon-money
-          |  PHP {{ errand.price | number:2 }}
-        div
-          .icon-time
-          |  {{ errand.deadline | humanize }}
-        button(ng-click='run(errand.id)') Run
+        div(rs-errand, errand="errand", user="user")
+          img(ng-src='{{errand.user.fb_id | photo}}')
+          div {{ errand.title }}
+          div
+            .icon-money
+            |  PHP {{ errand.price | number:2 }}
+          div
+            .icon-time
+            |  {{ errand.deadline | humanize }}
+          div
+            .icon-location-arrow
+            |  {{ errand.location }} ({{ errand | distance: user }})
+          button(ng-click='run(errand.id)') Run
   .span4.sidebar
     p bar

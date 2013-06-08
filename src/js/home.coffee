@@ -9,7 +9,8 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
     $scope.home_url = '/html/home_anon.html'
 
 
-module.controller 'HomeLoggedInCtrl', ($scope) ->
+module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser) ->
+  $scope.user = CurrentUser.data
   $scope.errands = [
     {
       title: 'A random job'

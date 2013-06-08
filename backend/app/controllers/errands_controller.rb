@@ -1,8 +1,16 @@
 class ErrandsController < ApplicationController
   respond_to :json
   def index
+<<<<<<< HEAD
     #render json: Errand.where(:user => env['warden'].user).all
     @errands = Errand.joins(:user).select("*, users.fb_id").all
+||||||| merged common ancestors
+    #render json: Errand.where(:user => current_user).all
+    @errands = Errand.joins(:user).select("*, users.fb_id").all
+=======
+    #render json: Errand.where(:user => current_user).all
+    @errands = Errand.includes(:user).select("*, users.fb_id").all
+>>>>>>> origin/master
 
     long = lat = nil
     if params['longitude']
@@ -21,18 +29,22 @@ class ErrandsController < ApplicationController
   end
 
   def show
-    render json: Errand.joins(:user).select("*, users.fb_id").find(params[:id])
+    render json: Errand.includes(:user).select("*, users.fb_id").find(params[:id])
   end
 
   def create
-    puts "hey"
-    puts env['warden'].user
-    puts "Xh"
     errand = Errand.new
-    if not env['warden'].user.nil?
+    unless env['warden'].user.nil?
       errand.user_id = env['warden'].user.id
     end
-    puts "UI:"
+
+
+    if not current_user.nil? and current_user.location.nil?
+      current_user.location = params['location']
+      current_user.longitude = params['longitude'].to_f
+      current_user.latitude = params['latitude'].to_f
+    end
+
     errand.update_attributes(params['errand'])
     puts "UIx:"
     puts env['warden'].user

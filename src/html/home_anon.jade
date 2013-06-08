@@ -3,8 +3,8 @@
     p Need to run an errand? Landry ? Printing? Find a runner now!
     a.btn(ng-href='logIn()') Sign up now!
   ul.errands
-    li(ng-repeat='errand in sampleErrands')
-      div(style='background-image: {{errand.fb_id | photo}}')
+    li(ng-repeat='errand in sampleErrands').errand
+      div(style='background-image: {{errand.photo}}')
         .desc
           div {{ errand.title }}
           div
