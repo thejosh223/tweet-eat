@@ -83,3 +83,4 @@ class buildtools {
 # This declares a dependency on the above defined db class
 class {'database':}
 class {'webserver':}
+class {'buildtools':}
