@@ -25,10 +25,13 @@ html(ng-app="tamad")
             a.brand(href='/#/')
               img(src='/img/logo.png', alt='RedSwift')
             .wrapper
-              ul.nav(ng-controller='NotificationCtrl')
+              ul.nav(ng-controller='NavCtrl')
                 li
                   a(href='/#/', title='Home')
                     i.icon-home
+                li
+                  a(href='#new-errand', data-toggle='modal', title='Post Errand', ng-click='postErrand()')
+                    i.icon-plus-sign
                 li
                   a(href='/#/my-errands', title='My Errands')
                     i.icon-briefcase 
@@ -55,10 +58,46 @@ html(ng-app="tamad")
               .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
+    #new-errand(ng-controller='ErrandCreationCtrl').modal.hide.fade
+      .modal-header
+        button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
+        h3 Post a new errand
+      form(ng-submit='submit()')
+        .modal-body
+          div.row-fluid
+            .control-group.span6
+              div
+                label
+                  | Title 
+                input(type='text', ng-model='errand.title', required, placeholder='Title').input-block-level
+              div
+                label
+                  | Description 
+                textarea(ng-model='errand.body', required, placeholder='Description').input-block-level
+            .control-group.span6
+              div
+                label
+                  | Deadline
+                div
+                  input(type='text', ng-model='time', required, bs-timepicker, placeholder='HH:MM:SS').input-block-level
+                div
+                  input(type='text', ng-model='date', required, bs-datepicker, placeholder='YYYY-mm-dd', data-date-startdate='{{today}}').input-block-level
+              div
+                label
+                  | Price
+                input(type='text', ng-model='errand.price', required, placeholder='Price (in PHP)').input-block-level
+          div
+            label
+              | Location
+            input(type='text', ng-model='errand.location', required, placeholder='Brief location (e.g., Manila)').input-block-level
+          #location-map-wrapper
+              
+        .modal-footer
+          button(type='submit').btn Submit
 
-    - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js']
+    - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'services.js', 'runner.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'services.js', 'runner.js', 'nav.js']
     each script in scripts
       script(src='/js/' + script)

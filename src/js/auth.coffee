@@ -2,7 +2,7 @@ module = angular.module 'tamad.auth', [
 
 ]
 
-module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, User) ->
+module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebook, User, $q) ->
   data = {}
   service =
     data: -> data
@@ -17,6 +17,7 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
         service.save()
     
     loadData: (authResponse) ->
+      loadResponse = $q.defer()
       $http.get "https://graph.facebook.com/me?access_token=#{authResponse.accessToken}",
         withCredentials: false
       .success (fbData) =>
@@ -28,11 +29,16 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
         ).success (user) ->
           console.log "got user info", user
           data = new User _.extend(data, user)
+          loadResponse.resolve user
         .error (err) ->
           console.log "Failed (loadData)", err
+          loadResponse.reject err
         service.save()
       .error (resp, status) ->
         console.error "Facebook responded", status, resp
+        loadResponse.reject resp
+
+      loadResponse.promise
 
     
     # Load from /api/session
@@ -52,13 +58,14 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
 ]
 
 module.controller 'SessionCtrl', [
- '$scope', '$http', 'CurrentUser', 'Facebook', 
- ($scope, $http, CurrentUser, Facebook) ->
+ '$scope', '$http', 'CurrentUser', 'Facebook', '$location',
+ ($scope, $http, CurrentUser, Facebook, $location) ->
   $scope.CurrentUser = CurrentUser
   $scope.logIn = ->
     Facebook.login().then (response) ->
       console.log "success login", response
-      CurrentUser.loadData response.authResponse
+      CurrentUser.loadData(response.authResponse).then (user) ->
+        $scope.$broadcast 'login-changed'
     , (error) ->
       console.log "error login", error
   $scope.logOut = ->
@@ -66,6 +73,7 @@ module.controller 'SessionCtrl', [
       $http.delete('/api/session').success (user) ->
         console.log "succes api sesion"
         CurrentUser.set {}
+        $scope.$broadcast 'login-changed'
       .error (err) ->
         console.log 'Error!'
         CurrentUser.set {}

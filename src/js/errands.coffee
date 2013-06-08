@@ -3,38 +3,49 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, Errand) ->
+module.controller 'MyErrandsCtrl', ($scope, $http) ->
   query = ->
-    $scope.errands = Errand.query()
+    $http.get("/api/errands/mine").success (errands) ->
+      $scope.errands = errands
+    .error (error) ->
+      console.error "error getting errands", error
 
-  query()
   $scope.$on 'save-errand', (event) ->
     query()
+
+  query()
+
+  $scope.accept = (errand, request) ->
+    console.log "accepting request", request, "for errand", errand
+
 
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
   $scope.errand =
     deadline: null
-  isDefault = not CurrentUser.data().user.latitude?
-  lat = CurrentUser.data().user.latitude ? 14.566
-  long = CurrentUser.data().user.longitude ? 121.034
+  isDefault = not CurrentUser.data()?.user?.latitude?
+  lat = CurrentUser.data()?.user?.latitude ? 14.566
+  long = CurrentUser.data()?.user?.longitude ? 121.034
   zoomLevel = if isDefault then 11 else 14
-  map = L.map('location-map').setView([lat, long], zoomLevel)
-  L.tileLayer('http://b.tile.cloudmade.com/bce295a2a50d43a2bb2dbebef4ea99e4/4/256/{z}/{x}/{y}.png', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>',
-      maxZoom: 18
-  }).addTo(map)
+  $scope.$watch (-> $('#new-errand').is(':visible')), (vis) ->
+    if vis
+      $('#location-map-wrapper').empty().append('<div id="location-map">')
+      map = L.map('location-map').setView([lat, long], zoomLevel)
+      L.tileLayer('http://b.tile.cloudmade.com/bce295a2a50d43a2bb2dbebef4ea99e4/4/256/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>',
+          maxZoom: 18
+      }).addTo(map)
 
-  popup = L.marker()
-  if not isDefault
-    popup.setLatLng(new L.LatLng(lat, long)).addTo(map)
+      popup = L.marker()
+      if not isDefault
+        popup.setLatLng(new L.LatLng(lat, long)).addTo(map)
+      map.on 'click', (e) ->
+        if e.latlng?
+          popup.setLatLng(e.latlng).addTo(map)
+          $scope.errand.latitude = e.latlng.lat
+          $scope.errand.longitude = e.latlng.lng
        
   $scope.today = new Date()
 
-  map.on 'click', (e) ->
-    if e.latlng?
-      popup.setLatLng(e.latlng).addTo(map)
-      $scope.errand.latitude = e.latlng.lat
-      $scope.errand.longitude = e.latlng.lng
 
   $scope.submit = ->
     # save $scope.errand.latitude/longitude to user
@@ -42,30 +53,27 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
     Errand.save $scope.errand, (success) ->
       $scope.$emit 'save-errand'
 
-module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
-  $scope.pendingRequests = []
-  $scope.acceptedRequests = []
 
-  pollPending =  () ->
-    $http.get('/api/errand_requests/pending')
-      .success (resp) ->
-        $scope.pendingRequests = resp
-        $timeout pollPending, 1000
-      .error (err) ->
-        console.log err
-        $scope.pendingRequests = []
-        $timeout pollPending, 1000
+module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
+  isDefault = not CurrentUser.data()?.user?.latitude?
+  lat = CurrentUser.data()?.user?.latitude ? 14.566
+  long = CurrentUser.data()?.user?.longitude ? 121.034
+  zoomLevel = if isDefault then 11 else 14
+  $scope.$watch (-> $('#set-location-wrapper').is(':visible')), (vis) ->
+    console.log vis, 'Vis change!'
+    if vis
+      $('#set-location-wrapper').empty().append('<div id="set-location">')
+      map = L.map('set-location').setView([lat, long], zoomLevel)
+      L.tileLayer('http://b.tile.cloudmade.com/bce295a2a50d43a2bb2dbebef4ea99e4/4/256/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>',
+          maxZoom: 18
+      }).addTo(map)
 
-  pollPending()
-
-  pollAccepted =  () ->
-    $http.get('/api/errands/accepted')
-      .success (resp) ->
-        $scope.acceptedRequests = resp
-        $timeout pollAccepted, 1000
-      .error (err) ->
-        console.log err
-        $scope.acceptedRequests = []
-        $timeout pollAccepted, 1000
-
-  pollAccepted()
+      popup = L.marker()
+      if not isDefault
+        popup.setLatLng(new L.LatLng(lat, long)).addTo(map)
+      map.on 'click', (e) ->
+        if e.latlng?
+          popup.setLatLng(e.latlng).addTo(map)
+          CurrentUser.data().user.latitude = e.latlng.lat
+          CurrentUser.data().user.longitude = e.latlng.lng

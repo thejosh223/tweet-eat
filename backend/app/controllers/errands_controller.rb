@@ -13,10 +13,6 @@ class ErrandsController < ApplicationController
       lat = env['warden'].user.latitude
     end
 
-    if long
-      @errands = @errands.sort_by {|x| x.distance_to([lat, long]) || 1e9 }
-    end
-
     render json: @errands
   end
 
@@ -58,17 +54,19 @@ class ErrandsController < ApplicationController
 
   def mine
     # Gives all the errands you own
-    @errands = Errand.includes([:user, :errand_requests]).select("*, users.fb_id").where('errands.user_id = ?', current_user.id).all
-    render json: @errands
+    @errands = Errand.includes([:user, {:errand_requests => :user}]).where('errands.user_id = ?', current_user.id).all
+    render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
   def apply
-    old = ErrandRequest.find('errand_id = ? AND user_id = ?', params[:id], current_user.id)
-    if !old.nil?
+    old = ErrandRequest.where('errand_id = ? AND user_id = ?', params[:id], current_user.id).first
+    unless old.nil?
       render json: old
     else
       request = ErrandRequest.new
-      request.update_attributes(params)
+      unless params[:deadline].nil?
+        request.deadline = params[:deadline]
+      end
       request.errand_id = params[:id] 
       request.user_id = current_user.id
       request.save!

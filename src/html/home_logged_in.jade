@@ -1,12 +1,20 @@
-#home-page.row(ng-controller='HomeLoggedInCtrl')
-  form.span12.search-bar.form-inline.row
-      label
-        | Errand 
-        input(type='text', ng-model='errand')
-      label
-        | Price 
-        input(type='text', ng-model='price')
-      button(type='submit') Post
+#home-page.row(ng-controller='HomeLoggedInCtrl', ng-if='CurrentUser.loggedIn()')
+  .span12.row
+    form.form-search
+      .input-append
+        input(type='text', ng-model='searchText', placeholder='Search for errands').search-query.input-medium
+    button.btn.pull-right(ng-click='setLocation()', data-toggle='modal', data-target='#set-location-modal')
+      i.icon-location-arrow
+      |  Set your location
   ul.span12.row.errands
-    li(ng-repeat='errand in errands')
+    li(ng-repeat='errand in filteredErrands')
       div(rs-errand, errand="errand", user="CurrentUser", run="run(errandId)")
+  #set-location-modal.modal.hide.fade(ng-controller='LocationSetCtrl')
+    .modal-header
+      button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
+      h3 Set your location
+    form(ng-click='setLocation()')
+      .modal-body
+        #set-location-wrapper
+      .modal-footer
+        button.btn(type='submit', data-dismiss='modal') Set Location
