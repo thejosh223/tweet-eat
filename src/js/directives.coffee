@@ -12,10 +12,10 @@ module.directive 'rsErrand', ->
   <div class="errand">
     <div class="misc">
       <img ng-src="{{errand.user.fb_id | photo}}"></img>
-      <button class="btn btn-success" ng-click="_run()" ng-show="user">Help Out</button>
-      <div class="view-offers" ng-hide="user">
+      <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
+      <div class="view-offers" ng-show="showManage">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button class="btn btn-success view-offers-btn" ng-click="_view()" ng-hide="user">
+        <button class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>
