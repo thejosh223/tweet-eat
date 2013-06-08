@@ -27,13 +27,8 @@
     "express"
   ],
   "dependencies": {
-    "express": "3.2.x",
-    "rethinkdb": "1.4.x",
-    "passport": "~0.1.16",
     "stylus": "~0.32.1",
-    "jade": "~0.30.0",
-    "pg": "~1.1.2",
-    "orm": "~2.0.12"
+    "jade": "~0.30.0"
   },
   "engines": {
     "node": ">=0.10"

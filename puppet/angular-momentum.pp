@@ -57,7 +57,7 @@ class webserver {
   }
 
   nginx::resource::vhost { 'momentum-frontend':
-    www_root => '/var/www/angular-momentum/build/frontend/'
+    www_root => '/var/www/angular-momentum/build/'
   }
   
   nginx::resource::location { 'momentum-proxy':
@@ -78,21 +78,7 @@ class buildtools {
   }
 }
 
-class expressjs {
-  file { '/etc/init/expressjs.conf':
-    source => "$config_directory/init/expressjs.conf",
-    owner => 'root',
-    group => 'root'
-  }
-  class { 'buildtools': }
-  service { 'expressjs':
-    ensure => running,
-    subscribe => File['/etc/init/expressjs.conf'],
-    require => [Class['buildtools'], Package['postgresql-server'], Package['nodejs']]
-  }
-}
 
 # This declares a dependency on the above defined db class
 class {'database':}
 class {'webserver':}
-class {'expressjs':}
