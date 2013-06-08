@@ -55,6 +55,12 @@ class ErrandsController < ApplicationController
     errand.delete!
   end
 
+  def mine
+    # Gives all the errands you own
+    @errands = Errand.includes([:user, :errand_requests]).select("*, users.fb_id").where('errands.user_id = ?', current_user.id).all
+    render json: @errands
+  end
+
   def apply
     old = ErrandRequest.find('errand_id = ? AND user_id = ?', params[:id], current_user.id)
     if !old.nil?
