@@ -1,7 +1,7 @@
 #home-page.row(ng-controller='HomeAnonCtrl', ng-if='!CurrentUser.loggedIn()')
   .span12.row
-    img(src='/img/banner.png')#banner
-  h2.row.span12 Popular Errands
+    img(src='/img/banner.png', alt='Need a hand with your errands? Have your friendly neighbours help you out!')#banner
+  img(src='/img/popularerrands.png', alt='Popular Errands')
   - var names = ['laundry', 'delivery', 'grocery']
   ul#teasers.row.span12
     - each name in names

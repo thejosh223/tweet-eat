@@ -9,6 +9,8 @@ Backend::Application.routes.draw do
       end
       member do
         post :apply
+        put :cancel
+        put :acknowledge
       end
     end
 
@@ -23,6 +25,12 @@ Backend::Application.routes.draw do
     resources :errand_requests do
       collection do
         get :pending
+      end
+      member do
+        put :decline
+        put :undodecline
+        put :reject
+        put :finish
       end
     end
 

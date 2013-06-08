@@ -2,7 +2,7 @@ module = angular.module 'tamad.nav', [
 
 ]
 
-module.controller 'NavCtrl', ($scope, $http, $timeout) ->
+module.controller 'NavCtrl', ($scope, $http, $timeout, $location) ->
   $scope.pendingRequests = []
   $scope.acceptedRequests = []
 
@@ -30,3 +30,6 @@ module.controller 'NavCtrl', ($scope, $http, $timeout) ->
 
   $scope.postErrand = ->
     $('#new-errand').show()
+
+  $scope.$watch (->$location.path()), (val) ->
+    $scope.path = val
