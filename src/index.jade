@@ -1,6 +1,10 @@
 html(ng-app="tamad")
   head
+<<<<<<< HEAD
+    title Red Swift
+=======
     title RedSwift
+>>>>>>> c675bf4cf6a6cfb96d3c19ff90f7a2afb2e22cf1
 
     meta(charset='utf8')
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
@@ -22,7 +26,8 @@ html(ng-app="tamad")
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.brand(href='/#/') RedSwift
+            a.brand(href='/#/')
+              img(src='/img/logo.png', alt='RedSwift')
             ul.nav
               li
                 a(href='/#/')
@@ -53,6 +58,8 @@ html(ng-app="tamad")
                 .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
+
+    .modal-footer
 
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js']
     each lib in libs
