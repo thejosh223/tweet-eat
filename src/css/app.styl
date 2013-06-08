@@ -1,5 +1,19 @@
 border-color = #ccc
 border-width = 1px
+true_blue = #003399
+
+body
+  color: #333333;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #eff2e3 90%, #ebfcd9 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(90%,#eff2e3), color-stop(100%,#ebfcd9)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%);
+
+a:focus
+  color: #fff
 
 #main
   margin-top 120px
@@ -81,7 +95,7 @@ header.navbar
       overflow hidden
   i
     font-size 32px
-    color #990000
+    color true-blue
     &:hover
       color #669933
   i.icon-facebook-sign
@@ -105,3 +119,25 @@ header.navbar
 #set-location
   height 300px
   width 100%
+
+#banner
+  box-shadow 2px 2px 5px #ccc
+
+#teasers
+  list-style-type none
+  li
+    float left
+    margin 10px
+    box-shadow 2px 2px 5px #ccc
+    &:first-child
+      margin-left 0
+    &:last-child
+      margin-right 0
+
+#login-btn
+  background true_blue
+
+.brand img
+  max-width none
+  width auto
+  height 80px

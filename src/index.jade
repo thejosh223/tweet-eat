@@ -6,7 +6,7 @@ html(ng-app="tamad")
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
     meta(name='viewport', content='width=device-width', initial-scale='1.0')
 
-    - var lib_styles = ['bootstrap/css/bootstrap.css', 'bootstrap/css/bootstrap-responsive.min.css', 'toastr/toastr.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css', 'leaflet/leaflet.css', 'bootstrap-datepicker/bootstrap-datepicker.css', 'bootstrap-timepicker/bootstrap-timepicker.css']
+    - var lib_styles = ['bootstrap/css/bootstrap.css', 'toastr/toastr.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css', 'leaflet/leaflet.css', 'bootstrap-datepicker/bootstrap-datepicker.css', 'bootstrap-timepicker/bootstrap-timepicker.css']
     each style in lib_styles
       link(rel='stylesheet', href='/lib/' + style)
     link(rel='stylesheet', href='/css/app.css')
@@ -23,7 +23,7 @@ html(ng-app="tamad")
               span.icon-bar
               span.icon-bar
             a.brand(href='/#/')
-              img(src='/img/logo.png', alt='RedSwift')
+              img(src='/img/logo2.png', alt='RedSwift')
             .wrapper
               ul.nav(ng-controller='NavCtrl', ng-show="CurrentUser.loggedIn()")
                 li
@@ -47,7 +47,7 @@ html(ng-app="tamad")
               .pull-right(ng-hide='CurrentUser.loggedIn()')
                 form.navbar-form.btn-group
                   // will style later
-                  a.btn.btn-large.btn-primary(ng-click='logIn()')
+                  a.btn.btn-large.btn-primary(ng-click='logIn()')#login-btn
                     i.icon-facebook-sign
                     |  Login With Facebook
               .pull-right(ng-show='CurrentUser.loggedIn()')
