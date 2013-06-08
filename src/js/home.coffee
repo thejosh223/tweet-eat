@@ -15,11 +15,13 @@ module.controller 'HomeLoggedInCtrl', ($scope) ->
       title: 'A random job'
       price:  100.00
       id: 1
+      deadline: new Date((new Date().getTime()) + 3600e3)
     }
     {
       title: 'Another job'
       price:  200.00
       id: 2
+      deadline: new Date(new Date().getTime() + 240e3)
     }
   ]
 

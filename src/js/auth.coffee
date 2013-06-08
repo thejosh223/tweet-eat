@@ -1,5 +1,3 @@
-"use strict"
-
 module = angular.module 'tamad.auth', [
 
 ]
