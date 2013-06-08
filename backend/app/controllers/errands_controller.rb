@@ -13,6 +13,10 @@ class ErrandsController < ApplicationController
       lat = env['warden'].user.latitude
     end
 
+    if params['exclude_self'] == 'true' and not env['warden'].user.nil?
+      @errands = @errands.where('users.id != ?', env['warden'].user.id)
+    end
+
     render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
