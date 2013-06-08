@@ -8,6 +8,8 @@ Backend::Application.routes.draw do
       end
     end
 
+    resources :users
+
     resources :errand_requests do
       collection do
         get :pending
