@@ -28,12 +28,14 @@ module.service 'CurrentUser', ['$http', ($http) ->
   service
 ]
 
-module.controller 'SessionCtrl', ['$scope', '$http', 'CurrentUser', ($scope, $http, CurrentUser) ->
+module.controller 'SessionCtrl', [
+ '$scope', '$http', 'CurrentUser', 'Facebook', 
+ ($scope, $http, CurrentUser, Facebook) ->
   $scope.CurrentUser = CurrentUser
   $scope.logIn = ->
     email = prompt('Email')
     password = prompt('Password')
-    $http.post('/api/session',
+    $http.post('/api/session', # replace this, backend guy
       email: email
       password: password
     ).success (user) ->
@@ -62,7 +64,9 @@ module.value 'PublicRoutes', [
   '/404'
 ]
 
-module.run ['$rootScope', '$location', 'CurrentUser', 'PublicRoutes', ($rootScope, $location, CurrentUser, PublicRoutes) ->
+module.run [
+ '$rootScope', '$location', 'CurrentUser', 'PublicRoutes', 
+ ($rootScope, $location, CurrentUser, PublicRoutes) ->
   $rootScope.$on '$routeChangeStart', ->
     if not CurrentUser.loggedIn() and $location.path() not in PublicRoutes
       # redirect path
