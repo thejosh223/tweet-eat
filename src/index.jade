@@ -14,7 +14,7 @@ html(ng-app="tamad")
   body
     noscript
       div Javascript must be enabled in order to use Juan Tamad
-    .ng-cloak(ng-controller='SessionCtrl')'
+    .ng-cloak     
       header.navbar.navbar-fixed-top
         .navbar-inner
           .container
@@ -26,13 +26,6 @@ html(ng-app="tamad")
             ul.nav
               li
                 a(href='/#/admin', ng-show='CurrentUser.loggedIn()') Admin
-            .pull-right
-              div(ng-hide='CurrentUser.loggedIn()')
-                button.btn(ng-click='logIn()') Log in
-              div(ng-show='CurrentUser.loggedIn()')
-                button.btn(disabled)
-                  {{ CurrentUser.data().first_name }} {{ CurrentUser.data().last_name }}
-                button.btn(ng-click='logOut()') Log out
             .pull-right
               .progress
                 .bar#progress-bar
