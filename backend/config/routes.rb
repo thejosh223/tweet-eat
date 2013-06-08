@@ -6,5 +6,7 @@ Backend::Application.routes.draw do
     resources :errands
 
     resources :errand_requests
+
+    resources :ratings
   end
 end

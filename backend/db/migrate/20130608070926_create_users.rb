@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :password_digest
       t.decimal :credit
-      t.text :address
+      t.text :location
       t.float :latitude
       t.float :longitude
 
