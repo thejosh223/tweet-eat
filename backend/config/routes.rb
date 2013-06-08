@@ -2,7 +2,11 @@ Backend::Application.routes.draw do
   scope :format => false do
 
     resource :session, :only => [:show, :create, :update, :destroy]
-    resources :errands
+    resources :errands do
+      collection do
+        get :accepted
+      end
+    end
 
     resources :errand_requests do
       collection do

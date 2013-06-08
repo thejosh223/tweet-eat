@@ -36,6 +36,7 @@ html(ng-app="tamad")
                 li
                   a(href='/#/accepted-errands', title='Accepted Errands')
                     i.icon-check
+                    span.notification(ng-show="acceptedRequests.length > 0") {{ acceptedRequests.length }}
               .pull-right
                 .progress
                   .bar#progress-bar

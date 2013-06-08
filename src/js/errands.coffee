@@ -24,15 +24,27 @@ module.controller 'ErrandCreationCtrl', ($scope, Errand) ->
 
 module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
   $scope.pendingRequests = []
+  $scope.acceptedRequests = []
 
-  poll =  () ->
+  pollPending =  () ->
     $http.get('/api/errand_requests/pending')
       .success (resp) ->
         $scope.pendingRequests = resp
-        $timeout poll, 1000
+        $timeout pollPending, 1000
       .error (err) ->
         console.log err
-        $timeout poll, 1000
+        $timeout pollPending, 1000
 
-  poll()
+  pollPending()
+
+  pollAccepted =  () ->
+    $http.get('/api/errands/accepted')
+      .success (resp) ->
+        $scope.acceptedRequests = resp
+        $timeout pollAccepted, 1000
+      .error (err) ->
+        console.log err
+        $timeout pollAccepted, 1000
+
+  pollAccepted()
 
