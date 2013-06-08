@@ -59,7 +59,8 @@ module.factory "Facebook", ['FBObject', '$q', '$rootScope', (FBObject, $q, $root
     result = $q.defer()
     FBObject.then (FB) ->
       FB.logout (response) ->
-        result.resolve response
+        $rootScope.$apply ->
+          result.resolve response
     result.promise
 
   getLoginStatus: ->

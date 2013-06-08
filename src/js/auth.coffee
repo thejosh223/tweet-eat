@@ -8,21 +8,16 @@ module.service 'CurrentUser', ['$http', 'Facebook', ($http, Facebook) ->
   data = {}
   service =
     data: -> data
-    loggedIn: ->  data.facebook
+    loggedIn: ->  data.facebook?
     # Load from localStorage
     load: -> 
       data = angular.fromJson(localStorage['userData']) ? {}
-      console.log "data is", data
       Facebook.getLoginStatus().then (response) =>
-        console.log "why that", data
-        console.log "logged in! response =", response
         @loadData response.authResponse
       , (response) ->
-        console.log "response =", response
         data.facebook = null      
     
     loadData: (authResponse) ->
-      console.log "hey data is", data
       $http.get "https://graph.facebook.com/me?access_token=#{authResponse.accessToken}",
         withCredentials: false
       .success (fbData) =>
