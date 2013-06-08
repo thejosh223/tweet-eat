@@ -58,24 +58,28 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
 ]
 
 module.controller 'SessionCtrl', [
- '$scope', '$http', 'CurrentUser', 'Facebook', '$location',
- ($scope, $http, CurrentUser, Facebook, $location) ->
+ '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr',
+ ($scope, $http, CurrentUser, Facebook, $location, Toastr) ->
   $scope.CurrentUser = CurrentUser
   $scope.logIn = ->
     Facebook.login().then (response) ->
       console.log "success login", response
+      Toastr.success 'Logged in successfully!'
       CurrentUser.loadData(response.authResponse).then (user) ->
         $scope.$broadcast 'login-changed'
     , (error) ->
       console.log "error login", error
+      Toastr.error 'Something went wrong. Please try again.'
   $scope.logOut = ->
     Facebook.logout().then -> # session?
       $http.delete('/api/session').success (user) ->
         console.log "succes api sesion"
+        Toastr.success 'Logged out successfully!'
         CurrentUser.set {}
         $scope.$broadcast 'login-changed'
       .error (err) ->
         console.log 'Error!'
+        Toastr.error 'Something went wrong. Please try again.'
         CurrentUser.set {}
   CurrentUser.loadRemote()
 ]
