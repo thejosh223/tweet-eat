@@ -56,12 +56,14 @@ class ErrandsController < ApplicationController
   end
 
   def apply
-    old = ErrandRequest.find('errand_id = ? AND user_id = ?', params[:id], current_user.id)
-    if !old.nil?
+    old = ErrandRequest.where('errand_id = ? AND user_id = ?', params[:id], current_user.id).first
+    unless old.nil?
       render json: old
     else
       request = ErrandRequest.new
-      request.update_attributes(params)
+      unless params[:deadline].nil?
+        request.deadline = params[:deadline]
+      end
       request.errand_id = params[:id] 
       request.user_id = current_user.id
       request.save!

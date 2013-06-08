@@ -9,45 +9,15 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
     $scope.home_url = '/html/home_anon.html'
 
 
-module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http) ->
+module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
   $scope.user = CurrentUser.data
-  $scope.errands = [
-    {
-      title: 'A random job'
-      price:  100.00
-      id: 1
-      deadline: new Date((new Date().getTime()) + 3600e3)
-      user:
-        fb_id: 100000775753811
-    }
-    {
-      title: 'Another job'
-      price:  200.00
-      id: 2
-      deadline: new Date(new Date().getTime() + 240e3)
-      user:
-        fb_id: 643054116
-    }
-  ]
+  $scope.errands = Errand.query()
   $scope.run = (eid) ->
     console.log "you chose to run errand id: ", eid
-    $http.post('/api/errands/apply',
-      id: eid
-    ).success (response) ->
+    $http.post("/api/errands/#{eid}/apply").success (response) ->
       console.log "success", response
     .error (response) ->
       console.log "didn't finish run successfully", response
 
-module.controller 'HomeAnonCtrl', ($scope) ->
-  $scope.sampleErrands = [
-    {
-      fb_id: 100000775753811
-      title: 'My Job'
-      price: 10.0
-    }
-    {
-      fb_id: 643054116
-      title: 'Other Job'
-      price: 20.0
-    }
-  ]
+module.controller 'HomeAnonCtrl', ($scope, Errand) ->
+  $scope.errands = Errand.query()
