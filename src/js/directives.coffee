@@ -45,7 +45,13 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) ->
       currentBox.errand = scope.errand
       currentBox.id = scope.errand.id
 
-    scope.$watch (-> scope.errand), ->
+    removeErrands = (request) -> _.omit request, ['errand']
+    scope.$watch (-> 
+      errand = _.extend {}, scope.errand
+      errand.errand_requests = removeErrands(request) for request in errand.errand_requests
+      errand
+    ), ->
+      console.log "errand", scope.errand
       if currentBox.id == scope.errand.id
         currentBox.errand = scope.errand
     , true
