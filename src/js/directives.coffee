@@ -29,7 +29,9 @@ module.directive 'rsErrand', -> {
     </div>
     <div ng-hide="errand.errand_request_id">
       <div ng-repeat='request in requests'>
-        <div>User {{request.user.first_name}} wants to do this task.</div>
+        <div>User {{request.user.first_name}} wants to do this task.
+          <span style="color: red;" ng-show="request.declined">You declined.</span>
+        </div>
         <button ng-hide="request.declined" class="btn btn-success" ng-click="_action('accept', request)">Accept</button>
         <button ng-hide="request.declined" class="btn btn-error" ng-click="_action('decline', request)">Decline</button>
         <button ng-show="request.declined" class="btn btn-info" ng-click="_action('undodecline', request)">Undo Decline</button>
