@@ -6,5 +6,6 @@ module = angular.module "tamad", [
   "tamad.profile"
   "tamad.facebook"
   "tamad.resources"
+  "tamad.filters"
   "ngResource"
 ]
