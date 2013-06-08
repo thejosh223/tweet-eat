@@ -5,7 +5,7 @@ require 'httparty'
 
 class Chikka
   include HTTParty
-  debug_output $stderr
+  debug_output $stdout
 end
 
 def sign(payload)
