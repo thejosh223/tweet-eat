@@ -1,6 +1,7 @@
-module = angular.module 'home', [
+module = angular.module 'tamad.home', [
 
 ]
 
 module.controller 'HomeCtrl', ->
+  console.log "HomeCtrl setup"
   # foo
