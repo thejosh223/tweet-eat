@@ -2,14 +2,14 @@ module = angular.module 'tamad.auth', [
 
 ]
 
-module.service 'CurrentUser', ['$http', 'Facebook', ($http, Facebook) ->
+module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, User) ->
   data = {}
   service =
     data: -> data
     loggedIn: ->  data.facebook?
     # Load from localStorage
     load: -> 
-      data = angular.fromJson(localStorage['userData']) ? {}
+      data = new User(angular.fromJson(localStorage['userData']) ? {})
       Facebook.getLoginStatus().then (response) =>
         @loadData response.authResponse
       , (response) ->
@@ -21,6 +21,13 @@ module.service 'CurrentUser', ['$http', 'Facebook', ($http, Facebook) ->
       .success (fbData) =>
         console.log "success", fbData
         data.facebook = fbData
+        $http.post('/api/session',
+          fbData
+        ).success (user) ->
+          console.log "got user info", user
+          data = new User _.extend(data, user)
+        .error (err) ->
+          console.log "Failed (loadData)", err
         service.save()
       .error (resp, status) ->
         console.error "Facebook responded", status, resp
@@ -29,13 +36,13 @@ module.service 'CurrentUser', ['$http', 'Facebook', ($http, Facebook) ->
     # Load from /api/session
     loadRemote: ->
       $http.get('/api/session').success (user) ->
-        data = user
+        _.extend data, user
         service.save()
       .error (err) ->
-#        data = {}
+        console.log "Failed (loadRemote)", err
         service.save()
     set: (user) ->
-      data = user
+      data = new Data(user)
       service.save()
     save: -> localStorage['userData'] = angular.toJson(data)
   service.load()
@@ -79,4 +86,8 @@ module.run [
       # redirect path
       $location.path '/'
     
+]
+
+module.config ['$httpProvider', ($httpProvider) ->
+  $httpProvider.defaults.withCredentials = true
 ]

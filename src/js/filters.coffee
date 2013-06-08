@@ -7,9 +7,14 @@ module.filter 'humanize', ->
 
 module.filter 'distance', ->
   (a, b) ->
-    L.LatLng(a.latitude, a.longitude).distanceTo(L.LatLng(b.latitude, b.longitude))
+    if a?.latitude? and b?.latitude?
+      L.LatLng(a.latitude, a.longitude).distanceTo(L.LatLng(b.latitude, b.longitude))
 
 
 module.filter "photo", ->
   (fbid) ->
-    "https://graph.facebook.com/#{fbid}/picture?type=large" # options later
+    if fbid?
+      "https://graph.facebook.com/#{fbid}/picture?type=large" # options later
+    else
+      # find a better default 'no picture' icon
+      ""

@@ -22,21 +22,19 @@ html(ng-app="tamad")
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.brand(href='/#/') RedSwift
+            a.brand(href='/#/')
+              img(src='/img/logo.png', alt='RedSwift')
             ul.nav(ng-controller='NotificationCtrl')
               li
-                a(href='/#/')
-                  .icon-home
-                  |  Home
+                a(href='/#/', title='Home')
+                  i.icon-home
               li
-                a(href='/#/my-errands')
-                  .icon-meh 
-                  |  My Errands
-                  span.notification(ng-show="{{pendingRequests.length > 0}}") {{ pendingRequests.length }}
+                a(href='/#/my-errands', title='My Errands')
+                  i.icon-briefcase 
+                  span.notification(ng-show="pendingRequests.length > 0") {{ pendingRequests.length }}
               li
-                a(href='/#/accepted-errands')
-                  .icon-smile
-                  |  Accepted Errands
+                a(href='/#/accepted-errands', title='Accepted Errands')
+                  i.icon-check
             .pull-right
               .progress
                 .bar#progress-bar
@@ -44,20 +42,21 @@ html(ng-app="tamad")
             .pull-right(ng-hide='CurrentUser.loggedIn()')
               form.navbar-form.btn-group
                 // will style later
-                a.btn(ng-click='logIn()') Login With Facebook
+                a.btn.btn-large.btn-primary(ng-click='logIn()')
+                  i.icon-facebook-sign
+                  |  Login With Facebook
             .pull-right(ng-show='CurrentUser.loggedIn()')
-              a(href="/#/profile").btn
+              a(href="/#/profile", title='View profile').btn
                 i.icon-user
-                |  {{CurrentUser.data().facebook.first_name}} {{CurrentUser.data().facebook.last_name}}
-              |  
-              a.btn(ng-click='logOut()') Log out
-                .nav-collapse.collapse
+              a.btn(ng-click='logOut()', title='Log out')
+                i.icon-off
+            .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
 
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js']
     each script in scripts
       script(src='/js/' + script)

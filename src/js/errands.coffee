@@ -22,12 +22,17 @@ module.controller 'ErrandCreationCtrl', ($scope, Errand) ->
     console.log $scope.errand
     Errand.save($scope.errand)
 
-module.controller 'NotificationCtrl', ($scope, $http) ->
+module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
   $scope.pendingRequests = []
-  
-  $http.get('/api/errand_requests/pending')
-    .success (resp) ->
-      $scope.pendingRequests = resp
-    .error (err) ->
-      console.log err
+
+  poll =  () ->
+    $http.get('/api/errand_requests/pending')
+      .success (resp) ->
+        $scope.pendingRequests = resp
+        $timeout poll, 1000
+      .error (err) ->
+        console.log err
+        $timeout poll, 1000
+
+  poll()
 
