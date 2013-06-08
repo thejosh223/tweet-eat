@@ -1,8 +1,8 @@
 module = angular.module 'tamad.directives', [
-
+  'tamad.resources'
 ]
 
-module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) -> 
+module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) -> 
   scope:
     errand: '='
     user: '='
@@ -18,6 +18,11 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) ->
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
         <button data-target="#offers-modal" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
+        </button>
+      </div>
+      <div class="mark-as-done" ng-show="showFinish">
+        <button class="btn btn-success mark-as-done-btn">
+          Mark as Done
         </button>
       </div>
     </div>
