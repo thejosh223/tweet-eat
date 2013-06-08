@@ -24,5 +24,5 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
 
   $scope.submit = ->
     Errand.save($scope.errand)
-    CurrentUser.data.
+    
 

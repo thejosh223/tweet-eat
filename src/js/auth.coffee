@@ -6,14 +6,14 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
   data = {}
   service =
     data: -> data
-    loggedIn: -> data.facebook?
+    loggedIn: -> data.loggedIn
     # Load from localStorage
     load: -> 
       data = new User(angular.fromJson(localStorage['userData']) ? {})
       Facebook.getLoginStatus().then (response) =>
         @loadData response.authResponse
       , (response) ->
-        data.facebook = null      
+        data.loggedIn = false     
         service.save()
     
     loadData: (authResponse) ->
@@ -21,9 +21,10 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', ($http, Facebook, Us
         withCredentials: false
       .success (fbData) =>
         console.log "success", fbData
-        data.facebook = fbData
+        data.loggedIn = true
+        _.extend data, fbData
         $http.post('/api/session',
-          fbData
+          data
         ).success (user) ->
           console.log "got user info", user
           data = new User _.extend(data, user)
@@ -76,7 +77,6 @@ module.value 'PublicRoutes', [
   '/'
   ''
   '/404'
-  '/my-errands'
 ]
 
 module.run [
