@@ -16,8 +16,10 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
   query()
 
   $scope.accept = (errand, request) ->
-    console.log "accepting request", request, "for errand", errand
-
+    $http.put("/api/errand_requests/#{request.id}").success (response) ->
+      console.log "successfully accepted response", response
+    .error (response) ->
+      console.log "for some reason it failed", response
 
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
   $scope.errand =

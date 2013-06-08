@@ -15,9 +15,11 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
   setHomeUrl()
 
 
-module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
+module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toastr) ->
   $scope.user = CurrentUser.data
-  $scope.errands = Errand.query()
+  $scope.errands = Errand.query (errands) ->
+    filterErrands()
+
   filterErrands = ->
     $scope.filteredErrands = $scope.errands
     if $scope.searchText
@@ -31,8 +33,7 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
         if errand.latitude? and errand.longitude?
           latLng.distanceTo(new L.LatLng(+errand.latitude, +errand.longitude))
         else
-          1e9
-        
+          1e9        
 
   $scope.$watch 'errands', filterErrands
   $scope.$watch 'searchText', filterErrands
@@ -41,6 +42,7 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
     console.log "you chose to run errand:", errand
     $http.post("/api/errands/#{errand.id}/apply").success (response) ->
       console.log "success", response
+      Toastr.success 'Success! You applied for an errand.'
     .error (response) ->
       console.log "didn't finish run successfully", response
 
