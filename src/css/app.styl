@@ -1,8 +1,26 @@
 border-color = #ccc
 border-width = 1px
+true_blue = #003399
+true_green = #669933
+fake_green = #eff2e3
+
+body
+  color: #333333;
+
+a:focus
+  color: #fff
 
 #main
-  margin-top 120px
+  padding-top 120px
+
+#wrap
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #eff2e3 90%, #ebfcd9 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(90%,#eff2e3), color-stop(100%,#ebfcd9)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%); /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%,#eff2e3 90%,#ebfcd9 100%);
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
   display none
@@ -23,8 +41,8 @@ footer
 
 ul.errands
   list-style-type none
+
 .errand
-  position relative
   display block
   border border-width solid border-color
   width 300px
@@ -33,17 +51,64 @@ ul.errands
   margin 12px 12px 12px 0
   padding 10px
   box-sizing border-box
+  background #fff
+  .misc
+    position relative
+    float left
+    width 100px
+    height 100%
+  img
+    float left
+    margin 0 10px 10px 0
+    border-radius 6px
+    width 100px
+    height auto
   .desc
+    padding-left 15px
+    overflow hidden
+    .title
+      font-size 125%
+      color true_blue
+    .meta
+      float left
+      clear right
+      margin-bottom 10px
+    .body
+      float left
+      clear right
+  button
+    background #f5f5f5
+    height 40px
+    padding 6px
+    color true_blue
+    text-align center
+    font-size 125%
     position absolute
     bottom 0
-    left 0
-    right 100%
-    height 60px
-    width 100%
-    border-color #eee
-    border-top border-width solid border-color
     box-sizing border-box
-    padding 10px
+    width 100px
+    font-weight bold
+    border-radius 6px
+    left 0
+    &.view-offers-btn
+      height 60px
+  .view-offers
+    position absolute
+    left 0
+    bottom 0
+    width 100px
+    height 60px
+    .offers-num
+      position absolute
+      z-index 10
+      border-radius 10px
+      text-align center
+      width 20px
+      height 20px
+      right -3px
+      top -3px
+      background true_green
+      color #fff
       
 #home-page
   display table
@@ -62,7 +127,7 @@ ul.errands
   .form-search
     float left
     input
-      width 800px
+      width 760px
     input, button
       height 32px
 
@@ -81,9 +146,9 @@ header.navbar
       overflow hidden
   i
     font-size 32px
-    color #990000
-    &:hover
-      color #669933
+    color true_blue
+    &.current, &:hover
+      color true_green
   i.icon-facebook-sign
       font-size 18px
       color #fff
@@ -105,3 +170,90 @@ header.navbar
 #set-location
   height 300px
   width 100%
+
+#banner
+  box-shadow 2px 2px 5px #ccc
+
+#teasers
+  list-style-type none
+  li
+    float left
+    margin 10px
+    box-shadow 2px 2px 5px #ccc
+    &:first-child
+      margin-left 0
+    &:last-child
+      margin-right 0
+
+#login-btn
+  background true_blue
+
+.brand img
+  max-width none
+  width auto
+  height 80px
+
+
+/** Adapted from: http://twitter.github.com/bootstrap/examples/sticky-footer.html */
+/* Sticky footer styles
+-------------------------------------------------- */
+
+footerHeight = 40px;
+html,
+body
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+
+/* Wrapper for page content to push down footer */
+#sticky-wrap
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -footerHeight;
+
+/* Set the fixed height of the footer here */
+#sticky-push,
+footer
+  height: footerHeight;
+
+footer.navbar
+  margin-bottom: 0
+  border-radius: 0
+  .navbar-inner
+    border-radius: 0
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px)
+  footer
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 60px;
+}
+#footer {
+  background-color: #f5f5f5;
+}
+

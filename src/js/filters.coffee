@@ -14,7 +14,7 @@ module.filter 'distance', ->
 module.filter "photo", ->
   (fbid) ->
     if fbid?
-      "https://graph.facebook.com/#{fbid}/picture?type=large" # options later
+      "https://graph.facebook.com/#{fbid}/picture?width=100&height=100" # options later
     else
       # find a better default 'no picture' icon
-      ""
+      "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm"

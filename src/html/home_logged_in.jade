@@ -1,4 +1,4 @@
-#home-page.row(ng-controller='HomeLoggedInCtrl', ng-if='CurrentUser.loggedIn()')
+#home-page.row(ng-controller='HomeLoggedInCtrl')
   .span12.row
     form.form-search
       .input-append
@@ -8,7 +8,7 @@
       |  Set your location
   ul.span12.row.errands
     li(ng-repeat='errand in filteredErrands')
-      div(rs-errand, errand="errand", user="CurrentUser", run="run(errandId)")
+      div(rs-errand, errand="errand", user="CurrentUser.data()", run="run(errand)", show-apply="true")
   #set-location-modal.modal.hide.fade(ng-controller='LocationSetCtrl')
     .modal-header
       button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;

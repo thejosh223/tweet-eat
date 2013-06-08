@@ -13,7 +13,7 @@ class ErrandsController < ApplicationController
       lat = env['warden'].user.latitude
     end
 
-    render json: @errands
+    render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
   def show
@@ -54,8 +54,8 @@ class ErrandsController < ApplicationController
 
   def mine
     # Gives all the errands you own
-    @errands = Errand.includes([:user, :errand_requests]).select("*, users.fb_id").where('errands.user_id = ?', current_user.id).all
-    render json: @errands
+    @errands = Errand.includes([:user, {:errand_requests => :user}]).where('errands.user_id = ?', current_user.id).all
+    render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
   def apply
@@ -75,7 +75,29 @@ class ErrandsController < ApplicationController
   end
 
   def accepted
-    errands = Errand.joins(:errand_requests).where('Errands.user_id = ? AND Errands.finished != true', current_user.id)
+    errands = Errand.joins(:errand_requests).where('errand_requests.user_id = ? AND errands.errand_request_id is not null AND (errands.finished is null or not errands.finished)', current_user.id)
     render json: errands
+  end
+
+  def cancel
+    errand = Errand.find params[:id]
+    if errand.user_id == current_user.id
+      errand.errand_request_id = nil
+      errand.save!
+      render json: {ok: true}
+    else
+      render json: "", status: 404
+    end
+  end
+
+  def acknowledge
+    errand = Errand.find params[:id]
+    if errand.user_id == current_user.id
+      errand.finished = true
+      errand.save!
+      render json: {ok: true}
+    else
+      render json: "", status: 404
+    end
   end
 end

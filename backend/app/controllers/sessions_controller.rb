@@ -17,16 +17,21 @@ class SessionsController < ApplicationController
       # create a new user
       user = User.new
       user.email = params[:email]
-      user.password = "skdlfjdslkfjdslkfjslkXXjerwipfXXjipfdpjXXokdjcfpodmXXcdkopjfXXsdklXXfhdosnqp"
+      user.password = "skdlfjdslkfjdslkfjslkXXjerwipfXXjipfdpjXXokdjcfpo;';'dmXXcdkopjfXXsdklXXf--=-=+hdosnqp1"
+      user.first_name = params[:first_name]
+      user.last_name = params[:last_name]
       user.fb_id = fb_id
       user.save!
+    else
+      # we need to update info too
+      user.email = params[:email] or user.email
+      user.first_name = params[:first_name] or user.first_name
+      user.last_name = params[:last_name] or user.last_name
+      user.save!
     end
-    puts "huuaa"
     puts env['warden'].user
     env['warden'].set_user user
-    puts "huu"
     puts env['warden'].user
-    puts "hee"
     render json: { :ok => true, :user => user.as_json }, status: :ok
   end
 

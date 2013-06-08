@@ -6,7 +6,7 @@ html(ng-app="tamad")
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
     meta(name='viewport', content='width=device-width', initial-scale='1.0')
 
-    - var lib_styles = ['bootstrap/css/bootstrap.css', 'bootstrap/css/bootstrap-responsive.min.css', 'toastr/toastr.min.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css', 'leaflet/leaflet.css', 'bootstrap-datepicker/bootstrap-datepicker.css', 'bootstrap-timepicker/bootstrap-timepicker.css']
+    - var lib_styles = ['bootstrap/css/bootstrap.css', 'toastr/toastr.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css', 'leaflet/leaflet.css', 'bootstrap-datepicker/bootstrap-datepicker.css', 'bootstrap-timepicker/bootstrap-timepicker.css']
     each style in lib_styles
       link(rel='stylesheet', href='/lib/' + style)
     link(rel='stylesheet', href='/css/app.css')
@@ -15,49 +15,55 @@ html(ng-app="tamad")
     noscript
       div Javascript must be enabled in order to use RedSwift
     .ng-cloak     
-      header.navbar.navbar-fixed-top
-        .navbar-inner
-          .container
-            button.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
-            a.brand(href='/#/')
-              img(src='/img/logo.png', alt='RedSwift')
-            .wrapper
-              ul.nav(ng-controller='NavCtrl')
-                li
-                  a(href='/#/', title='Home')
-                    i.icon-home
-                li
-                  a(href='#new-errand', data-toggle='modal', title='Post Errand', ng-click='postErrand()')
-                    i.icon-plus-sign
-                li
-                  a(href='/#/my-errands', title='My Errands')
-                    i.icon-briefcase 
-                    span.notification(ng-show="pendingRequests.length > 0") {{ pendingRequests.length }}
-                li
-                  a(href='/#/accepted-errands', title='Accepted Errands')
-                    i.icon-check
-                    span.notification(ng-show="acceptedRequests.length > 0") {{ acceptedRequests.length }}
-              .pull-right
-                .progress
-                  .bar#progress-bar
-                  #progress-text
-              .pull-right(ng-hide='CurrentUser.loggedIn()')
-                form.navbar-form.btn-group
-                  // will style later
-                  a.btn.btn-large.btn-primary(ng-click='logIn()')
-                    i.icon-facebook-sign
-                    |  Login With Facebook
-              .pull-right(ng-show='CurrentUser.loggedIn()')
-                a(href="/#/profile", title='View profile').btn
-                  i.icon-user
-                a.btn(ng-click='logOut()', title='Log out')
-                  i.icon-off
-              .nav-collapse.collapse
-      #main(role='main').container
-        #content(ng-view)
+      #wrap
+        header.navbar.navbar-fixed-top
+          .navbar-inner
+            .container
+              button.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+              a.brand(href='/#/')
+                img(src='/img/logo2.png', alt='RedSwift')
+              .wrapper
+                ul.nav(ng-controller='NavCtrl', ng-show="CurrentUser.loggedIn()")
+                  li
+                    a(href='/#/', title='Home')
+                      i.icon-home(ng-class='{"current": path=="/"}')
+                  li
+                    a(data-target='#new-errand', data-toggle='modal', title='Post Errand', ng-click='postErrand()')
+                      i.icon-plus-sign
+                  li
+                    a(href='/#/my-errands', title='My Errands')
+                      i.icon-briefcase(ng-class='{"current": path=="/my-errands"}')
+                      span.notification(ng-show="pendingRequests.length > 0") {{ pendingRequests.length }}
+                  li
+                    a(href='/#/accepted-errands', title='Accepted Errands')
+                      i.icon-check(ng-class='{"current": path=="/accepted-errands"}')
+                      span.notification(ng-show="acceptedRequests.length > 0") {{ acceptedRequests.length }}
+                .pull-right
+                  .progress
+                    .bar#progress-bar
+                    #progress-text
+                .pull-right(ng-hide='CurrentUser.loggedIn()')
+                  form.navbar-form.btn-group
+                    // will style later
+                    a.btn.btn-large.btn-primary(ng-click='logIn()')#login-btn
+                      i.icon-facebook-sign
+                      |  Login With Facebook
+                .pull-right(ng-show='CurrentUser.loggedIn()')
+                  a(href="/#/profile", title='View profile').btn
+                    i.icon-user
+                  a.btn(ng-click='logOut()', title='Log out')
+                    i.icon-off
+                .nav-collapse.collapse
+        #main(role='main').container
+          #content(ng-view)
+        #push
+      #footer
+        .container
+          p.muted.credit
+            &copy; 2013 Team Vivace
     #new-errand(ng-controller='ErrandCreationCtrl').modal.hide.fade
       .modal-header
         button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
@@ -93,11 +99,11 @@ html(ng-app="tamad")
           #location-map-wrapper
               
         .modal-footer
-          button(type='submit').btn Submit
+          button(type='submit', data-dismiss="modal").btn.btn-danger Submit
 
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'runner.js', 'nav.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'services.js', 'runner.js', 'nav.js']
     each script in scripts
       script(src='/js/' + script)

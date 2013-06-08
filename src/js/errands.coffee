@@ -3,21 +3,66 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, Errand) ->
+module.controller 'MyErrandsCtrl', ($scope, $http) ->
   query = ->
-    $scope.errands = Errand.query (errands) ->
-      console.log "got errands = ", errands
-      console.log "getting requests for each" # or may get the requests simultaneously
+    $http.get("/api/errands/mine").success (errands) ->
+      $scope.errands = errands
+    .error (error) ->
+      console.error "error getting errands", error
 
-  query()
-  $scope.$on 'save-errand', (event) ->
+  $scope.$on 'reload-errands', (event) ->
     query()
 
-  $scope.accept = (errand, request) ->
-    console.log "accepting request", request, "for errand", errand
+  query()
+
+  $scope.doAction = (action, errand, request) ->
+    # add toastr here!!!!
+    switch action
+      when "accept" # you want this runner to do your task
+        $http.put("/api/errand_requests/#{request.id}").success (response) ->
+          console.log "successfully accepted", response
+          $scope.$emit 'reload-errands'
+        .error (response) ->
+          console.error "for some reason it failed", response
+          $scope.$emit 'reload-errands'
+      when "decline" # you don't want this runner to do your task
+        $http.put("/api/errand_requests/#{request.id}/decline").success (response) ->
+          console.log "successfully decline", response
+          $scope.$emit 'reload-errands'
+        .error (response) ->
+          console.error "for some reason it failed", response
+          $scope.$emit 'reload-errands'
+      when "undodecline" # undo 'decline' of a runner
+        $http.put("/api/errand_requests/#{request.id}/undodecline").success (response) ->
+          console.log "successfully undid decline", response
+          $scope.$emit 'reload-errands'
+        .error (response) ->
+          console.error "for some reason it failed", response
+          $scope.$emit 'reload-errands'
+      when "cancel" # cancel the errand given to runner 
+        $http.put("/api/errands/#{errand.id}/cancel").success (response) ->
+          console.log "successfully cancelled", response
+          $scope.$emit 'reload-errands'
+        .error (response) ->
+          console.error "for some reason it failed", response
+          $scope.$emit 'reload-errands'
+      when "reject" # runner did not really complete errand
+        $http.put("/api/errand_requests/#{request.id}/reject").success (response) ->
+          console.log "successfully cancelled", response
+          $scope.$emit 'reload-errands'
+        .error (response) ->
+          console.error "for some reason it failed", response
+          $scope.$emit 'reload-errands'
+      when "acknowledge" # acknowledge that runner has indeed completed errand
+        $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
+          console.log "successfully acknowledged", response
+          $scope.$emit 'reload-errands'
+        .error (response) ->
+          console.error "for some reason it failed", response
+          $scope.$emit 'reload-errands'
 
 
-module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
+module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
   $scope.errand =
     deadline: null
   isDefault = not CurrentUser.data()?.user?.latitude?
@@ -47,9 +92,9 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
 
   $scope.submit = ->
     # save $scope.errand.latitude/longitude to user
-
     Errand.save $scope.errand, (success) ->
-      $scope.$emit 'save-errand'
+      $scope.$emit 'reload-errands'
+      $location.path('/my-errands')
 
 
 module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
