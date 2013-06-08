@@ -21,3 +21,13 @@ module.controller 'ErrandCreationCtrl', ($scope, Errand) ->
   $scope.submit = ->
     console.log $scope.errand
     Errand.save($scope.errand)
+
+module.controller 'NotificationCtrl', ($scope, $http) ->
+  $scope.pendingRequests = []
+  
+  $http.get('/api/errand_requests/pending')
+    .success (resp) ->
+      $scope.pendingRequests = resp
+    .error (err) ->
+      console.log err
+

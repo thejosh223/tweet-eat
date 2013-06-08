@@ -23,7 +23,7 @@ html(ng-app="tamad")
               span.icon-bar
               span.icon-bar
             a.brand(href='/#/') RedSwift
-            ul.nav
+            ul.nav(ng-controller='NotificationCtrl')
               li
                 a(href='/#/')
                   .icon-home
@@ -32,6 +32,7 @@ html(ng-app="tamad")
                 a(href='/#/my-errands')
                   .icon-meh 
                   |  My Errands
+                  span.notification(ng-show="{{pendingRequests.length > 0}}") {{ pendingRequests.length }}
               li
                 a(href='/#/accepted-errands')
                   .icon-smile
