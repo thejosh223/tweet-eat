@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
       # we need to update info too
       user.email = params[:email] or user.email
       user.first_name = params[:first_name] or user.first_name
-      user.last_name = params[:last_name] user.last_name
+      user.last_name = params[:last_name] or user.last_name
       user.save!
     end
     puts env['warden'].user
