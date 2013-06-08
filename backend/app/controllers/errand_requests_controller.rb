@@ -1,6 +1,6 @@
 class ErrandRequestsController < ApplicationController
   def index
-    requests = ErrandRequest.joins(:errand).where("not errands.finished AND errand_requests.user_id = ?", current_user.id).all
+    requests = ErrandRequest.joins(:errand).where("(errands.finished is null or not errands.finished) AND errand_requests.user_id = ?", current_user.id).all
     render json: requests
   end
   def update
