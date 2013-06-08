@@ -1,1 +1,19 @@
-p Test
+#home-page.row
+  .span8.content
+    form.span8.search-bar.form-inline.row
+        label
+          | Errand 
+          input(type='text', ng-model='errand')
+        label
+          | Price 
+          input(type='text', ng-model='price')
+        button(type='submit') Search
+    ul.span8.row.errands
+      li(ng-repeat='errand in errands')
+        div {{ errand.title }}
+        div
+          .icon-money
+          |  PHP {{ errand.price | number:2 }}
+        button(ng-click='run(errand.id)') Run
+  .span4.sidebar
+    p bar

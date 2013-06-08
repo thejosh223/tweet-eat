@@ -1,0 +1,2 @@
+class ErrandRequestsController < ApplicationController
+end
