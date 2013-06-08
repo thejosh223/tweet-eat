@@ -10,6 +10,10 @@ module.config ["$routeProvider", ($routeProvider) ->
   $routeProvider.when "/404",
     templateUrl: "/html/404.html"
 
+  $routeProvider.when "/profile",
+    templateUrl: "/html/profile.html"
+    controller: "ProfileCtrl"
+    
   $routeProvider.when "",
     redirectTo: "/"
   

@@ -30,6 +30,17 @@ html(ng-app="tamad")
               .progress
                 .bar#progress-bar
                 #progress-text
+            .pull-right(ng-hide='CurrentUser.loggedIn()')
+              form.navbar-form.btn-group
+                a.btn(ng-click='login()') Login
+                // will style later
+                a.btn(ng-click='signup()') Signup With Facebook
+            .pull-right(ng-show='CurrentUser.loggedIn()')
+              a(href="/profile").btn
+                i.icon-user
+              |  
+              a.btn(ng-click='logout()') Log out
+                .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
 
