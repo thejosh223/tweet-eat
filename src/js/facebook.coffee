@@ -65,11 +65,8 @@ module.factory "Facebook", ['FBObject', '$q', '$rootScope', (FBObject, $q, $root
 
   getLoginStatus: ->
     result = $q.defer()  
-    console.log "getting login status"
     FBObject.then (FB) ->
-      console.log "got", FB
       FB.getLoginStatus (response) ->
-        console.log "got 2", response
         $rootScope.$apply ->
           if response.authResponse
             result.resolve response

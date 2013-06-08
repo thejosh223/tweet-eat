@@ -1,16 +1,16 @@
 class ErrandsController < ApplicationController
   respond_to :json
   def index
-    #render json: Errand.where(:user => current_user).all
+    #render json: Errand.where(:user => env['warden'].user).all
     @errands = Errand.joins(:user).select("*, users.fb_id").all
 
     long = lat = nil
     if params['longitude']
       long = params['longitude'].to_f
       lat = params['latitude'].to_f
-    elsif warden.user and warden.user.longitude
-      long = warden.user.longitude
-      lat = warden.user.latitude
+    elsif env['warden'].user and env['warden'].user.longitude
+      long = env['warden'].user.longitude
+      lat = env['warden'].user.latitude
     end
 
     if long
@@ -25,11 +25,18 @@ class ErrandsController < ApplicationController
   end
 
   def create
+    puts "hey"
+    puts env['warden'].user
+    puts "Xh"
     errand = Errand.new
-    if not current_user.nil?
-      errand.user_id = current_user.id
+    if not env['warden'].user.nil?
+      errand.user_id = env['warden'].user.id
     end
+    puts "UI:"
     errand.update_attributes(params['errand'])
+    puts "UIx:"
+    puts env['warden'].user
+    puts "UIy:"
     render json: errand
   end
 
