@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :location, :credit, :email, :latitude, :longitude, :password_digest, :avatar
+  attr_accessible :location, :credit, :email, :latitude, :longitude, :password_digest, :avatar, :fb_id
 
   has_attached_file :avatar, :styles => { :medium => '300x300>', :thumb => '100x100' }, :default_url => '/images/:style/missing.png'
  
