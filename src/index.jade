@@ -22,19 +22,28 @@ html(ng-app="tamad")
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.brand(href='/#') Juan Tamad
+            a.brand(href='/#/') Juan Tamad
             ul.nav
               li
-                a(href='/#/admin', ng-show='CurrentUser.loggedIn()') Admin
+                a(href='/#/')
+                  .icon-home
+                  |  Home
+              li
+                a(href='/#/my-errands')
+                  .icon-meh 
+                  |  My Errands
+              li
+                a(href='/#/accepted-errands')
+                  .icon-smile
+                  |  Accepted Errands
             .pull-right
               .progress
                 .bar#progress-bar
                 #progress-text
             .pull-right(ng-hide='CurrentUser.loggedIn()')
               form.navbar-form.btn-group
-                a.btn(ng-click='logIn()') Login
                 // will style later
-                a.btn(ng-click='signUp()') Signup With Facebook
+                a.btn(ng-click='signUp()') Login With Facebook
             .pull-right(ng-show='CurrentUser.loggedIn()')
               a(href="/#/profile").btn
                 i.icon-user

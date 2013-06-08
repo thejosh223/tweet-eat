@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user: 
+  title: MyString
+  body: MyText
+  price: 9.99
+  deadline: 2013-06-08 07:16:25
+
+two:
+  user: 
+  title: MyString
+  body: MyText
+  price: 9.99
+  deadline: 2013-06-08 07:16:25
