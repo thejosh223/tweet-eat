@@ -1,27 +1,48 @@
-html(ng-app="Momentum")
+html(ng-app="tamad")
   head
-    title Angular Momentum
+    title Juan Tamad
 
-    // import the bootstrap stylesheets
-    link(href='/lib/bootstrap/css/bootstrap.css', rel='stylesheet')
-    link(href='/lib/bootstrap/css/bootstrap-responsive.css', rel='stylesheet')
+    meta(charset='utf8')
+    meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+    meta(name='viewport', content='width=device-width', initial-scale='1.0')
 
-    // import the css styles we created in the /css/ folder
-    link(href='/css/styles.css', rel='stylesheet')
-
-    // import the jquery, bootstrap, and Angular JS libraries
-    script(src='/lib/jquery-1.9.1.js') 
-    script(src='/lib/bootstrap/js/bootstrap.js')
-    script(src='/lib/angular-1.1.5/angular.js')
-
-    // import the javascript code we created in the /js/ folder
-    script(src='/js/app.js', type='text/javascript')
-    script(src='/js/message.js', type='text/javascript')
-    script(src='/js/directives.js', type='text/javascript')
+    - var lib_styles = ['bootstrap/css/bootstrap.css', 'bootstrap/css/bootstrap-responsive.min.css', 'toastr/toastr.min.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css']
+    each style in lib_styles
+      link(rel='stylesheet', href='/lib/' + style)
+    link(rel='stylesheet', href='/css/app.css')
 
   body
-    .container
-      .row
-        h1 Angular Momentum Lesson 1
-        p.lead This simple app posts messages on a public board anonymously.
-      div(ng-view)
+    noscript
+      div Javascript must be enabled in order to use Juan Tamad
+    .ng-cloak(ng-controller='SessionCtrl')'
+      header.navbar.navbar-fixed-top
+        .navbar-inner
+          .container
+            button.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.brand(href='/#') Juan Tamad
+            ul.nav
+              li
+                a(href='/#/admin', ng-show='CurrentUser.loggedIn()') Admin
+            .pull-right
+              div(ng-hide='CurrentUser.loggedIn()')
+                button.btn(ng-click='logIn()') Log in
+              div(ng-show='CurrentUser.loggedIn()')
+                button.btn(disabled)
+                  {{ CurrentUser.data().first_name }} {{ CurrentUser.data().last_name }}
+                button.btn(ng-click='logOut()') Log out
+            .pull-right
+              .progress
+                .bar#progress-bar
+                #progress-text
+      #main(role='main').container
+        #content(ng-view)
+
+    - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js']
+    each lib in libs
+      script(src='/lib/' + lib)
+    - var scripts = ['app.js', 'routes.js', 'home.js']
+    each script in scripts
+      script(src='/js/' + script)

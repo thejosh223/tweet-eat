@@ -47,7 +47,8 @@ class webserver {
   # This sets up nginx as a webserver using puppetlabs's nginx module.
   # You can visit http://forge.puppetlabs.com/puppetlabs/nginx
   # if you want to know more.
-  include nginx
+  class {'nginx': 
+  }
 
   # This tells nginx that the backend server for momentum is at localhost:8080
   nginx::resource::upstream { 'momentum-backend':
