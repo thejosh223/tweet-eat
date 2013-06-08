@@ -24,33 +24,34 @@ html(ng-app="tamad")
               span.icon-bar
             a.brand(href='/#/')
               img(src='/img/logo.png', alt='RedSwift')
-            ul.nav(ng-controller='NotificationCtrl')
-              li
-                a(href='/#/', title='Home')
-                  i.icon-home
-              li
-                a(href='/#/my-errands', title='My Errands')
-                  i.icon-briefcase 
-                  span.notification(ng-show="pendingRequests.length > 0") {{ pendingRequests.length }}
-              li
-                a(href='/#/accepted-errands', title='Accepted Errands')
-                  i.icon-check
-            .pull-right
-              .progress
-                .bar#progress-bar
-                #progress-text
-            .pull-right(ng-hide='CurrentUser.loggedIn()')
-              form.navbar-form.btn-group
-                // will style later
-                a.btn.btn-large.btn-primary(ng-click='logIn()')
-                  i.icon-facebook-sign
-                  |  Login With Facebook
-            .pull-right(ng-show='CurrentUser.loggedIn()')
-              a(href="/#/profile", title='View profile').btn
-                i.icon-user
-              a.btn(ng-click='logOut()', title='Log out')
-                i.icon-off
-            .nav-collapse.collapse
+            .wrapper
+              ul.nav(ng-controller='NotificationCtrl')
+                li
+                  a(href='/#/', title='Home')
+                    i.icon-home
+                li
+                  a(href='/#/my-errands', title='My Errands')
+                    i.icon-briefcase 
+                    span.notification(ng-show="pendingRequests.length > 0") {{ pendingRequests.length }}
+                li
+                  a(href='/#/accepted-errands', title='Accepted Errands')
+                    i.icon-check
+              .pull-right
+                .progress
+                  .bar#progress-bar
+                  #progress-text
+              .pull-right(ng-hide='CurrentUser.loggedIn()')
+                form.navbar-form.btn-group
+                  // will style later
+                  a.btn.btn-large.btn-primary(ng-click='logIn()')
+                    i.icon-facebook-sign
+                    |  Login With Facebook
+              .pull-right(ng-show='CurrentUser.loggedIn()')
+                a(href="/#/profile", title='View profile').btn
+                  i.icon-user
+                a.btn(ng-click='logOut()', title='Log out')
+                  i.icon-off
+              .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
 
