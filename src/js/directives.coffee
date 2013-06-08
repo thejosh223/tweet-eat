@@ -2,7 +2,7 @@ module = angular.module 'tamad.directives', [
 
 ]
 
-module.directive 'rsErrand', -> 
+module.directive 'rsErrand', (NumberStream) -> 
   scope:
     errand: '='
     user: '='
@@ -15,7 +15,7 @@ module.directive 'rsErrand', ->
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
       <div class="view-offers" ng-show="showManage">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button class="btn btn-success view-offers-btn" ng-click="_view()">
+        <button data-target="#rs-errand-{{randId}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>
@@ -29,9 +29,22 @@ module.directive 'rsErrand', ->
       </div>
       <div class="body">{{ errand.body }}</div>
     </div>
+    <div id="rs-errand-{{randId}}" class="modal hide fade">
+      <div class="modal-header">
+        <button class="btn close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Offers</h3>
+      </div>
+      <div class="modal-body>
+        <div ng-repeat="request in errand.errand_requests">
+          
+        </div>
+      </div
+    </div>
+
   </div>
   '''
   link: (scope, element, attrs) ->
+    scope.randId = NumberStream.next()
     scope.showApply = attrs.showApply?
     scope.showManage = attrs.showManage?
     scope.showFinish = attrs.showFinish?
@@ -39,4 +52,6 @@ module.directive 'rsErrand', ->
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
+    scope._view = ->
+      console.log "hey view"
 
