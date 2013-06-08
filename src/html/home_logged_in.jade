@@ -10,10 +10,14 @@
         button(type='submit') Search
     ul.span8.row.errands
       li(ng-repeat='errand in errands')
+        img(ng-src='{{errand.user.photo}}')
         div {{ errand.title }}
         div
           .icon-money
           |  PHP {{ errand.price | number:2 }}
+        div
+          .icon-time
+          |  {{ errand.deadline | humanize }}
         button(ng-click='run(errand.id)') Run
   .span4.sidebar
     p bar

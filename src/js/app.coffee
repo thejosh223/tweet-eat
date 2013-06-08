@@ -4,4 +4,5 @@ module = angular.module "tamad", [
   "tamad.home"
   "tamad.profile"
   "tamad.facebook"
+  "tamad.filters"
 ]

@@ -1,5 +1,3 @@
-"use strict"
-
 module = angular.module 'tamad.auth', [
 
 ]
@@ -8,7 +6,7 @@ module.service 'CurrentUser', ['$http', ($http) ->
   data = null
   service =
     data: -> data
-    loggedIn: -> false # for now
+    loggedIn: -> true # for now
     # Load from localStorage
     load: -> data = angular.fromJson(localStorage['userData']) ? {}
     # Load from /api/session
