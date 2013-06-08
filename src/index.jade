@@ -25,12 +25,12 @@ html(ng-app="tamad")
             a.brand(href='/#/')
               img(src='/img/logo.png', alt='RedSwift')
             .wrapper
-              ul.nav(ng-controller='NavCtrl')
+              ul.nav(ng-controller='NavCtrl', ng-show="CurrentUser.loggedIn()")
                 li
                   a(href='/#/', title='Home')
                     i.icon-home
                 li
-                  a(href='#new-errand', data-toggle='modal', title='Post Errand', ng-click='postErrand()')
+                  a(data-target='#new-errand', data-toggle='modal', title='Post Errand', ng-click='postErrand()')
                     i.icon-plus-sign
                 li
                   a(href='/#/my-errands', title='My Errands')
