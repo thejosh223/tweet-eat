@@ -8,7 +8,7 @@ module.service 'CurrentUser', ['$http', ($http) ->
   data = null
   service = {
     data: -> data
-    loggedIn: -> data?
+    loggedIn: -> false # for now
     # Load from localStorage
     load: -> data = angular.fromJson(localStorage['userData']) ? {}
     # Load from /api/session
@@ -28,12 +28,14 @@ module.service 'CurrentUser', ['$http', ($http) ->
   service
 ]
 
-module.controller 'SessionCtrl', ['$scope', '$http', 'CurrentUser', ($scope, $http, CurrentUser) ->
+module.controller 'SessionCtrl', [
+ '$scope', '$http', 'CurrentUser', 'Facebook', 
+ ($scope, $http, CurrentUser, Facebook) ->
   $scope.CurrentUser = CurrentUser
   $scope.logIn = ->
     email = prompt('Email')
     password = prompt('Password')
-    $http.post('/api/session',
+    $http.post('/api/session', # replace this, backend guy
       email: email
       password: password
     ).success (user) ->
@@ -49,6 +51,25 @@ module.controller 'SessionCtrl', ['$scope', '$http', 'CurrentUser', ($scope, $ht
     .error (err) ->
       console.log 'Error!'
       CurrentUser.set null
-
+  $scope.signUp = ->
+    console.log "Sign up!!!"
+    # With facebook
   CurrentUser.loadRemote()
+]
+
+module.value 'PublicRoutes', [
+  '/home'
+  '/'
+  ''
+  '/404'
+]
+
+module.run [
+ '$rootScope', '$location', 'CurrentUser', 'PublicRoutes', 
+ ($rootScope, $location, CurrentUser, PublicRoutes) ->
+  $rootScope.$on '$routeChangeStart', ->
+    if not CurrentUser.loggedIn() and $location.path() not in PublicRoutes
+      # redirect path
+      $location.path '/'
+    
 ]

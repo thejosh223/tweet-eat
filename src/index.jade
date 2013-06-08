@@ -11,7 +11,7 @@ html(ng-app="tamad")
       link(rel='stylesheet', href='/lib/' + style)
     link(rel='stylesheet', href='/css/app.css')
 
-  body
+  body(ng-controller="SessionCtrl")
     noscript
       div Javascript must be enabled in order to use Juan Tamad
     .ng-cloak     
@@ -30,12 +30,23 @@ html(ng-app="tamad")
               .progress
                 .bar#progress-bar
                 #progress-text
+            .pull-right(ng-hide='CurrentUser.loggedIn()')
+              form.navbar-form.btn-group
+                a.btn(ng-click='logIn()') Login
+                // will style later
+                a.btn(ng-click='signUp()') Signup With Facebook
+            .pull-right(ng-show='CurrentUser.loggedIn()')
+              a(href="/#/profile").btn
+                i.icon-user
+              |  
+              a.btn(ng-click='logOut()') Log out
+                .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
 
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'auth.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'auth.js', 'profile.js', 'facebook.js']
     each script in scripts
       script(src='/js/' + script)
