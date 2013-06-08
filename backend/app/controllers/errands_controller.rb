@@ -1,16 +1,8 @@
 class ErrandsController < ApplicationController
   respond_to :json
   def index
-<<<<<<< HEAD
     #render json: Errand.where(:user => env['warden'].user).all
-    @errands = Errand.joins(:user).select("*, users.fb_id").all
-||||||| merged common ancestors
-    #render json: Errand.where(:user => current_user).all
-    @errands = Errand.joins(:user).select("*, users.fb_id").all
-=======
-    #render json: Errand.where(:user => current_user).all
     @errands = Errand.includes(:user).select("*, users.fb_id").all
->>>>>>> origin/master
 
     long = lat = nil
     if params['longitude']
