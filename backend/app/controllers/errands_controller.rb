@@ -2,7 +2,7 @@ class ErrandsController < ApplicationController
   respond_to :json
   def index
     #render json: Errand.where(:user => current_user).all
-    @errands = Errand.joins(:user).select("*, users.fb_id").all
+    @errands = Errand.includes(:user).select("*, users.fb_id").all
 
     long = lat = nil
     if params['longitude']
@@ -21,17 +21,17 @@ class ErrandsController < ApplicationController
   end
 
   def show
-    render json: Errand.joins(:user).select("*, users.fb_id").find(params[:id])
+    render json: Errand.includes(:user).select("*, users.fb_id").find(params[:id])
   end
 
   def create
     errand = Errand.new
-    if not current_user.nil?
+    unless current_user.nil?
       errand.user_id = current_user.id
     end
 
 
-    if current_user.location.nil?
+    if not current_user.nil? and current_user.location.nil?
       current_user.location = params['location']
       current_user.longitude = params['longitude'].to_f
       current_user.latitude = params['latitude'].to_f
