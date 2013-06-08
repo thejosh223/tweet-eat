@@ -44,23 +44,17 @@ module.directive 'rsErrand', ->
 
 module.directive 'rsRating', -> 
   scope:
-    errand: '='
-    user: '='
+    rating: '='
   template: '''
-  <div class="errand">
-    <div class="misc">
-      <img ng-src="{{errand.user.fb_id | photo}}"></img>
+  <div class="rating-box">
+    <div class="title">{{ rating.title }}</div>
+    <div class="comment">{{ rating.comment }}</div>
+    <div class="pull-right muted">- {{ rating.citation }}</div>
+    <div class="score">
+      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= rating.score] }}'></span>
     </div>
-    <div class="desc">
-      <div class="meta">
-        <div class="title">{{ errand.title }}</div>
-        <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
-        <div class="price">&#8369; {{ errand.price | number:2 }}</div>
-        <div class="location">{{ errand.location }}<span ng-show="user">  {{errand|distance:user}}</span></div>
-      </div>
-      <div class="body">{{ errand.body }}</div>
-    </div>
+    <div class='clearfix'></div>
   </div>
-  '''
+'''
   link: (scope, element, attrs) ->
-    #pass 
+    scope.stars = [1,2,3,4,5]

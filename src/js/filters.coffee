@@ -22,3 +22,11 @@ module.filter "photo", ->
     else
       # find a better default 'no picture' icon
       "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm"
+
+module.filter "profilepic", ->
+  (fbid) ->
+    if fbid?
+      "https://graph.facebook.com/#{fbid}/picture?width=200&height=200" # options later
+    else
+      # find a better default 'no picture' icon
+      "http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm"

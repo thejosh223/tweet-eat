@@ -1,12 +1,15 @@
 #profile
   .row
-    .span4
-      img(ng-src="{{user.fb_id | photo}}")
-    .span4
-      h2.row {{ user.first_name }} {{ user.last_name }}
-      h4.row Average Rating: {{ rating_average }}
-      h4.row Rating Count: {{ rating_count }}
+    .profile-picture
+      img(ng-src="{{user.fb_id | profilepic}}")
+    .profile-details
+      h3.profile-name {{ user.first_name }} {{ user.last_name }}
+      div.rating-score
+        | Average Rating:
+      span.rating-stars
+        span(ng-repeat='star in stars', class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= rating_average] }}')
+      span.rating-count.muted {{ rating_count }} votes
   .row
-    h4 Errands Done
-    div(ng-repeat='errand in errands')
-      div(rs-rating, errand="errand")
+    h3.errands-done Errands Done
+    div(ng-repeat='rating in ratings')
+      div(rs-rating, rating="rating")
