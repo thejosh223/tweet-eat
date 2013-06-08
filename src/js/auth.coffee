@@ -43,8 +43,6 @@ module.controller 'SessionCtrl', [
     .error (err) ->
       console.log 'Error!'
       CurrentUser.set null
-  $scope.signUp = ->
-    console.log "Sign up!!!"
     # With facebook
   CurrentUser.loadRemote()
 ]

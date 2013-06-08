@@ -43,7 +43,7 @@ html(ng-app="tamad")
             .pull-right(ng-hide='CurrentUser.loggedIn()')
               form.navbar-form.btn-group
                 // will style later
-                a.btn(ng-click='signUp()') Login With Facebook
+                a.btn(ng-click='logIn()') Login With Facebook
             .pull-right(ng-show='CurrentUser.loggedIn()')
               a(href="/#/profile").btn
                 i.icon-user
