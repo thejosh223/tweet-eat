@@ -11,7 +11,7 @@ html(ng-app="tamad")
       link(rel='stylesheet', href='/lib/' + style)
     link(rel='stylesheet', href='/css/app.css')
 
-  body
+  body(ng-controller="SessionCtrl")
     noscript
       div Javascript must be enabled in order to use Juan Tamad
     .ng-cloak     
@@ -32,14 +32,14 @@ html(ng-app="tamad")
                 #progress-text
             .pull-right(ng-hide='CurrentUser.loggedIn()')
               form.navbar-form.btn-group
-                a.btn(ng-click='login()') Login
+                a.btn(ng-click='logIn()') Login
                 // will style later
-                a.btn(ng-click='signup()') Signup With Facebook
+                a.btn(ng-click='signUp()') Signup With Facebook
             .pull-right(ng-show='CurrentUser.loggedIn()')
               a(href="/#/profile").btn
                 i.icon-user
               |  
-              a.btn(ng-click='logout()') Log out
+              a.btn(ng-click='logOut()') Log out
                 .nav-collapse.collapse
       #main(role='main').container
         #content(ng-view)
