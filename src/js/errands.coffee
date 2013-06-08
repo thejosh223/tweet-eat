@@ -15,7 +15,7 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
   }).addTo(map)
 
   console.log "current user is", CurrentUser
-
+  
   popup = L.marker()
   map.on 'click', (e) ->
     popup.setLatLng(e.latlng).addTo(map)
@@ -23,6 +23,8 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
     $scope.errand.longitude = e.latlng.lng
 
   $scope.submit = ->
+    # save $scope.errand.latitude/longitude to user
+
     Errand.save($scope.errand)
-    
+
 
