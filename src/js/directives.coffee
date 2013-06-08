@@ -1,8 +1,8 @@
 module = angular.module 'tamad.directives', [
-
+  'tamad.resources'
 ]
 
-module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) -> 
+module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) -> 
   scope:
     errand: '='
     user: '='
@@ -20,6 +20,25 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) ->
           View Offers
         </button>
       </div>
+      <div class="accept-reject" ng-show="showAcceptReject">
+        <button class="btn btn-success mark-as-done-btn accept-btn">
+          Accept
+        </button>
+        <button class="btn btn-danger mark-as-done-btn reject-btn">
+          Reject
+        </button>
+      </div>
+      <div class="mark-as-done" ng-show="showFinish && !userRequest().finished">
+        <button class="btn btn-success mark-as-done-btn" ng-click="_action('finish')">
+          Mark as Done
+        </button>
+      </div>
+      <div class="mark-as-done" ng-show="showFinish && userRequest().finished && !errand.finished">
+        You marked this task as completed. Awaiting response from errand creator. TODO I need a better message than myself.
+      </div>
+      <div class="mark-as-done" ng-show="showFinish && userRequest().finished && errand.finished">
+        You finished this task! TODO I need a better message than myself.
+      </div>
     </div>
     <div class="desc">
       <div class="meta">
@@ -36,7 +55,10 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) ->
     scope.showApply = attrs.showApply?
     scope.showManage = attrs.showManage?
     scope.showFinish = attrs.showFinish?
-    scope._action = (name, request) ->
+    scope.showAcceptReject = attrs.showAcceptReject?
+    scope.userRequest = ->
+      _.find scope.errand.errand_requests, (request) -> request.user_id == scope.user.id
+    scope._action = (name, request = scope.userRequest()) ->
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
