@@ -6,7 +6,7 @@ html(ng-app="tamad")
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
     meta(name='viewport', content='width=device-width', initial-scale='1.0')
 
-    - var lib_styles = ['bootstrap/css/bootstrap.css', 'bootstrap/css/bootstrap-responsive.min.css', 'toastr/toastr.min.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css', 'leaflet/leaflet.css']
+    - var lib_styles = ['bootstrap/css/bootstrap.css', 'bootstrap/css/bootstrap-responsive.min.css', 'toastr/toastr.min.css', 'font-awesome/css/font-awesome.min.css', 'angular-ui/angular-ui.min.css', 'select2/select2.css', 'leaflet/leaflet.css', 'bootstrap-datepicker/bootstrap-datepicker.css', 'bootstrap-timepicker/bootstrap-timepicker.css']
     each style in lib_styles
       link(rel='stylesheet', href='/lib/' + style)
     link(rel='stylesheet', href='/css/app.css')
@@ -56,9 +56,9 @@ html(ng-app="tamad")
       #main(role='main').container
         #content(ng-view)
 
-    - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js']
+    - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'runner.js']
     each script in scripts
       script(src='/js/' + script)

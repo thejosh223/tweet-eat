@@ -14,7 +14,7 @@ class ErrandsController < ApplicationController
     end
 
     if long
-      @errands = @errands.sort_by {|x| x.distance_to([lat, long]) }
+      @errands = @errands.sort_by {|x| x.distance_to([lat, long]) || 1e9 }
     end
 
     render json: @errands
@@ -25,23 +25,24 @@ class ErrandsController < ApplicationController
   end
 
   def create
-    errand = Errand.new
+    errand = Errand.new(params['errand'])
     unless env['warden'].user.nil?
       errand.user_id = env['warden'].user.id
     end
 
 
-    if not current_user.nil? and current_user.location.nil?
-      current_user.location = params['location']
-      current_user.longitude = params['longitude'].to_f
-      current_user.latitude = params['latitude'].to_f
+    if not env['warden'].user.nil? and not env['warden'].user.location
+      env['warden'].user.location = params['location']
+      env['warden'].user.longitude = params['longitude'].to_f
+      env['warden'].user.latitude = params['latitude'].to_f
+      env['warden'].user.save
     end
 
-    errand.update_attributes(params['errand'])
-    puts "UIx:"
-    puts env['warden'].user
-    puts "UIy:"
-    render json: errand
+    if errand.save
+      render json: errand
+    else
+      render json: errand.errors, status: :unprocessable_entity
+    end
   end
 
   def update

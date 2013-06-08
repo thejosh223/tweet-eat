@@ -9,7 +9,7 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
     $scope.home_url = '/html/home_anon.html'
 
 
-module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser) ->
+module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http) ->
   $scope.user = CurrentUser.data
   $scope.errands = [
     {
@@ -29,6 +29,14 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser) ->
         fb_id: 643054116
     }
   ]
+  $scope.run = (eid) ->
+    console.log "you chose to run errand id: ", eid
+    $http.post('/api/errands/apply',
+      id: eid
+    ).success (response) ->
+      console.log "success", response
+    .error (response) ->
+      console.log "didn't finish run successfully", response
 
 module.controller 'HomeAnonCtrl', ($scope) ->
   $scope.sampleErrands = [
