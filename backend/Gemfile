@@ -43,3 +43,5 @@ gem 'geocoder'
 gem 'rails_warden'
 
 gem 'paperclip'
+
+gem 'httparty'
