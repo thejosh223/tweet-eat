@@ -129,9 +129,9 @@ html(ng-app="tamad")
               span.text-success(ng-show="currentBox.errand.finished") This task is finished
             ul.span5.buttons
               li
-                button.btn.btn-success(type="button", ng-show="request.finished", ng-click="currentBox._action('acknowledge', request)") Acknowledge
+                button.btn.btn-success(type="button", ng-show="!currentBox.errand.finished && request.finished", ng-click="currentBox._action('acknowledge', request)") Acknowledge
               li
-                button.btn.btn-error(type="button", ng-show="request.finished", ng-click="currentBox._action('reject', request)") Reject
+                button.btn.btn-error(type="button", ng-show="!currentBox.errand.finished && request.finished", ng-click="currentBox._action('reject', request)") Reject
               li
                 button.btn.btn-info(type="button", ng-show="!request.finished", ng-click="currentBox._action('cancel', request)") Cancel
           li(ng-repeat='request in currentBox.errand.errand_requests', ng-hide="request.id == currentBox.errand.errand_request_id").row-fluid
