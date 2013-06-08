@@ -6,7 +6,7 @@ module = angular.module 'tamad.errands', [
 module.controller 'MyErrandsCtrl', ($scope, Errand) ->
   $scope.errands = Errand.query()
 
-module.controller 'ErrandCreationCtrl', ($scope, Errand) ->
+module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
   $scope.errand = {}
   map = L.map('location-map').setView([14.566, 121.034], 11)
   L.tileLayer('http://b.tile.cloudmade.com/bce295a2a50d43a2bb2dbebef4ea99e4/4/256/{z}/{x}/{y}.png', {
@@ -14,12 +14,17 @@ module.controller 'ErrandCreationCtrl', ($scope, Errand) ->
       maxZoom: 18
   }).addTo(map)
 
+  console.log "current user is", CurrentUser
+  
   popup = L.marker()
   map.on 'click', (e) ->
     popup.setLatLng(e.latlng).addTo(map)
+    $scope.errand.latitude = e.latlng.lat
+    $scope.errand.longitude = e.latlng.lng
 
   $scope.submit = ->
-    console.log $scope.errand
+    # save $scope.errand.latitude/longitude to user
+
     Errand.save($scope.errand)
 
 module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
@@ -47,4 +52,3 @@ module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
         $timeout pollAccepted, 1000
 
   pollAccepted()
-
