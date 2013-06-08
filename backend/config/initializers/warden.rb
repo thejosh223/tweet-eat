@@ -3,9 +3,13 @@ Rails.configuration.middleware.use RailsWarden::Manager do |manager|
   manager.failure_app = SessionsController
 end
 
+Warden::Manager.serialize_into_session do |user| 
+  user.id
+end
 
-Warden::Manager.serialize_into_session { |user| user.id             }
-Warden::Manager.serialize_from_session { |id  | User.find_by_id(id) }
+Warden::Manager.serialize_from_session do |id| 
+  User.find_by_id(id)
+end
 
 Warden::Strategies.add(:facebook) do
   def valid?

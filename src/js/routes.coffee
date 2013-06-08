@@ -17,6 +17,10 @@ module.config ["$routeProvider", ($routeProvider) ->
   $routeProvider.when "/profile",
     templateUrl: "/html/profile.html"
     controller: "ProfileCtrl"
+
+  $routeProvider.when "/accepted-errands",
+    templateUrl: "/html/runner.html"
+    controller: "AcceptedErrandsCtrl"
     
   $routeProvider.when "",
     redirectTo: "/"
