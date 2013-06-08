@@ -3,10 +3,16 @@ module = angular.module 'tamad.home', [
 ]
 
 module.controller 'HomeCtrl', ($scope, CurrentUser) ->
-  if CurrentUser.loggedIn()
-    $scope.home_url = '/html/home_logged_in.html'
-  else
-    $scope.home_url = '/html/home_anon.html'
+  setHomeUrl = ->
+    if CurrentUser.loggedIn()
+      $scope.home_url = '/html/home_logged_in.html'
+    else
+      $scope.home_url = '/html/home_anon.html'
+
+  $scope.$on 'login-changed', (event) ->
+    setHomeUrl()
+
+  setHomeUrl()
 
 
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
