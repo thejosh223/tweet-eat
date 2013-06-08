@@ -36,7 +36,7 @@ html(ng-app="tamad")
                 // will style later
                 a.btn(ng-click='signup()') Signup With Facebook
             .pull-right(ng-show='CurrentUser.loggedIn()')
-              a(href="/profile").btn
+              a(href="/#/profile").btn
                 i.icon-user
               |  
               a.btn(ng-click='logout()') Log out
@@ -47,6 +47,6 @@ html(ng-app="tamad")
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'auth.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'auth.js', 'profile.js']
     each script in scripts
       script(src='/js/' + script)
