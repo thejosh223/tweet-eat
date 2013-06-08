@@ -2,13 +2,12 @@ module = angular.module 'tamad.directives', [
 
 ]
 
-module.directive 'rsErrand', -> {
+module.directive 'rsErrand', -> 
   scope:
     errand: '='
-    user: '=?'
+    user: '='
     run: '&'
-    accept: '&'
-    requests: '='
+    action: '&'
   template: '''
   <div class="errand">
     <div class="misc">
@@ -33,8 +32,11 @@ module.directive 'rsErrand', -> {
   </div>
   '''
   link: (scope, element, attrs) ->
-    scope._accept = (request) ->
-      scope.accept errand: scope.errand, request: request
+    scope.showApply = attrs.showApply?
+    scope.showManage = attrs.showManage?
+    scope.showFinish = attrs.showFinish?
+    scope._action = (name, request) ->
+      scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
-  }
+
