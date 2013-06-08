@@ -28,7 +28,7 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
         ).success (resp) ->
           console.log "got user info", resp.user
           data = new User _.extend(data, resp.user)
-          loadResponse.resolve resp.user
+          loadResponse.resolve [resp.user, resp.new]
           service.save()
         .error (err) ->
           console.log "Failed (loadData)", err
@@ -61,13 +61,19 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
 ]
 
 module.controller 'SessionCtrl', [
- '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr',
- ($scope, $http, CurrentUser, Facebook, $location, Toastr) ->
+ '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr', 'currentBox', '$rootScope',
+ ($scope, $http, CurrentUser, Facebook, $location, Toastr, currentBox, $rootScope) ->
   $scope.CurrentUser = CurrentUser
+  $scope.currentBox = currentBox
   $scope.logIn = ->
     Facebook.login().then (response) ->
       Toastr.success 'Logged in successfully!'
-      CurrentUser.loadData(response.authResponse).then (user) ->
+      CurrentUser.loadData(response.authResponse).then ([user, is_new]) ->
+        console.log user, is_new
+        if is_new
+          console.log 'showing'
+          $('#verification-code-modal').modal('show')
+
         $scope.$broadcast 'login-changed'
     , (error) ->
       console.log "error login", error
@@ -84,6 +90,9 @@ module.controller 'SessionCtrl', [
         CurrentUser.set {}
   CurrentUser.loadRemote()
 ]
+
+module.controller 'VerificationModalCtrl', ($scope, CurrentUser) ->
+  $scope.verification_code = CurrentUser.data().verification_code
 
 module.value 'PublicRoutes', [
   '/home'

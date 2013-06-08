@@ -33,5 +33,7 @@ Backend::Application.routes.draw do
     end
 
     resources :ratings
+
+    resources :mo
   end
 end
