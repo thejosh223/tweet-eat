@@ -75,7 +75,7 @@ class ErrandsController < ApplicationController
   end
 
   def accepted
-    errands = Errand.joins(:errand_requests).where('errands.user_id = ? AND (errands.finished is null or not errands.finished)', current_user.id)
+    errands = Errand.joins(:errand_requests).where('errand_requests.user_id = ? AND errands.errand_request_id is not null AND (errands.finished is null or not errands.finished)', current_user.id)
     render json: errands
   end
 
