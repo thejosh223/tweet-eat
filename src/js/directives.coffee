@@ -18,7 +18,7 @@ module.directive 'rsErrand', -> {
     <div class="body">{{ errand.body }}</div>
     <button class="btn btn-success" ng-click="_run()" ng-show="user">Apply</button>
     <div ng-repeat='request in requests'>
-      <div>User {{request.first_name}} {{request.last_name}} wants to do this task.</div>
+      <div>User {{request.first_name}} {{request.last_name}} ({{request}}) wants to do this task.</div>
       <button class="btn btn-success" ng-click="_accept(request)">Accept</button>
     </div>
   </div>

@@ -22,6 +22,12 @@ class SessionsController < ApplicationController
       user.last_name = params[:last_name]
       user.fb_id = fb_id
       user.save!
+    else
+      # we need to update info too
+      user.email = params[:email] or user.email
+      user.first_name = params[:first_name] or user.first_name
+      user.last_name = params[:last_name] user.last_name
+      user.save!
     end
     puts env['warden'].user
     env['warden'].set_user user
