@@ -1,6 +1,7 @@
 module = angular.module 'tamad.errands', [
-
+  'tamad.resources'
 ]
+
 
 module.controller 'MyErrandsCtrl', ($scope) ->
   $scope.errands = [
@@ -16,3 +17,10 @@ module.controller 'MyErrandsCtrl', ($scope) ->
     }
   ]
 
+module.controller 'ErrandCreationCtrl', ($scope, Errand) ->
+  $scope.submit = () ->
+    errand = new Errand
+      title: $scope.title
+      body: $scope.body
+      deadline: $scope.deadline
+    errand.$save() 
