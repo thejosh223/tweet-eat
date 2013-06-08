@@ -2,7 +2,7 @@ class ErrandsController < ApplicationController
   respond_to :json
   def index
     #render json: Errand.where(:user => env['warden'].user).all
-    @errands = Errand.includes(:user).select("*, users.fb_id").all
+    @errands = Errand.includes(:user).select("*, users.fb_id").where('errand_request_id = ?', nil)
 
     long = lat = nil
     if params['longitude']
