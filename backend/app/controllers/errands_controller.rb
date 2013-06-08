@@ -54,34 +54,42 @@ class ErrandsController < ApplicationController
 
   def mine
     # Gives all the errands you own
-    @errands = Errand.includes([:user, {:errand_requests => :user}]).where('errands.user_id = ?', current_user.id).all
+    @errands = Errand.includes([:user, {:errand_requests => :user}]).where('errands.user_id = ?', env['warden'].user.id).all
     render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
   def apply
-    old = ErrandRequest.where('errand_id = ? AND user_id = ?', params[:id], current_user.id).first
-    unless old.nil?
-      render json: old
-    else
-      request = ErrandRequest.new
-      unless params[:deadline].nil?
-        request.deadline = params[:deadline]
+    unless env['warden'].user.nil?
+      old = ErrandRequest.where('errand_id = ? AND user_id = ?', params[:id], env['warden'].user.id).first
+      unless old.nil?
+        render json: old
+      else
+        request = ErrandRequest.new
+        unless params[:deadline].nil?
+          request.deadline = params[:deadline]
+        end
+        request.errand_id = params[:id] 
+        request.user_id = env['warden'].user.id
+        request.save!
+        render json: request
       end
-      request.errand_id = params[:id] 
-      request.user_id = current_user.id
-      request.save!
-      render json: request
+    else
+      render json: {}, status: :unprocessable_entity
     end
   end
 
   def accepted
-    errands = Errand.joins(:errand_requests).where('errand_requests.user_id = ? AND errands.errand_request_id is not null AND (errands.finished is null or not errands.finished)', current_user.id)
-    render json: errands
+    unless env['warden'].user.nil?
+      errands = Errand.joins(:errand_requests).where('errand_requests.user_id = ? AND errands.errand_request_id is not null AND (errands.finished is null or not errands.finished)', env['warden'].user.id)
+      render json: errands
+    else
+      render json: {}, status: :unprocessable_entity
+    end
   end
 
   def cancel
     errand = Errand.find params[:id]
-    if errand.user_id == current_user.id
+    if errand.user_id == env['warden'].user.id
       errand.errand_request_id = nil
       errand.save!
       render json: {ok: true}
@@ -92,7 +100,7 @@ class ErrandsController < ApplicationController
 
   def acknowledge
     errand = Errand.find params[:id]
-    if errand.user_id == current_user.id
+    if errand.user_id == env['warden'].user.id
       errand.finished = true
       errand.save!
       render json: {ok: true}
