@@ -4,7 +4,7 @@
     a.btn(ng-href='logIn()') Sign up now!
   ul.errands
     li(ng-repeat='errand in sampleErrands')
-      div(style='background-image: {{errand.photo}}')
+      div(style='background-image: {{errand.fb_id | photo}}')
         .desc
           div {{ errand.title }}
           div
