@@ -62,6 +62,7 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
           $scope.$emit 'reload-errands'
 
 
+
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
   $scope.errand =
     deadline: null

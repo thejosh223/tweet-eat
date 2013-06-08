@@ -58,9 +58,10 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
 ]
 
 module.controller 'SessionCtrl', [
- '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr',
- ($scope, $http, CurrentUser, Facebook, $location, Toastr) ->
+ '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr', 'currentBox',
+ ($scope, $http, CurrentUser, Facebook, $location, Toastr, currentBox) ->
   $scope.CurrentUser = CurrentUser
+  $scope.currentBox = currentBox
   $scope.logIn = ->
     Facebook.login().then (response) ->
       console.log "success login", response

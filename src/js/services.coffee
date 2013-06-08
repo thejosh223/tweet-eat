@@ -10,3 +10,6 @@ module.factory 'Toastr', ($window) ->
 module.factory 'NumberStream', ->
   seed = 0
   next: -> ++seed
+
+module.factory 'currentBox', ->
+  set: (obj) -> _.extend @, _.pick(obj, ['errand', '_action'])
