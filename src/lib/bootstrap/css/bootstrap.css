@@ -241,6 +241,7 @@ a:focus {
   display: table;
   content: "";
   line-height: 0;
+  color: #FFFFFF;
 }
 .row:after {
   clear: both;
