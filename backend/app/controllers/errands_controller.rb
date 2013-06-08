@@ -78,4 +78,26 @@ class ErrandsController < ApplicationController
     errands = Errand.joins(:errand_requests).where('errands.user_id = ? AND (errands.finished is null or not errands.finished)', current_user.id)
     render json: errands
   end
+
+  def cancel
+    errand = Errand.find params[:id]
+    if errand.user_id == current_user.id
+      errand.errand_request_id = nil
+      errand.save!
+      render json: {ok: true}
+    else
+      render json: "", status: 404
+    end
+  end
+
+  def acknowledge
+    errand = Errand.find params[:id]
+    if errand.user_id == current_user.id
+      errand.finished = true
+      errand.save!
+      render json: {ok: true}
+    else
+      render json: "", status: 404
+    end
+  end
 end

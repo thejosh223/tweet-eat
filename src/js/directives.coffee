@@ -7,7 +7,7 @@ module.directive 'rsErrand', -> {
     errand: '='
     user: '=?'
     run: '&'
-    accept: '&'
+    action: '&'
     requests: '='
   template: '''
   <div class="errand">
@@ -17,15 +17,29 @@ module.directive 'rsErrand', -> {
     <div class="location"><i class="icon-location-arrow"></i> {{ errand.location }}<span ng-show="user">  {{errand|distance:user}}</span></div>
     <div class="body">{{ errand.body }}</div>
     <button class="btn btn-success" ng-click="_run()" ng-show="user">Apply</button>
-    <div ng-repeat='request in requests'>
-      <div>User {{request.user.first_name}} {{request.user.last_name}} wants to do this task.</div>
-      <button class="btn btn-success" ng-click="_accept(request)">Accept</button>
+    <div ng-show="errand.errand_request_id">
+      <div ng-repeat='request in requests'>
+        <div ng-show="request.id == errand.errand_request_id">
+          <div>You assigned {{request.user.first_name}} to do this task.</div>
+          <button ng-show="request.finished" class="btn btn-success" ng-click="_action('acknowledge', request)">Acknowledge</button>
+          <button ng-show="request.finished" class="btn btn-success" ng-click="_action('reject', request)">Reject</button>
+          <button ng-hide="request.finished" class="btn btn-success" ng-click="_action('cancel', request)">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div ng-hide="errand.errand_request_id">
+      <div ng-repeat='request in requests'>
+        <div>User {{request.user.first_name}} wants to do this task.</div>
+        <button ng-hide="request.declined" class="btn btn-success" ng-click="_action('accept', request)">Accept</button>
+        <button ng-hide="request.declined" class="btn btn-error" ng-click="_action('decline', request)">Decline</button>
+        <button ng-show="request.declined" class="btn btn-info" ng-click="_action('undodecline', request)">Undo Decline</button>
+      </div>
     </div>
   </div>
   '''
   link: (scope, element, attrs) ->
-    scope._accept = (request) ->
-      scope.accept errand: scope.errand, request: request
+    scope._action = (name, request) ->
+      scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
   }
