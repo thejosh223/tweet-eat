@@ -12,6 +12,7 @@ module.directive 'rsErrand', ->
   <div class="errand">
     <div class="misc">
       <img ng-src="{{errand.user.fb_id | photo}}"></img>
+      <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
       <div class="view-offers" ng-show="showManage">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
@@ -23,9 +24,9 @@ module.directive 'rsErrand', ->
     <div class="desc">
       <div class="meta">
         <div class="title">{{ errand.title }}</div>
-        <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
+        <div class="distance" ng-user="user">{{errand | distance:user}}</div>
+        <div class="location">{{ errand.location }}</div>
         <div class="price">&#8369; {{ errand.price | number:2 }}</div>
-        <div class="location">{{ errand.location }}<span ng-show="user"> ({{errand|distance:user}})</span></div>
       </div>
       <div class="body">{{ errand.body }}</div>
     </div>

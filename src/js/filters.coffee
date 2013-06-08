@@ -10,7 +10,7 @@ module.filter 'distance', ->
     if a?.latitude? and b?.latitude?
       dist = new L.LatLng(a.latitude, a.longitude).distanceTo(new L.LatLng(b.latitude, b.longitude))/1000.0
       if dist < 1
-        '< 1 km away'
+        '<1 km away'
       else
         "#{dist.toFixed(2)} km away"
 
