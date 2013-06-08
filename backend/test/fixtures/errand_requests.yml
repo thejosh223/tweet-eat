@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  errand: 
+  user: 
+  deadline: 2013-06-08 07:18:24
+
+two:
+  errand: 
+  user: 
+  deadline: 2013-06-08 07:18:24
