@@ -66,9 +66,9 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
   $scope.errand =
     deadline: null
-  isDefault = not CurrentUser.data()?.user?.latitude?
-  lat = CurrentUser.data()?.user?.latitude ? 14.566
-  long = CurrentUser.data()?.user?.longitude ? 121.034
+  isDefault = not CurrentUser.data()?.latitude?
+  lat = CurrentUser.data()?.latitude ? 14.566
+  long = CurrentUser.data()?.longitude ? 121.034
   zoomLevel = if isDefault then 11 else 14
   $scope.$watch (-> $('#new-errand').is(':visible')), (vis) ->
     if vis
@@ -96,12 +96,13 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location)
     Errand.save $scope.errand, (success) ->
       $scope.$emit 'reload-errands'
       $location.path('/my-errands')
+      $('#new-errand').modal('hide')
 
 
 module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
-  isDefault = not CurrentUser.data()?.user?.latitude?
-  lat = CurrentUser.data()?.user?.latitude ? 14.566
-  long = CurrentUser.data()?.user?.longitude ? 121.034
+  isDefault = not CurrentUser.data()?.latitude?
+  lat = CurrentUser.data()?.latitude ? 14.566
+  long = CurrentUser.data()?.longitude ? 121.034
   zoomLevel = if isDefault then 11 else 14
   $scope.$watch (-> $('#set-location-wrapper').is(':visible')), (vis) ->
     console.log vis, 'Vis change!'
@@ -119,5 +120,9 @@ module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
       map.on 'click', (e) ->
         if e.latlng?
           popup.setLatLng(e.latlng).addTo(map)
-          CurrentUser.data().user.latitude = e.latlng.lat
-          CurrentUser.data().user.longitude = e.latlng.lng
+          CurrentUser.data()?.latitude = e.latlng.lat
+          CurrentUser.data()?.longitude = e.latlng.lng
+
+  $scope.setLocation = ->
+    CurrentUser.saveRemote()
+    $('#set-location-modal').modal('hide')

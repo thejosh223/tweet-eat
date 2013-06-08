@@ -8,7 +8,11 @@ module.filter 'humanize', ->
 module.filter 'distance', ->
   (a, b) ->
     if a?.latitude? and b?.latitude?
-      new L.LatLng(a.latitude, a.longitude).distanceTo(new L.LatLng(b.latitude, b.longitude))
+      dist = new L.LatLng(a.latitude, a.longitude).distanceTo(new L.LatLng(b.latitude, b.longitude))/1000.0
+      if dist < 1
+        '<1 km away'
+      else
+        "#{dist.toFixed(2)} km away"
 
 
 module.filter "photo", ->
