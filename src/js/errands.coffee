@@ -53,6 +53,7 @@ module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
         $timeout pollPending, 1000
       .error (err) ->
         console.log err
+        $scope.pendingRequests = []
         $timeout pollPending, 1000
 
   pollPending()
@@ -64,6 +65,7 @@ module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
         $timeout pollAccepted, 1000
       .error (err) ->
         console.log err
+        $scope.acceptedRequests = []
         $timeout pollAccepted, 1000
 
   pollAccepted()
