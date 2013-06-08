@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608140058) do
+ActiveRecord::Schema.define(:version => 20130608160819) do
 
   create_table "errand_requests", :force => true do |t|
     t.integer  "errand_id"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(:version => 20130608140058) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.string   "fb_id"
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
 end
