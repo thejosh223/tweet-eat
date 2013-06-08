@@ -8,31 +8,38 @@ module.service 'CurrentUser', ['$http', 'Facebook', ($http, Facebook) ->
   data = {}
   service =
     data: -> data
-    loggedIn: -> data.facebook # for now
+    loggedIn: ->  data.facebook
     # Load from localStorage
     load: -> 
       data = angular.fromJson(localStorage['userData']) ? {}
-      Facebook.getLoginStatus().then (response) ->
-        $http.get "https://graph.facebook.com/me?access_token=#{response.authResponse.accessToken}",
-          withCredentials: false
-        .success (fbData) =>
-          console.log "succes", fbData
-          data.facebook = fbData
-        .error (resp, status) ->
-          console.error "Facebook responded", status, resp
-
+      console.log "data is", data
+      Facebook.getLoginStatus().then (response) =>
+        console.log "why that", data
         console.log "logged in! response =", response
-        data.facebook = response
+        @loadData response.authResponse
       , (response) ->
         console.log "response =", response
-        data.facebook = null
+        data.facebook = null      
+    
+    loadData: (authResponse) ->
+      console.log "hey data is", data
+      $http.get "https://graph.facebook.com/me?access_token=#{authResponse.accessToken}",
+        withCredentials: false
+      .success (fbData) =>
+        console.log "success", fbData
+        data.facebook = fbData
+        service.save()
+      .error (resp, status) ->
+        console.error "Facebook responded", status, resp
+
+    
     # Load from /api/session
     loadRemote: ->
       $http.get('/api/session').success (user) ->
         data = user
         service.save()
       .error (err) ->
-        data = {}
+#        data = {}
         service.save()
     set: (user) ->
       data = user
@@ -49,15 +56,17 @@ module.controller 'SessionCtrl', [
   $scope.logIn = ->
     Facebook.login().then (response) ->
       console.log "success login", response
+      CurrentUser.loadData response.authResponse
     , (error) ->
       console.log "error login", error
   $scope.logOut = ->
-    # session?
-    $http.delete('/api/session').success (user) ->
-      CurrentUser.set {}
-    .error (err) ->
-      console.log 'Error!'
-      CurrentUser.set {}
+    Facebook.logout().then -> # session?
+      $http.delete('/api/session').success (user) ->
+        console.log "succes api sesion"
+        CurrentUser.set {}
+      .error (err) ->
+        console.log 'Error!'
+        CurrentUser.set {}
   CurrentUser.loadRemote()
 ]
 
