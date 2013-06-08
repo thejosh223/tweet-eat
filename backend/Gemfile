@@ -41,3 +41,5 @@ gem 'warden'
 gem 'geocoder'
 
 gem 'rails_warden'
+
+gem 'paperclip'

@@ -31,6 +31,10 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.1)
+      climate_control (>= 0.0.3, < 1.0)
     erubis (2.7.0)
     geocoder (1.1.8)
     hike (1.2.3)
@@ -45,6 +49,12 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.23)
     multi_json (1.7.6)
+    paperclip (3.4.2)
+      activemodel (>= 3.0.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      cocaine (~> 0.5.0)
+      mime-types
     pg (0.15.1)
     polyglot (0.3.3)
     rack (1.4.5)
@@ -95,6 +105,7 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   geocoder
   jquery-rails
+  paperclip
   pg
   rails (= 3.2.13)
   rails_warden
