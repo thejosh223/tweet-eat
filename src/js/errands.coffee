@@ -7,9 +7,10 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
+      $scope.$broadcast 'reload-box-trigger'
     .error (error) ->
       console.error "error getting errands", error
-
+      $scope.$broadcast 'reload-box-trigger'
   $scope.$on 'reload-errands', (event) ->
     query()
 
@@ -21,45 +22,45 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
       when "accept" # you want this runner to do your task
         $http.put("/api/errand_requests/#{request.id}").success (response) ->
           console.log "successfully accepted", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
         .error (response) ->
           console.error "for some reason it failed", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
       when "decline" # you don't want this runner to do your task
         $http.put("/api/errand_requests/#{request.id}/decline").success (response) ->
           console.log "successfully decline", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
         .error (response) ->
           console.error "for some reason it failed", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
       when "undodecline" # undo 'decline' of a runner
         $http.put("/api/errand_requests/#{request.id}/undodecline").success (response) ->
           console.log "successfully undid decline", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
         .error (response) ->
           console.error "for some reason it failed", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
       when "cancel" # cancel the errand given to runner 
         $http.put("/api/errands/#{errand.id}/cancel").success (response) ->
           console.log "successfully cancelled", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
         .error (response) ->
           console.error "for some reason it failed", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
       when "reject" # runner did not really complete errand
         $http.put("/api/errand_requests/#{request.id}/reject").success (response) ->
           console.log "successfully cancelled", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
         .error (response) ->
           console.error "for some reason it failed", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
       when "acknowledge" # acknowledge that runner has indeed completed errand
         $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
           console.log "successfully acknowledged", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
         .error (response) ->
           console.error "for some reason it failed", response
-          $scope.$emit 'reload-errands'
+          $scope.$broadcast 'reload-errands'
 
 
 
@@ -94,7 +95,7 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location)
   $scope.submit = ->
     # save $scope.errand.latitude/longitude to user
     Errand.save $scope.errand, (success) ->
-      $scope.$emit 'reload-errands'
+      $scope.$broadcast 'reload-errands'
       $location.path('/my-errands')
       $('#new-errand').modal('hide')
 

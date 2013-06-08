@@ -62,8 +62,8 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
 ]
 
 module.controller 'SessionCtrl', [
- '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr', 'currentBox',
- ($scope, $http, CurrentUser, Facebook, $location, Toastr, currentBox) ->
+ '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr', 'currentBox', '$rootScope',
+ ($scope, $http, CurrentUser, Facebook, $location, Toastr, currentBox, $rootScope) ->
   $scope.CurrentUser = CurrentUser
   $scope.currentBox = currentBox
   $scope.logIn = ->

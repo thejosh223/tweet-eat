@@ -2,7 +2,7 @@ module = angular.module 'tamad.directives', [
 
 ]
 
-module.directive 'rsErrand', (NumberStream, currentBox) -> 
+module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) -> 
   scope:
     errand: '='
     user: '='
@@ -41,6 +41,11 @@ module.directive 'rsErrand', (NumberStream, currentBox) ->
     scope._run = ->
       scope.run errand: scope.errand
     scope._view = ->
-      currentBox.set scope
+      currentBox._action = scope._action
+      currentBox.errand = scope.errand
+      currentBox.id = scope.errand.id
 
-
+    scope.$watch (-> scope.errand), ->
+      if currentBox.id == scope.errand.id
+        currentBox.errand = scope.errand
+    , true
