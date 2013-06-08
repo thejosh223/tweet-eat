@@ -17,7 +17,9 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
 
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toastr) ->
   $scope.user = CurrentUser.data
-  $scope.errands = Errand.query()
+  $scope.errands = Errand.query (errands) ->
+    filterErrands()
+
   filterErrands = ->
     $scope.filteredErrands = $scope.errands
     if $scope.searchText
@@ -31,8 +33,7 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
         if errand.latitude? and errand.longitude?
           latLng.distanceTo(new L.LatLng(+errand.latitude, +errand.longitude))
         else
-          1e9
-        
+          1e9        
 
   $scope.$watch 'errands', filterErrands
   $scope.$watch 'searchText', filterErrands
