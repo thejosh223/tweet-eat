@@ -1,0 +1,30 @@
+#my-errands.row
+  .span8.content(ng-controller='ErrandCreationCtrl')
+    form.span8.search-bar.form-inline.row(ng-submit='submit()')
+      div
+        label
+          | Title 
+          input(type='text', ng-model='errand')
+      div
+        label
+          | Body 
+          textarea(ng-model='body')
+      div
+        label
+          | Deadline
+          input(type='text', ng-model='deadline')
+      div
+        label
+          | Price
+          input(type='text', ng-model='price')
+      div
+        button(type='submit') Submit
+    ul.span8.row.errands
+      li(ng-repeat='errand in errands')
+        div {{ errand.title }}
+        div
+          .icon-money
+          |  PHP {{ errand.price | number:2 }}
+        button(ng-click='run(errand.id)') Run
+  .span4.sidebar
+    p bar
