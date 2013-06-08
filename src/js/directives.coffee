@@ -28,10 +28,16 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
           Reject
         </button>
       </div>
-      <div class="mark-as-done" ng-show="showFinish">
-        <button class="btn btn-success mark-as-done-btn">
+      <div class="mark-as-done" ng-show="showFinish && !userRequest().finished">
+        <button class="btn btn-success mark-as-done-btn" ng-click="_action('finish')">
           Mark as Done
         </button>
+      </div>
+      <div class="mark-as-done" ng-show="showFinish && userRequest().finished && !errand.finished">
+        You marked this task as completed. Awaiting response from errand creator. TODO I need a better message than myself.
+      </div>
+      <div class="mark-as-done" ng-show="showFinish && userRequest().finished && errand.finished">
+        You finished this task! TODO I need a better message than myself.
       </div>
     </div>
     <div class="desc">
@@ -50,7 +56,9 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
     scope.showManage = attrs.showManage?
     scope.showFinish = attrs.showFinish?
     scope.showAcceptReject = attrs.showAcceptReject?
-    scope._action = (name, request) ->
+    scope.userRequest = ->
+      _.find scope.errand.errand_requests, (request) -> request.user_id == scope.user.id
+    scope._action = (name, request = scope.userRequest()) ->
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
