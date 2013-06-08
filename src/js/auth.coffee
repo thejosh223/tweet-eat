@@ -21,7 +21,6 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
       $http.get "https://graph.facebook.com/me?access_token=#{authResponse.accessToken}",
         withCredentials: false
       .success (fbData) =>
-        console.log "success", fbData
         data.loggedIn = true
         _.extend data, fbData
         $http.post('/api/session',
@@ -29,7 +28,7 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
         ).success (resp) ->
           console.log "got user info", resp.user
           data = new User _.extend(data, resp.user)
-          loadResponse.resolve resp.user
+          loadResponse.resolve [resp.user, resp.new]
           service.save()
         .error (err) ->
           console.log "Failed (loadData)", err
@@ -62,14 +61,19 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
 ]
 
 module.controller 'SessionCtrl', [
- '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr',
- ($scope, $http, CurrentUser, Facebook, $location, Toastr) ->
+ '$scope', '$http', 'CurrentUser', 'Facebook', '$location', 'Toastr', 'currentBox', '$rootScope',
+ ($scope, $http, CurrentUser, Facebook, $location, Toastr, currentBox, $rootScope) ->
   $scope.CurrentUser = CurrentUser
+  $scope.currentBox = currentBox
   $scope.logIn = ->
     Facebook.login().then (response) ->
-      console.log "success login", response
       Toastr.success 'Logged in successfully!'
-      CurrentUser.loadData(response.authResponse).then (user) ->
+      CurrentUser.loadData(response.authResponse).then ([user, is_new]) ->
+        console.log user, is_new
+        if is_new
+          console.log 'showing'
+          $('#verification-code-modal').modal('show')
+
         $scope.$broadcast 'login-changed'
     , (error) ->
       console.log "error login", error
@@ -77,16 +81,18 @@ module.controller 'SessionCtrl', [
   $scope.logOut = ->
     Facebook.logout().then -> # session?
       $http.delete('/api/session').success (user) ->
-        console.log "succes api sesion"
         Toastr.success 'Logged out successfully!'
         CurrentUser.set {}
         $scope.$broadcast 'login-changed'
       .error (err) ->
-        console.log 'Error!'
+        console.log 'Error!', err
         Toastr.error 'Something went wrong. Please try again.'
         CurrentUser.set {}
   CurrentUser.loadRemote()
 ]
+
+module.controller 'VerificationModalCtrl', ($scope, CurrentUser) ->
+  $scope.verification_code = CurrentUser.data().verification_code
 
 module.value 'PublicRoutes', [
   '/home'

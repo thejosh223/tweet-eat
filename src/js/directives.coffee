@@ -2,7 +2,7 @@ module = angular.module 'tamad.directives', [
 
 ]
 
-module.directive 'rsErrand', -> 
+module.directive 'rsErrand', (NumberStream, currentBox, $rootScope) -> 
   scope:
     errand: '='
     user: '='
@@ -16,7 +16,7 @@ module.directive 'rsErrand', ->
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
       <div class="view-offers" ng-show="showManage">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button class="btn btn-success view-offers-btn" ng-click="_view()">
+        <button data-target="#offers-modal" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>
@@ -40,4 +40,34 @@ module.directive 'rsErrand', ->
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
+    scope._view = ->
+      currentBox._action = scope._action
+      currentBox.errand = scope.errand
+      currentBox.id = scope.errand.id
 
+    removeErrands = (request) -> _.omit request, ['errand']
+    scope.$watch (-> 
+      errand = _.extend {}, scope.errand
+      errand.errand_requests = removeErrands(request) for request in errand.errand_requests
+      errand
+    ), ->
+      if currentBox.id == scope.errand.id
+        currentBox.errand = scope.errand
+    , true
+
+module.directive 'rsRating', -> 
+  scope:
+    rating: '='
+  template: '''
+  <div class="rating-box">
+    <div class="title">{{ rating.title }}</div>
+    <div class="comment">{{ rating.comment }}</div>
+    <div class="pull-right muted">- {{ rating.citation }}</div>
+    <div class="score">
+      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= rating.score] }}'></span>
+    </div>
+    <div class='clearfix'></div>
+  </div>
+'''
+  link: (scope, element, attrs) ->
+    scope.stars = [1,2,3,4,5]

@@ -25,6 +25,11 @@ class UsersController < ApplicationController
     user.delete!
   end
 
+  def ratings
+    ratings = Rating.where('for_user_id = ?', params[:id]).all 
+    render json: ratings
+  end
+
   def safe_params
     ['first_name', 'last_name', 'location', 'latitude', 'longitude']
   end

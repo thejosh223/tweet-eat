@@ -14,7 +14,11 @@ Backend::Application.routes.draw do
       end
     end
 
-    resources :users
+    resources :users do
+      member do
+        get :ratings
+      end
+    end
 
     resources :errand_requests do
       collection do
