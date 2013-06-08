@@ -39,24 +39,40 @@ module.factory "Facebook", ['FBObject', '$q', '$rootScope', (FBObject, $q, $root
 
   login: ->
     result = $q.defer()
-    @getLoginStatus().then (statusResponse) ->
-      if statusResponse.status == 'connected'
-        result.resolve statusResponse
-      else
-        FB.login (status) ->
-          if status.authResponse
-            result.resolve status
-          else
-            result.reject status
+    FBObject.then (FB) ->
+      FB.getLoginStatus (statusResponse) ->
+        if statusResponse.status == 'connected'
+          result.resolve statusResponse
+        else
+          FB.login (status) ->
+            $rootScope.$apply ->
+              if status.authResponse
+                result.resolve status
+              else
+                result.reject status
 
-          # TODO move scope to somewhere better
-        , scope: 'email'#,last_name,gender,age_range'
-    return result.promise
+            # TODO move scope to somewhere better
+          , scope: 'email'#,last_name,gender,age_range'
+    result.promise
+
+  logout: ->
+    result = $q.defer()
+    FBObject.then (FB) ->
+      FB.logout (response) ->
+        result.resolve response
+    result.promise
 
   getLoginStatus: ->
     result = $q.defer()  
+    console.log "getting login status"
     FBObject.then (FB) ->
+      console.log "got", FB
       FB.getLoginStatus (response) ->
-        result.resolve response
+        console.log "got 2", response
+        $rootScope.$apply ->
+          if response.authResponse
+            result.resolve response
+          else
+            result.reject response
     result.promise
 ]

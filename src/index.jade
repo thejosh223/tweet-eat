@@ -47,6 +47,7 @@ html(ng-app="tamad")
             .pull-right(ng-show='CurrentUser.loggedIn()')
               a(href="/#/profile").btn
                 i.icon-user
+                |  {{CurrentUser.data().facebook.first_name}} {{CurrentUser.data().facebook.last_name}}
               |  
               a.btn(ng-click='logOut()') Log out
                 .nav-collapse.collapse
