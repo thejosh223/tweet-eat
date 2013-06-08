@@ -5,11 +5,17 @@ module = angular.module 'tamad.errands', [
 
 module.controller 'MyErrandsCtrl', ($scope, Errand) ->
   query = ->
-    $scope.errands = Errand.query()
+    $scope.errands = Errand.query (errands) ->
+      console.log "got errands = ", errands
+      console.log "getting requests for each" # or may get the requests simultaneously
 
   query()
   $scope.$on 'save-errand', (event) ->
     query()
+
+  $scope.accept = (errand, request) ->
+    console.log "accepting request", request, "for errand", errand
+
 
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
   $scope.errand = {}

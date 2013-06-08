@@ -12,9 +12,9 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand) ->
   $scope.user = CurrentUser.data
   $scope.errands = Errand.query()
-  $scope.run = (eid) ->
-    console.log "you chose to run errand id: ", eid
-    $http.post("/api/errands/#{eid}/apply").success (response) ->
+  $scope.run = (errand) ->
+    console.log "you chose to run errand:", errand
+    $http.post("/api/errands/#{errand.id}/apply").success (response) ->
       console.log "success", response
     .error (response) ->
       console.log "didn't finish run successfully", response
