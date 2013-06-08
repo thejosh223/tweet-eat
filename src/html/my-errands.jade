@@ -30,4 +30,4 @@
         button(type='submit') Submit
     ul.span12.row.errands
       li(ng-repeat='errand in errands')
-        div(rs-errand, errand="errand", accept="accept(errand, request)", requests="requests")
+        div(rs-errand, errand="errand", accept="accept(errand, request)", requests="errand.errand_requests")

@@ -58,8 +58,8 @@ class ErrandsController < ApplicationController
 
   def mine
     # Gives all the errands you own
-    @errands = Errand.includes([:user, :errand_requests]).select("*, users.fb_id").where('errands.user_id = ?', current_user.id).all
-    render json: @errands
+    @errands = Errand.includes([:user, :errand_requests]).where('errands.user_id = ?', current_user.id).all
+    render json: @errands, :include => [:user, :errand_requests]
   end
 
   def apply
