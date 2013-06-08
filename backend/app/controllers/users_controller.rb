@@ -24,4 +24,19 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     user.delete!
   end
+
+  def ratings
+    ratings = Rating.where('for_user_id = ?', params[:id]).all 
+    render json: ratings
+  end
+
+  def errands
+    errands = Errand.where('user_id = ?', params[:id]).all
+    render json: errands
+  end
+
+  def requests
+    requests = ErrandRequest.where('user_id = ?', params[:id]).all
+    render json: requests
+  end
 end
