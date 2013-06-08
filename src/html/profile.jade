@@ -1,0 +1,17 @@
+#profile
+  .row
+    .span4
+      img(ng-src="{{user.fb_id | photo}}")
+    .span4
+      h2.row {{ user.first_name }} {{ user.last_name }}
+      h4.row Average Rating: {{ rating_average }}
+      h4.row Rating Count: {{ rating_count }}
+  .row
+    .span5
+      h4 Errands Commissioned
+      div(ng-repeat='errand in errands')
+        p 'Errand!'
+    .span5
+      h4 Errands Done
+      div(ng-repeat='request in requests')
+        p 'Request!'
