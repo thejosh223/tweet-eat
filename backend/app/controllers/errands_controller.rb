@@ -13,7 +13,7 @@ class ErrandsController < ApplicationController
       lat = env['warden'].user.latitude
     end
 
-    render json: @errands
+    render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
   def show

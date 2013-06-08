@@ -21,7 +21,7 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
     .error (response) ->
       console.log "for some reason it failed", response
 
-module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
+module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
   $scope.errand =
     deadline: null
   isDefault = not CurrentUser.data()?.user?.latitude?
@@ -51,9 +51,9 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
 
   $scope.submit = ->
     # save $scope.errand.latitude/longitude to user
-
     Errand.save $scope.errand, (success) ->
       $scope.$emit 'save-errand'
+      $location.path('/my-errands')
 
 
 module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
