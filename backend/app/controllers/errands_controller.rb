@@ -55,6 +55,20 @@ class ErrandsController < ApplicationController
     errand.delete!
   end
 
+  def apply
+    old = ErrandRequest.find('errand_id = ? AND user_id = ?', params[:id], current_user.id)
+    if !old.nil?
+      render json: old
+    else
+      request = ErrandRequest.new
+      request.update_attributes(params)
+      request.errand_id = params[:id] 
+      request.user_id = current_user.id
+      request.save!
+      render json: request
+    end
+  end
+
   def accepted
     errands = Errand.joins(:errand_requests).where('Errands.user_id = ? AND Errands.finished != true', current_user.id)
     render json: errands
