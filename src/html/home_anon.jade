@@ -1,6 +1,6 @@
-#home-page.row(ng-controller='HomeAnonCtrl')
+#home-page.row(ng-controller='HomeAnonCtrl', ng-if='!CurrentUser.loggedIn()')
   .search-bar.span12.row
-    p Need to run an errand? Laundry? Printing? Find a runner now!
+    p Need to run an errand? Laundry ? Printing? Find a runner now!
     a.btn(ng-href='logIn()') Sign up now!
   ul.errands
     li(ng-repeat='errand in sampleErrands').errand

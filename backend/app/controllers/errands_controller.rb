@@ -13,10 +13,6 @@ class ErrandsController < ApplicationController
       lat = env['warden'].user.latitude
     end
 
-    if long
-      @errands = @errands.sort_by {|x| x.distance_to([lat, long]) || 1e9 }
-    end
-
     render json: @errands
   end
 

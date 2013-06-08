@@ -28,4 +28,4 @@ module.directive 'rsErrand', -> {
       scope.accept errand: scope.errand, request: request
     scope._run = ->
       scope.run errand: scope.errand
-}
+  }
