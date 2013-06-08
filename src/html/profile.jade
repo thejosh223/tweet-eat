@@ -7,11 +7,6 @@
       h4.row Average Rating: {{ rating_average }}
       h4.row Rating Count: {{ rating_count }}
   .row
-    .span5
-      h4 Errands Commissioned
-      div(ng-repeat='errand in errands')
-        p 'Errand!'
-    .span5
-      h4 Errands Done
-      div(ng-repeat='request in requests')
-        p 'Request!'
+    h4 Errands Done
+    div(ng-repeat='errand in errands')
+      div(rs-rating, errand="errand")

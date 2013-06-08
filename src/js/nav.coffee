@@ -15,7 +15,7 @@ module.controller 'NavCtrl', ($scope, $http, $timeout, $location) ->
         console.log err
         $timeout pollPending, 1000
 
-  pollPending()
+#  pollPending()
 
   pollAccepted =  () ->
     $http.get('/api/errands/accepted')
@@ -26,7 +26,7 @@ module.controller 'NavCtrl', ($scope, $http, $timeout, $location) ->
         console.log err
         $timeout pollAccepted, 1000
 
-  pollAccepted()
+#  pollAccepted()
 
   $scope.postErrand = ->
     $('#new-errand').show()

@@ -4,13 +4,13 @@ module = angular.module 'tamad.profile', [
 
 ]
 
-module.controller 'ProfileCtrl', ['$scope', '$http', 'CurrentUser', ($scope, $http, CurrentUser) ->
+module.controller 'ProfileCtrl', ['$scope', '$http', 'CurrentUser', 'Toastr', ($scope, $http, CurrentUser, Toastr) ->
   $scope.rating_average = 0
   $scope.rating_count = 0
   $scope.errands = []
-  $scope.requests = []
   $scope.user = CurrentUser.data()
   user = $scope.user
+  user.id = 1
 
   $http.get("/api/users/#{user.id}/ratings")
     .success (resp) ->
@@ -26,15 +26,9 @@ module.controller 'ProfileCtrl', ['$scope', '$http', 'CurrentUser', ($scope, $ht
 
   $http.get("/api/users/#{user.id}/errands")
     .success (resp) ->
+      console.log 'Yay', resp
       $scope.errands = resp
     .error (err) ->
       Toastr.error 'Something went wrong. Please try again.'
 
-  $http.get("/api/users/#{user.id}/requests")
-    .success (resp) ->
-      $scope.requests = resp
-    .error (err) ->
-      Toastr.error 'Something went wrong. Please try again.'
-
-  console.log "profile setup"
 ]

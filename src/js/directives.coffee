@@ -40,3 +40,26 @@ module.directive 'rsErrand', ->
     scope._run = ->
       scope.run errand: scope.errand
 
+
+module.directive 'rsRating', -> 
+  scope:
+    errand: '='
+    user: '='
+  template: '''
+  <div class="errand">
+    <div class="misc">
+      <img ng-src="{{errand.user.fb_id | photo}}"></img>
+    </div>
+    <div class="desc">
+      <div class="meta">
+        <div class="title">{{ errand.title }}</div>
+        <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
+        <div class="price">&#8369; {{ errand.price | number:2 }}</div>
+        <div class="location">{{ errand.location }}<span ng-show="user">  {{errand|distance:user}}</span></div>
+      </div>
+      <div class="body">{{ errand.body }}</div>
+    </div>
+  </div>
+  '''
+  link: (scope, element, attrs) ->
+    #pass 

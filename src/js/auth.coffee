@@ -21,13 +21,11 @@ module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebo
       $http.get "https://graph.facebook.com/me?access_token=#{authResponse.accessToken}",
         withCredentials: false
       .success (fbData) =>
-        console.log "success", fbData
         data.loggedIn = true
         _.extend data, fbData
         $http.post('/api/session',
           data
         ).success (user) ->
-          console.log "got user info", user
           data = new User _.extend(data, user)
           loadResponse.resolve user
         .error (err) ->
@@ -63,7 +61,6 @@ module.controller 'SessionCtrl', [
   $scope.CurrentUser = CurrentUser
   $scope.logIn = ->
     Facebook.login().then (response) ->
-      console.log "success login", response
       Toastr.success 'Logged in successfully!'
       CurrentUser.loadData(response.authResponse).then (user) ->
         $scope.$broadcast 'login-changed'
@@ -73,12 +70,11 @@ module.controller 'SessionCtrl', [
   $scope.logOut = ->
     Facebook.logout().then -> # session?
       $http.delete('/api/session').success (user) ->
-        console.log "succes api sesion"
         Toastr.success 'Logged out successfully!'
         CurrentUser.set {}
         $scope.$broadcast 'login-changed'
       .error (err) ->
-        console.log 'Error!'
+        console.log 'Error!', err
         Toastr.error 'Something went wrong. Please try again.'
         CurrentUser.set {}
   CurrentUser.loadRemote()

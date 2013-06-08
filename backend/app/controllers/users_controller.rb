@@ -31,12 +31,8 @@ class UsersController < ApplicationController
   end
 
   def errands
-    errands = Errand.where('user_id = ?', params[:id]).all
-    render json: errands
-  end
-
-  def requests
-    requests = ErrandRequest.where('user_id = ?', params[:id]).all
-    render json: requests
+    #errands = Errand.joins([:user, :errand_requests]).where('errands.finished = true and errands.finished is not null and errand_requests.user_id = ?', params[:id]).all
+    errands = Errand.joins([:user]).all
+    render json: errands, :include => [:user]
   end
 end
