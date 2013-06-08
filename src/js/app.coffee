@@ -7,5 +7,6 @@ module = angular.module "tamad", [
   "tamad.facebook"
   "tamad.resources"
   "tamad.filters"
+  'tamad.directives'
   "ngResource"
 ]

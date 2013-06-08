@@ -1,6 +1,6 @@
 #my-errands.row
-  .span8.content(ng-controller='ErrandCreationCtrl')
-    form.span8.search-bar.row(ng-submit='submit()')
+  .span12.content(ng-controller='ErrandCreationCtrl')
+    form.span12.search-bar.row(ng-submit='submit()')
       div
         label
           | Title 
@@ -25,16 +25,6 @@
           input(type='text', ng-model='errand.price', required)
       div
         button(type='submit') Submit
-    ul.span8.row.errands
-      li(ng-repeat='errand in errands').errand
-        div {{ errand.title }}
-        div
-          .icon-money
-          |  PHP {{ errand.price | number:2 }}
-        div
-          .icon-location-arrow
-          |  {{ errand.location }}
-        div
-          {{ errand.body }}
-  .span4.sidebar
-    p bar
+    ul.span12.row.errands
+      li(ng-repeat='errand in errands')
+        div(rs-errand, errand="errand")

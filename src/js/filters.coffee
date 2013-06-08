@@ -7,7 +7,8 @@ module.filter 'humanize', ->
 
 module.filter 'distance', ->
   (a, b) ->
-    L.LatLng(a.latitude, a.longitude).distanceTo(L.LatLng(b.latitude, b.longitude))
+    if a? and b?
+      L.LatLng(a.latitude, a.longitude).distanceTo(L.LatLng(b.latitude, b.longitude))
 
 
 module.filter "photo", ->
