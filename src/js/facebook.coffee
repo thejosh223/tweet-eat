@@ -40,26 +40,23 @@ module.factory "Facebook", ['FBObject', '$q', '$rootScope', (FBObject, $q, $root
   login: ->
     result = $q.defer()
     @getLoginStatus().then (statusResponse) ->
-      console.log "HEY", statusResponse
       if statusResponse.status == 'connected'
-        console.log "already connected"
         result.resolve statusResponse
       else
-        console.log "logging in facebook"
         FB.login (status) ->
-          console.log "hey", status
           if status.authResponse
             result.resolve status
           else
             result.reject status
+
+          # TODO move scope to somewhere better
+        , scope: 'email'#,last_name,gender,age_range'
     return result.promise
 
   getLoginStatus: ->
     result = $q.defer()  
     FBObject.then (FB) ->
-      console.log "got FB", FB
       FB.getLoginStatus (response) ->
-        console.log "response", response
         result.resolve response
     result.promise
 ]
