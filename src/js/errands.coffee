@@ -4,7 +4,12 @@ module = angular.module 'tamad.errands', [
 
 
 module.controller 'MyErrandsCtrl', ($scope, Errand) ->
-  $scope.errands = Errand.query()
+  query = ->
+    $scope.errands = Errand.query()
+
+  query()
+  $scope.$on 'save-errand', (event) ->
+    query()
 
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
   $scope.errand =
@@ -32,7 +37,10 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand) ->
       $scope.errand.longitude = e.latlng.lng
 
   $scope.submit = ->
-    Errand.save($scope.errand)
+    # save $scope.errand.latitude/longitude to user
+
+    Errand.save $scope.errand, (success) ->
+      $scope.$emit 'save-errand'
 
 module.controller 'NotificationCtrl', ($scope, $http, $timeout) ->
   $scope.pendingRequests = []

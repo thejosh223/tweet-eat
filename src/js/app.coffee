@@ -8,6 +8,7 @@ module = angular.module "tamad", [
   "tamad.resources"
   "tamad.filters"
   'tamad.directives'
+  'tamad.runner'
   "ngResource"
   '$strap.directives'
 ]

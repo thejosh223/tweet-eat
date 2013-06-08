@@ -6,19 +6,7 @@
       label
         | Price 
         input(type='text', ng-model='price')
-      button(type='submit') Search
+      button(type='submit') Post
   ul.span12.row.errands
     li(ng-repeat='errand in errands')
-      div(rs-errand, errand="errand", user="user")
-        img(ng-src='{{errand.user.fb_id | photo}}')
-        div {{ errand.title }}
-        div
-          .icon-money
-          |  PHP {{ errand.price | number:2 }}
-        div
-          .icon-time
-          |  {{ errand.deadline | humanize }}
-        div
-          .icon-location-arrow
-          |  {{ errand.location }} ({{ errand | distance: user }})
-        button(ng-click='run(errand.id)') Run
+      div(rs-errand, errand="errand", user="CurrentUser", run="run(errandId)")
