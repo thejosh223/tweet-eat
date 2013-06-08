@@ -7,3 +7,8 @@ module.factory 'Toastr', ($window) ->
   toastr.options.positionClass = 'toast-top-middle'
   toastr
 
+module.factory 'NumberStream', ->
+  seed = 0
+  next: -> ++seed
+
+module.factory 'currentBox', -> {}

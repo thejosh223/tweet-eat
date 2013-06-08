@@ -72,7 +72,7 @@ html(ng-app="tamad")
       .modal-header
         button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
         h3 Post a new errand
-      form(ng-submit='submit()')
+      form.modal-form(ng-submit='submit()')
         .modal-body
           div.row-fluid
             .control-group.span6
@@ -115,6 +115,37 @@ html(ng-app="tamad")
           | you can use SMS to use our application as well! Just text {{verification_code}} to 7114-8823, and you're done!
       .modal-footer
         button(type='submit', data-dismiss='modal').btn.btn-primary Done
+
+    #offers-modal.rs-errand-modal.modal.hide.fade
+      .modal-header
+        button.btn.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+        h3 Offers
+      .modal-body
+        ul.modal-form
+          li(ng-repeat="request in currentBox.errand.errand_requests", ng-show="request.id == currentBox.errand.errand_request_id").row-fluid
+            .span5
+              | You assigned {{request.user.first_name}} to do this task.
+              span.text-info(ng-show="request.finished && !currentBox.errand.finished") {{ request.user.first_name}} marked this task as finished
+              span.text-success(ng-show="currentBox.errand.finished") This task is finished
+            ul.span5.buttons
+              li
+                button.btn.btn-success(type="button", ng-show="request.finished", ng-click="currentBox._action('acknowledge', request)") Acknowledge
+              li
+                button.btn.btn-error(type="button", ng-show="request.finished", ng-click="currentBox._action('reject', request)") Reject
+              li
+                button.btn.btn-info(type="button", ng-show="!request.finished", ng-click="currentBox._action('cancel', request)") Cancel
+          li(ng-repeat='request in currentBox.errand.errand_requests', ng-hide="request.id == currentBox.errand.errand_request_id").row-fluid
+            .span5
+              | Runner {{request.user.first_name}} wants to do this task.
+              span.text-error(ng-show="request.declined") You declined.
+            ul.span5.buttons
+              li
+                button.btn.btn-success(type="button", ng-show="!request.declined", ng-click="currentBox._action('accept', request)") Accept
+              li
+                button.btn.btn-error(type="button", ng-show="!request.declined", ng-click="currentBox._action('decline', request)") Decline
+              li
+                button.btn.btn-info(type="button", ng-show="request.declined", ng-click="currentBox._action('undodecline', request)") Undo Decline
+
 
     script(type='text/javascript', src='https://js.stripe.com/v2/')
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
