@@ -4,7 +4,7 @@ class ErrandRequestsController < ApplicationController
     render json: requests, :include => [:errand, :user]
   end
   def pending
-    requests = ErrandRequest.joins(:errand).where("errand_request_id = ? AND errands.user_id = ?", nil, current_user.id).all
+    requests = ErrandRequest.joins(:errand).where("errands.user_id = ? AND ((errand_request_id is null and (errand_requests.declined is null or not errand_requests.declined)) OR (errand_request_id IS NOT NULL AND (errands.finished is null or not errands.finished) AND (errand_requests.finished is not null and errand_requests.finished)))", current_user.id).all
     render json: requests, :include => [:errand, :user]
   end
 

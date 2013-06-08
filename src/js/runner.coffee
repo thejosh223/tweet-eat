@@ -19,9 +19,7 @@ module.controller 'AcceptedErrandsCtrl', ($scope, $http) ->
   query()
 
   $scope.doAction = (action, errand, request) ->
-    console.log "A B C", action, errand, request
     # add toastr here!!!!
-    # add requery in here
     switch action
       when "finish"
         $http.put("/api/errand_requests/#{request.id}/finish").success (response) ->
