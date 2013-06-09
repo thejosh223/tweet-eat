@@ -91,6 +91,9 @@ module.controller 'SessionCtrl', [
         Toastr.error 'Something went wrong. Please try again.'
         CurrentUser.set {}
 
+  $scope.closeModal = (name) ->
+    $('#'+name).modal 'hide'
+
   $scope.closeRatings = ->
     $("#ratings-modal").modal 'hide'
 
