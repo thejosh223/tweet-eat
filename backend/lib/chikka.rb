@@ -21,6 +21,7 @@ def create_payload(http_params)
 end
 
 def sms(number, trans_id, message, new=false)
+  $stdout.sync = true
   uri = '/request'
   username = 'jeodn'
   password = 'DnBJvXym'
