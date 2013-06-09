@@ -16,7 +16,7 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
       <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished()">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button data-target="#offers-modal" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
+        <button data-target="#offers-modal" ng-show="errand.errand_requests.length > 0" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>
@@ -34,10 +34,10 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
         </button>
       </div>
       <div class="mark-as-done" ng-show="showFinish && userRequest().finished && !errand.finished">
-        You marked this task as completed. Awaiting response from errand creator. TODO I need a better message than myself.
+        You marked this task as completed.
       </div>
       <div class="mark-as-done" ng-show="showFinish && userRequest().finished && errand.finished">
-        You finished this task! TODO I need a better message than myself.
+        You finished this task!
       </div>
     </div>
     <div class="desc">

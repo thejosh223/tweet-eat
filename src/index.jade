@@ -159,6 +159,12 @@ html(ng-app="tamad")
               li
                 button.btn.btn-info(type="button", ng-show="request.declined", ng-click="currentBox._action('undodecline', request)") Undo Decline
 
+    #ratings-modal.rs-errand-modal.modal.hide.fade
+      .modal-header
+        button.btn.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+        h3 Ratings
+      .modal-body
+        
 
     script(type='text/javascript', src='https://js.stripe.com/v2/')
     - var libs = ['jquery-1.9.1.js', 'angular/angular.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
