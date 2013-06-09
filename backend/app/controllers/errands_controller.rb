@@ -106,6 +106,7 @@ class ErrandsController < ApplicationController
     errand = Errand.find params[:id]
     if errand.user_id == env['warden'].user.id
       errand.finished = true
+      
       errand.save!
       render json: {ok: true}
     else

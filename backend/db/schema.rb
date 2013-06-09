@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608221313) do
+ActiveRecord::Schema.define(:version => 20130609025638) do
 
   create_table "errand_requests", :force => true do |t|
     t.integer  "errand_id"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20130608221313) do
     t.datetime "updated_at", :null => false
     t.boolean  "finished"
     t.boolean  "declined"
+    t.text     "comment"
+    t.integer  "rating"
   end
 
   create_table "errands", :force => true do |t|
@@ -51,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20130608221313) do
     t.string   "email"
     t.string   "password_digest"
     t.decimal  "credit"
-    t.text     "address"
+    t.text     "location"
     t.float    "latitude"
     t.float    "longitude"
     t.datetime "created_at",          :null => false
