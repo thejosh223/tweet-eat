@@ -17,6 +17,7 @@ Backend::Application.routes.draw do
     resources :users do
       member do
         get :ratings
+        post :top_up
       end
     end
 

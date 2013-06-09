@@ -9,6 +9,8 @@ class Chikka
 end
 
 def sign(payload)
+  puts payload
+  puts
   digest = OpenSSL::Digest::SHA512.new
   pkey = OpenSSL::PKey::RSA.new File.read 'config/angelhack_private_key.pem'
   signature = pkey.sign(digest, payload)
@@ -67,3 +69,31 @@ def sms(number, trans_id, message, new=false)
 #                'Content-Type' => 'application/x-www-form-urlencoded'})
 end
 
+def test()
+
+  to_sign = {"URI" => "/request", "USERNAME" => "jeodn", "PASSWORD" => "DnBJvXym", "MSISDN" => "639083543480", "MESSAGE_TYPE" => "PULL", "ENCODING" => "SMS", "SUB_TYPE" => "FREE", "SERVICE" => "DEMO", "SUFFIX" => "8823", "BODY" => "Invalid keywords entered.", "TRANSID" => "5048303030534D415254303030303731313430303031303030303030303036363030303036333930383335343334383030303030313330363039303830353039", "MESSAGE_ID" => "1370736313"}
+
+  puts to_sign
+
+  puts 
+
+  payload = create_payload(to_sign)
+
+  puts
+
+  puts payload
+
+  signature = sign(payload)
+
+  puts
+
+  puts signature
+
+  puts
+
+  encoded_signature = Base64.encode64(signature).gsub(/\n/, '')
+
+  puts
+
+  puts encoded_signature
+end
