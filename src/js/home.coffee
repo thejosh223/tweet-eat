@@ -20,13 +20,11 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
   $scope.user = CurrentUser.data()
   console.log "FUU"
   Errand.query {exclude_self: true}, (errands) ->
-    console.log "I''M HERE"
     $scope.errands = errands
     filterErrands()
 
   filterErrands = ->
     filteredErrands = $scope.errands
-    console.log "hey", filteredErrands, $scope.errands
     if $scope.searchText
       filteredErrands = _.filter $scope.filteredErrands, (errand) ->
         errand.body.indexOf($scope.searchText) != -1 and errand.title.indexOf($scope.searchText)

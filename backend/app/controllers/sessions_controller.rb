@@ -29,6 +29,7 @@ class SessionsController < ApplicationController
       # we need to update info too
       user.email = params[:email] or user.email
       user.first_name = params[:first_name] or user.first_name
+      user.verification_code = Random.rand(0...9999).to_s.rjust(4, '0')
       user.last_name = params[:last_name] or user.last_name
       user.save!
     end
