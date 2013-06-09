@@ -90,6 +90,10 @@ module.controller 'SessionCtrl', [
         console.log 'Error!', err
         Toastr.error 'Something went wrong. Please try again.'
         CurrentUser.set {}
+
+  $scope.closeRatings = ->
+    $("#ratings-modal").modal 'hide'
+
   CurrentUser.loadRemote()
 ]
 

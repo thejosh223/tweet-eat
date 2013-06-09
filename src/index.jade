@@ -163,8 +163,18 @@ html(ng-app="tamad")
       .modal-header
         button.btn.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
         h3 Ratings
-      .modal-body
-        
+      form.modal-form(ng-submit='ratingsSubmit()')
+        .modal-body
+          .row-fluid
+            .control-group.span12
+              | Please rate the runner below.
+          .row-fluid
+            .control-group.span12
+              | FORM HERE
+        .modal-footer
+          button(type='button', ng-click="closeRatings()").btn Cancel
+          button(type='submit').btn.btn-danger Accept!
+
 
     script(type='text/javascript', src='https://js.stripe.com/v2/')
     - var libs = ['jquery-1.9.1.js', 'angular/angular.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']

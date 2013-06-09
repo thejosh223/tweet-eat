@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -64,12 +64,26 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser) ->
           console.error "for some reason it failed", response
           $scope.$broadcast 'reload-errands'
       when "acknowledge" # acknowledge that runner has indeed completed errand
-        $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
-          console.log "successfully acknowledged", response
-          $scope.$broadcast 'reload-errands'
-        .error (response) ->
-          console.error "for some reason it failed", response
-          $scope.$broadcast 'reload-errands'
+        $rootScope.ratingsSubmit = ->
+          # save ratings
+          acknowledgeAction(errand, request).then (response) ->
+            $('#ratings-modal').modal 'hide'
+            console.log "Successfully acknowledged", response
+          , (response) ->
+            console.error "Failed to save acknowledgment", response
+        $('#ratings-modal').modal 'show'
+
+  acknowledgeAction = (errand, request) ->
+    deferred = $q.defer()
+    $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
+      console.log "successfully acknowledged", response
+      deferred.resolve response
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      deferred.reject response
+      $scope.$broadcast 'reload-errands'
+    deferred.promise
 
 
 

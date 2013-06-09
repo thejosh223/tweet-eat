@@ -33,10 +33,10 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
           Mark as Done
         </button>
       </div>
-      <div class="mark-as-done" ng-show="showFinish && userRequest().finished && !errand.finished">
+      <div class="mark-as-done text-success" ng-show="showFinish && userRequest().finished && !errand.finished">
         You marked this task as completed.
       </div>
-      <div class="mark-as-done" ng-show="showFinish && userRequest().finished && errand.finished">
+      <div class="mark-as-done text-success" ng-show="showFinish && userRequest().finished && errand.finished">
         You finished this task!
       </div>
     </div>
