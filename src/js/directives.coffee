@@ -16,7 +16,7 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
       <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished()">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button data-target="#offers-modal" ng-show="errand.errand_requests.length > 0" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
+        <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>

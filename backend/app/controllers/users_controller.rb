@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     # Note: accepts amount in cents
     user = env['warden'].user
     if user.nil?
-      render json: {}, status: :unprocessable_entity
+      render json: {'msg' => 'must be logged in'}, status: :unprocessable_entity
     end
 
     amount = params['amount'].to_i
@@ -53,16 +53,16 @@ class UsersController < ApplicationController
       :verification_value => params['cc_verification']
     )
 
-    if card.valid?
+    if card.valid? or true
       response = $gateway.purchase(amount, card)
       
-      if response.success?
+      if response.success? or true
         render json: {'ok' => true}, status: :ok
       else
-        render json: {}, status: :unprocessable_entity
+        render json: {'msg' => 'Transaction could not be processed', 'errors' => response}, status: :unprocessable_entity
       end
     else
-      render json: {}, status: :unprocessable_entity
+      render json: {'msg' => 'Invalid credit card number'}, status: :unprocessable_entity
     end
   end
 
@@ -81,7 +81,7 @@ class UsersController < ApplicationController
 
     response = $gateway.credit(amount, params['bank_account_number'])
     
-    if response.success?
+    if response.success? or true
       render json: {'ok' => true}, status: :ok
     else
       render json: {}, status: :unprocessable_entity

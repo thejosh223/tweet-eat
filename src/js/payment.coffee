@@ -5,7 +5,7 @@ module = angular.module 'tamad.payment', [
 module.controller 'TopUpCtrl', ($scope, $http, CurrentUser, currentBox, Toastr) ->
   $scope.cc = {}
   $scope.submit = ->
-    $scope.cc.amount = +(((currentBox.errand.price - CurrentUser.data().credit) * 100).to_fixed(0))
+    $scope.cc.amount = +(((currentBox.errand.price - CurrentUser.data().credit) * 100).toFixed(0))
     $http.post("/api/users/#{CurrentUser.data().id}/top_up", $scope.cc, ->
       Toastr.success 'Successfully topped-up your wallet.'
     , ->
