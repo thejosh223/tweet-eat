@@ -106,28 +106,45 @@ html(ng-app="tamad")
               
         .modal-footer
           button(type='submit').btn.btn-danger Submit
-    #credits-modal.modal.hide.fade
+    #credits-modal.modal.hide.fade(ng-controller='TopUpCtrl')
       .modal-header
         button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
-        h3 Post a new errand
+        h3 Top-up your wallet
       form.modal-form(ng-submit='submit()')
         .modal-body
           div.row-fluid
             .control-group.span12
-              | You need &#8369; {{currentBox.errand.price | number: 2}} but you only have &#8369; {{CurrentUser.data().credit | number: 2}}. Please pay, pal. 
+              p You need &#8369; {{currentBox.errand.price | number: 2}} but you only have &#8369; {{CurrentUser.data().credit | number: 2}} in your wallet. Please enter your credit card details to top-up your wallet and accept the offer.
+              label First name
+              input(ng-model='cc.cc_first_name', type='text', placeholder='First name (as it appears on your credit card)')
+              label Last name
+              input(ng-model='cc.cc_first_name', type='text', placeholder='Last name (as it appears on your credit card)')
+              label Credit card number
+              input(ng-model='cc.cc_number', type='text', placeholder='Credit card number')
+              label Expiry month
+              input(ng-model='cc.cc_month', type='number', min='1', max'12', placeholder='Expiry month')
+              label Expiry year
+              input(ng-model='cc.cc_year', type='number', min='1', max'12', placeholder='Expiry year')
+              label Verification number
+              input(ng-model='cc.cc_verification', type='text', placeholder='3-digit verification number')
+
         .modal-footer
           button(type='submit').btn.btn-danger Submit
 
     #verification-code-modal(ng-controller='VerificationModalCtrl').modal.hide.fade
       .modal-header
         button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
-        h3 Verify your phone number (optional)
-      .modal-body
-        p
-          | If you're a SMART subscriber, you can optionally verify your phone number with us, 
-          | you can use SMS to use our application as well! Just text {{verification_code}} to 7114-8823, and you're done!
-      .modal-footer
-        button(type='submit', data-dismiss='modal').btn.btn-primary Done
+        h3 Set your phone number
+      form.modal-form(ng-submit='submit()')
+        .modal-body
+          p To be able to communicate with our errand runners, please enter your mobile number:
+          input(type='text', ng-model='phone_number', placeholder='Your mobile number (e.g., 639151234567')
+          h4 Verify your number(optional)
+          p
+            | If you're a SMART subscriber, you can optionally verify your mobile number with us, 
+            | you can use SMS to use our application as well! Just text {{verification_code}} to 7114-8823, and you're done!
+        .modal-footer
+          button(type='submit').btn.btn-primary Save
 
     #offers-modal.rs-errand-modal.modal.hide.fade
       .modal-header
@@ -189,6 +206,6 @@ html(ng-app="tamad")
     - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
     each lib in libs
       script(src='/lib/' + lib)
-    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'services.js', 'runner.js', 'nav.js']
+    - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'services.js', 'runner.js', 'nav.js', 'payment.js']
     each script in scripts
       script(src='/js/' + script)

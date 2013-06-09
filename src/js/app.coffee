@@ -11,6 +11,7 @@ module = angular.module "tamad", [
   'tamad.services'
   'tamad.runner'
   'tamad.nav'
+  'tamad.payment'
   "ngResource"
   '$strap.directives'
 ]

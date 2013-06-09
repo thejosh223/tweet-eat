@@ -51,9 +51,13 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
       console.log "didn't finish run successfully", response
 
 module.controller 'HomeAnonCtrl', ($scope, Errand) ->
-  $scope.sampleErrands = [
-    {
-      title: 'Blah'
-      price: 100.00
-    }
-  ]
+  console.log 'Foobar'
+  for t in $('#targets li')
+    do (t) ->
+      $t = $(t)
+      do ($t) ->
+        $t.hover((ev) ->
+          $t.find('.desc').animate({bottom: '0px'})
+        , (ev) ->
+          $t.find('.desc').animate({bottom: $t.find('.desc').data('orig')})
+        )
