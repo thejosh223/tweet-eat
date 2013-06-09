@@ -91,6 +91,8 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location,
       popup = L.marker()
       if not isDefault
         popup.setLatLng(new L.LatLng(lat, long)).addTo(map)
+        $scope.errand.latitude = lat
+        $scope.errand.longitude = long
       map.on 'click', (e) ->
         if e.latlng?
           popup.setLatLng(e.latlng).addTo(map)
