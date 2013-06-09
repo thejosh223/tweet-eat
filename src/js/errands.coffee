@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope, $q) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope, $q, Toastr) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -18,8 +18,10 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope, $q) 
 
   acceptAction = (errand, request) ->
     $http.put("/api/errand_requests/#{request.id}").success (response) ->
+      Toastr.success "You have successfully topped up your account!"
       console.log "successfully accepted", response
       $scope.$broadcast 'reload-errands'
+      $('#credits-modal').modal 'hide'
     .error (response) ->
       console.error "for some reason it failed", response
       $scope.$broadcast 'reload-errands'
