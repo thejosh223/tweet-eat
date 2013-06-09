@@ -106,6 +106,17 @@ html(ng-app="tamad")
               
         .modal-footer
           button(type='submit').btn.btn-danger Submit
+    #credits-modal.modal.hide.fade
+      .modal-header
+        button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
+        h3 Post a new errand
+      form.modal-form(ng-submit='submit()')
+        .modal-body
+          div.row-fluid
+            .control-group.span12
+              | You need &#8369; {{currentBox.errand.price | number: 2}} but you only have &#8369; {{CurrentUser.data().credit | number: 2}}. Please pay, pal. 
+        .modal-footer
+          button(type='submit').btn.btn-danger Submit
 
     #verification-code-modal(ng-controller='VerificationModalCtrl').modal.hide.fade
       .modal-header
@@ -148,14 +159,18 @@ html(ng-app="tamad")
               li
                 button.btn.btn-info(type="button", ng-show="request.declined", ng-click="currentBox._action('undodecline', request)") Undo Decline
 
-    #rating-modal(ng-controller='RatingModalCtrl').modal.hide.fade
+   #ratings-modal.rs-errand-modal.modal.hide.fade
       .modal-header
-        button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
-        h3 Rate your runner!
-      form.modal-form(ng-submit='submit()')
+        button.btn.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+        h3 Ratings
+      form.modal-form(ng-submit='ratingsSubmit()')
         .modal-body
-          div.row-fluid
-            .control-group.span6
+          .row-fluid
+            .control-group.span12
+              | Please rate the runner below.
+          .row-fluid
+            .control-group.span12
+              | FORM HERE
               div
                 label
                   | Rating
@@ -165,15 +180,9 @@ html(ng-app="tamad")
                   | Comments
                 span.muted (optional)
                 textarea(placeholder='Comments', ng-model='comment').input-block-level
-          div
-            label
-              | Location
-            input(type='text', ng-model='errand.location', required, placeholder='Brief location (e.g., Manila)').input-block-level
-          #location-map-wrapper
-              
         .modal-footer
-          button(type='submit').btn.btn-danger Submit
-
+          button(type='button', ng-click="closeRatings()").btn Cancel
+          button(type='submit').btn.btn-danger Accept!
 
 
     script(type='text/javascript', src='https://js.stripe.com/v2/')

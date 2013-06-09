@@ -74,6 +74,7 @@ module.controller 'SessionCtrl', [
           console.log 'showing'
           $('#verification-code-modal').modal('show')
 
+        $location.path '/'
         $scope.$broadcast 'login-changed'
     , (error) ->
       console.log "error login", error
@@ -83,11 +84,16 @@ module.controller 'SessionCtrl', [
       $http.delete('/api/session').success (user) ->
         Toastr.success 'Logged out successfully!'
         CurrentUser.set {}
+        $location.path '/'
         $scope.$broadcast 'login-changed'
       .error (err) ->
         console.log 'Error!', err
         Toastr.error 'Something went wrong. Please try again.'
         CurrentUser.set {}
+
+  $scope.closeRatings = ->
+    $("#ratings-modal").modal 'hide'
+
   CurrentUser.loadRemote()
 ]
 

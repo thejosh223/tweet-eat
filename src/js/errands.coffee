@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http, CurrentRequest) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -16,16 +16,25 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentRequest) ->
 
   query()
 
+  acceptAction = (errand, request) ->
+    $http.put("/api/errand_requests/#{request.id}").success (response) ->
+      console.log "successfully accepted", response
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      $scope.$broadcast 'reload-errands'
+
   $scope.doAction = (action, errand, request) ->
     # add toastr here!!!!
     switch action
       when "accept" # you want this runner to do your task
-        $http.put("/api/errand_requests/#{request.id}").success (response) ->
-          console.log "successfully accepted", response
-          $scope.$broadcast 'reload-errands'
-        .error (response) ->
-          console.error "for some reason it failed", response
-          $scope.$broadcast 'reload-errands'
+        # check muna credit
+        if CurrentUser.data().credit >= errand.price
+          acceptAction errand, request
+        else
+          $('#offers-modal').modal 'hide'
+          $('#credits-modal').modal 'show'
+          acceptAction errand, request # THIS IS TEMPORARY. IN A MERGE CONFLICT, REMOVE THIS
       when "decline" # you don't want this runner to do your task
         $http.put("/api/errand_requests/#{request.id}/decline").success (response) ->
           console.log "successfully decline", response
@@ -55,12 +64,29 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentRequest) ->
           console.error "for some reason it failed", response
           $scope.$broadcast 'reload-errands'
       when "acknowledge" # acknowledge that runner has indeed completed errand
-        CurrentRequest.request_id = request.id
-        $('#rating-modal').modal('show')
+        $rootScope.ratingsSubmit = ->
+          # save ratings
+          acknowledgeAction(errand, request).then (response) ->
+            $('#ratings-modal').modal 'hide'
+            console.log "Successfully acknowledged", response
+          , (response) ->
+            console.error "Failed to save acknowledgment", response
+        $('#ratings-modal').modal 'show'
+
+  acknowledgeAction = (errand, request) ->
+    deferred = $q.defer()
+    $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
+      console.log "successfully acknowledged", response
+      deferred.resolve response
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      deferred.reject response
+      $scope.$broadcast 'reload-errands'
+    deferred.promise
 
 
-
-module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
+module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location, Toastr) ->
   $scope.errand =
     deadline: null
     location: CurrentUser.data()?.location
@@ -85,11 +111,14 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location)
           popup.setLatLng(e.latlng).addTo(map)
           $scope.errand.latitude = e.latlng.lat
           $scope.errand.longitude = e.latlng.lng
-       
+
+
   $scope.today = new Date()
 
-
   $scope.submit = ->
+    unless $scope.errand?.latitude?
+      Toastr.error 'Please click on the map to mark where your errand is to be done.'
+      return false
     # save $scope.errand.latitude/longitude to user
     Errand.save $scope.errand, (success) ->
       $scope.$broadcast 'reload-errands'
@@ -122,6 +151,8 @@ module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
           CurrentUser.data()?.longitude = e.latlng.lng
 
   $scope.setLocation = ->
+    unless CurrentUser.data()?.latitude?
+      Toastr.error 'Please click on the map to mark where you want to search for errands.'
     CurrentUser.saveRemote()
     $('#set-location-modal').modal('hide')
 

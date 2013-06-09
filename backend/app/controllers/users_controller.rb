@@ -61,6 +61,30 @@ class UsersController < ApplicationController
       else
         render json: {}, status: :unprocessable_entity
       end
+    else
+      render json: {}, status: :unprocessable_entity
+    end
+  end
+
+
+  def withdraw
+    # Note: accepts amount in cents
+    user = env['warden'].user
+    if user.nil?
+      render json: {}, status: :unprocessable_entity
+    end
+
+    amount = params['amount'].to_i
+    if amount <= 0
+      render json: {'msg' => 'already have sufficienct credit'}, status: :unprocessable_entity
+    end
+
+    response = $gateway.credit(amount, params['bank_account_number'])
+    
+    if response.success?
+      render json: {'ok' => true}, status: :ok
+    else
+      render json: {}, status: :unprocessable_entity
     end
   end
 
