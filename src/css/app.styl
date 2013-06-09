@@ -3,6 +3,9 @@ border-width = 1px
 true_blue = #003399
 true_green = #669933
 fake_green = #eff2e3
+amber = color rgb(255,191,0)
+
+
 
 body
   color: #333333;
@@ -248,30 +251,29 @@ header.navbar
   width auto
   height 80px
 
-
 #profile
   .profile-picture
-    display: inline-block
-    /* Pass */
+    display inline-block
 
   .profile-details
-    display: inline-block
+    display inline-block
     margin-left 10px
 
     .profile-name
       font-weight bold
       font-size 300%
-      margin-bottom: 15px
+      margin-bottom 15px
 
     .rating-score
       font-weight bold
-      font-size: 125%
-      margin-bottom: 5px
+      font-size 125%
+      margin-bottom 5px
 
     .rating-stars
       font-weight bold
       font-size 150%
-      margin-left: 20px
+      margin-left 20px
+      color amber
 
     .rating-count
       margin-left: 10px   
@@ -292,11 +294,15 @@ header.navbar
       position absolute
       top 10px
       right 10px
-      color rgb(255,191,0)
+      color amber
       font-size 110%
 
     .clearfix
       clear both
+
+#rating-modal
+  .rating-star
+    color amber
 
 
 /** Adapted from: http://twitter.github.com/bootstrap/examples/sticky-footer.html */

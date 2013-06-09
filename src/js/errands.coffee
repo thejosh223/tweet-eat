@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -64,13 +64,26 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser) ->
           console.error "for some reason it failed", response
           $scope.$broadcast 'reload-errands'
       when "acknowledge" # acknowledge that runner has indeed completed errand
-        $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
-          console.log "successfully acknowledged", response
-          $scope.$broadcast 'reload-errands'
-        .error (response) ->
-          console.error "for some reason it failed", response
-          $scope.$broadcast 'reload-errands'
+        $rootScope.ratingsSubmit = ->
+          # save ratings
+          acknowledgeAction(errand, request).then (response) ->
+            $('#ratings-modal').modal 'hide'
+            console.log "Successfully acknowledged", response
+          , (response) ->
+            console.error "Failed to save acknowledgment", response
+        $('#ratings-modal').modal 'show'
 
+  acknowledgeAction = (errand, request) ->
+    deferred = $q.defer()
+    $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
+      console.log "successfully acknowledged", response
+      deferred.resolve response
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      deferred.reject response
+      $scope.$broadcast 'reload-errands'
+    deferred.promise
 
 
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location, Toastr) ->
@@ -142,3 +155,27 @@ module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
       Toastr.error 'Please click on the map to mark where you want to search for errands.'
     CurrentUser.saveRemote()
     $('#set-location-modal').modal('hide')
+
+
+module.controller 'RatingModalCtrl', ($scope, $http, Toastr, CurrentRequest) ->
+  $scope.stars = [1,2,3,4,5]
+  $scope.hoverRating = 1
+  $scope.selectedRating = 1
+
+  $scope.hoverRating = (rating) ->
+    $scope.hoverRating = rating
+  
+  $scope.selectRating = (rating) ->
+    $scope.selectedRating = rating
+
+  $scope.submit = (rating) ->
+    $http.post("/api/errands/#{CurrentRequest.request_id}/acknowledge"
+      rating: $scope.selectedRating
+      comment: $scope.comment
+    ).success (resp) ->
+      Toastr.success 'Successfully rated your runner!'
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      $scope.$broadcast 'reload-errands'
+

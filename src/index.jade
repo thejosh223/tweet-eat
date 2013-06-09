@@ -163,11 +163,30 @@ html(ng-app="tamad")
       .modal-header
         button.btn.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
         h3 Ratings
-      .modal-body
-        
+      form.modal-form(ng-submit='ratingsSubmit()')
+        .modal-body
+          .row-fluid
+            .control-group.span12
+              | Please rate the runner below.
+          .row-fluid
+            .control-group.span12
+              | FORM HERE
+              div
+                label
+                  | Rating
+                span.rating-star(ng-repeat='star in stars', class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= temporaryRating] }}', ng-click='selectRating({{star}})', ng-mouseover='hoverRating({{star}})')
+              div
+                label
+                  | Comments
+                span.muted (optional)
+                textarea(placeholder='Comments', ng-model='comment').input-block-level
+        .modal-footer
+          button(type='button', ng-click="closeRatings()").btn Cancel
+          button(type='submit').btn.btn-danger Accept!
+
 
     script(type='text/javascript', src='https://js.stripe.com/v2/')
-    - var libs = ['jquery-1.9.1.js', 'angular/angular.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
+    - var libs = ['jquery-1.9.1.js', 'angular/angular.min.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']
     each lib in libs
       script(src='/lib/' + lib)
     - var scripts = ['app.js', 'routes.js', 'home.js', 'errands.js', 'auth.js', 'profile.js', 'facebook.js', 'filters.js', 'resources.js', 'directives.js', 'services.js', 'runner.js', 'nav.js']

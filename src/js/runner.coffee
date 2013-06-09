@@ -40,4 +40,3 @@ module.controller 'AcceptedErrandsCtrl', ($scope, $http) ->
         .error (response) ->
           console.error "for some reason it failed", response
           $scope.$broadcast 'reload-errands'
-
