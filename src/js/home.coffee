@@ -17,15 +17,17 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
 
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toastr) ->
   $scope.user = CurrentUser.data()
-  $scope.errands = Errand.query {exclude_self: true}, (errands) ->
-    filterErrands()
+  Errand.query {exclude_self: true}, (errands) ->
+    errands.$then (errands) ->
+      $scope.errands = errands
+      filterErrands()
 
   filterErrands = ->
     filteredErrands = $scope.errands
+    console.log "hey", filteredErrands, $scope.errands
     if $scope.searchText
       filteredErrands = _.filter $scope.filteredErrands, (errand) ->
         errand.body.indexOf($scope.searchText) != -1 and errand.title.indexOf($scope.searchText)
-    console.log(CurrentUser.data()?.latitude)
     lat = CurrentUser.data()?.latitude
     long = CurrentUser.data()?.longitude
     if lat? and long?
@@ -34,7 +36,7 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
         if errand.latitude? and errand.longitude?
           latLng.distanceTo(new L.LatLng(+errand?.latitude, +errand.longitude))
         else
-          1e9        
+          1e9
     $scope.filteredErrands = filteredErrands
 
   $scope.$watch 'errands', filterErrands
