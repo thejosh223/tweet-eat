@@ -34,6 +34,7 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser) ->
         else
           $('#offers-modal').modal 'hide'
           $('#credits-modal').modal 'show'
+          acceptAction errand, request # THIS IS TEMPORARY. IN A MERGE CONFLICT, REMOVE THIS
       when "decline" # you don't want this runner to do your task
         $http.put("/api/errand_requests/#{request.id}/decline").success (response) ->
           console.log "successfully decline", response
