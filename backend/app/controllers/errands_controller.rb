@@ -2,7 +2,7 @@ class ErrandsController < ApplicationController
   respond_to :json
   def index
     #render json: Errand.where(:user => env['warden'].user).all
-    @errands = Errand.includes(:user).select("*, users.fb_id").where('errand_request_id = ?', nil)
+    @errands = Errand.includes(:user).select("*, users.fb_id").where('errand_request_id is null')
 
     long = lat = nil
     if params['longitude']
@@ -14,7 +14,7 @@ class ErrandsController < ApplicationController
     end
 
     if params['exclude_self'] == 'true' and not env['warden'].user.nil?
-      #@errands = @errands.where('users.id != ?', env['warden'].user.id)
+      @errands = @errands.where('errands.user_id != ?', env['warden'].user.id)
     end
 
     render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}

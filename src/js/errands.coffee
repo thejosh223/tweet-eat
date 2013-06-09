@@ -94,6 +94,9 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location)
 
 
   $scope.submit = ->
+    unless $scope.errand?.latitude?
+      Toastr.error 'Please click on the map to mark where your errand is to be done.'
+      return false
     # save $scope.errand.latitude/longitude to user
     Errand.save $scope.errand, (success) ->
       $scope.$broadcast 'reload-errands'
@@ -126,5 +129,7 @@ module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
           CurrentUser.data()?.longitude = e.latlng.lng
 
   $scope.setLocation = ->
+    unless CurrentUser.data()?.latitude?
+      Toastr.error 'Please click on the map to mark where you want to search for errands.'
     CurrentUser.saveRemote()
     $('#set-location-modal').modal('hide')
