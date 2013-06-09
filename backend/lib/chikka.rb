@@ -2,6 +2,7 @@ require 'openssl'
 require 'open-uri'
 require 'base64'
 require 'httparty'
+require 'cgi'
 
 class Chikka
   include HTTParty
@@ -17,7 +18,9 @@ def sign(payload)
 end
 
 def create_payload(http_params)
-  URI.encode(http_params)
+#  CGIhttp_params.to_a.collect{|k,v| k + '=' + v}.join('&')
+#  URI.encode(http_params)
+  URI.encode_www_form(http_params).gsub(/\+/, '%20')
 end
 
 def sms(number, trans_id, message, new=false)
@@ -80,9 +83,9 @@ def test()
   puts to_sign
 
   puts 
+#  payload = to_sign.to_a.collect{|k,v| k + '=' + v}.join('&')
+  payload = create_payload(to_sign)
 
-#  payload = create_payload(to_sign)
-  payload = to_sign.to_a.collect{|k,v| k + '=' + v}.join('&')
 
   puts
 
@@ -94,9 +97,11 @@ def test()
 
   puts signature
 
+  puts signature
+
   puts
 
-  encoded_signature = Base64.encode64(signature).gsub(/\n/, '')
+  encoded_signature = Base64.encode64(signature)#.to_s.gsub(/\n/, '')
 
   puts
 
