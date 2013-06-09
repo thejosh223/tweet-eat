@@ -101,7 +101,8 @@ module.controller 'SessionCtrl', [
 ]
 
 module.controller 'VerificationModalCtrl', ($scope, CurrentUser) ->
-  $scope.verification_code = CurrentUser.data().verification_code
+  $scope.$watch (-> CurrentUser.data().verification_code), ->
+    $scope.verification_code = CurrentUser.data().verification_code
   $scope.submit = ->
     CurrentUser.data().phone_number = $scope.phone_number
     CurrentUser.saveRemote()
