@@ -26,11 +26,12 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
         </button>
       </div>
       <div class="accept-reject" ng-show="showManage && !errand.finished && someFinished()">
+        <p>Errand completed?</p>
         <button class="btn btn-success mark-as-done-btn accept-btn" ng-click="_action('acknowledge')">
-          Accept
+          Yes
         </button>
         <button class="btn btn-danger mark-as-done-btn reject-btn" ng-click="_action('reject')">
-          Reject
+          No
         </button>
       </div>
       <div class="done-group" ng-show="showManage && errand.finished">

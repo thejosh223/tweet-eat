@@ -15,6 +15,7 @@ class ErrandsController < ApplicationController
 
     if params['exclude_self'] == 'true' and not env['warden'].user.nil?
       @errands = @errands.where('errands.user_id != ?', env['warden'].user.id)
+      @errands = @errands.include(:errand_requests).where('errand_requests.user_id != ?', env['warden'].user.id)
     end
 
     render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
