@@ -18,7 +18,9 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
 
 module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toastr) ->
   $scope.user = CurrentUser.data()
+  console.log "FUU"
   Errand.query {exclude_self: true}, (errands) ->
+    console.log "I''M HERE"
     $scope.errands = errands
     filterErrands()
 
@@ -47,6 +49,7 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
     $http.post("/api/errands/#{errand.id}/apply").success (response) ->
       console.log "success", response
       Toastr.success 'Success! You applied for an errand.'
+      errand.applied = true
     .error (response) ->
       console.log "didn't finish run successfully", response
 

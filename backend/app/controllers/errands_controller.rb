@@ -15,10 +15,12 @@ class ErrandsController < ApplicationController
 
     if params['exclude_self'] == 'true' and not env['warden'].user.nil?
       @errands = @errands.where('errands.user_id != ?', env['warden'].user.id)
-      @errands = @errands.include(:errand_requests).where('errand_requests.user_id != ?', env['warden'].user.id)
+      requests = ErrandRequest.joins(:errand).where("errand_requests.user_id = ?", env['warden'].user.id).all
+      @errands = @errands.where("errands.id not in (?)", requests.collect {|r| r.errand.id})
+      render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
+    else
+      render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
     end
-
-    render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
   end
 
   def show
