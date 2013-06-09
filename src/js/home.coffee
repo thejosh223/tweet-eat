@@ -10,6 +10,7 @@ module.controller 'HomeCtrl', ($scope, CurrentUser) ->
       $scope.homeUrl = '/html/home_anon.html'
 
   $scope.$on 'login-changed', (event) ->
+    console.log "got login changed!"
     setHomeUrl()
 
   setHomeUrl()
