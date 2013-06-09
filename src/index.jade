@@ -146,6 +146,33 @@ html(ng-app="tamad")
               li
                 button.btn.btn-info(type="button", ng-show="request.declined", ng-click="currentBox._action('undodecline', request)") Undo Decline
 
+    #rating-modal(ng-controller='RatingModalCtrl').modal.hide.fade
+      .modal-header
+        button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
+        h3 Rate your runner!
+      form.modal-form(ng-submit='submit()')
+        .modal-body
+          div.row-fluid
+            .control-group.span6
+              div
+                label
+                  | Rating
+                span.rating-star(ng-repeat='star in stars', class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= temporaryRating] }}', ng-click='selectRating({{star}})', ng-mouseover='hoverRating({{star}})')
+              div
+                label
+                  | Comments
+                span.muted (optional)
+                textarea(placeholder='Comments', ng-model='comment').input-block-level
+          div
+            label
+              | Location
+            input(type='text', ng-model='errand.location', required, placeholder='Brief location (e.g., Manila)').input-block-level
+          #location-map-wrapper
+              
+        .modal-footer
+          button(type='submit').btn.btn-danger Submit
+
+
 
     script(type='text/javascript', src='https://js.stripe.com/v2/')
     - var libs = ['jquery-1.9.1.js', 'angular/angular.js', 'angular/angular-resource.min.js', 'bootstrap/js/bootstrap.min.js', 'angular-strap.min.js', 'toastr/toastr.js', 'underscore-min.js', 'underscore.string.min.js', 'angular-ui/angular-ui.min.js', 'select2/select2.min.js', 'moment.min.js', 'leaflet/leaflet.js', 'bootstrap-datepicker/bootstrap-datepicker.js', 'bootstrap-timepicker/bootstrap-timepicker.js', 'angular-strap.min.js']

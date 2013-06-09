@@ -12,3 +12,5 @@ module.factory 'NumberStream', ->
   next: -> ++seed
 
 module.factory 'currentBox', -> {}
+
+module.factory 'CurrentRequest', -> {}

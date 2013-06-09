@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentRequest) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -55,12 +55,8 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
           console.error "for some reason it failed", response
           $scope.$broadcast 'reload-errands'
       when "acknowledge" # acknowledge that runner has indeed completed errand
-        $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
-          console.log "successfully acknowledged", response
-          $scope.$broadcast 'reload-errands'
-        .error (response) ->
-          console.error "for some reason it failed", response
-          $scope.$broadcast 'reload-errands'
+        CurrentRequest.request_id = request.id
+        $('#rating-modal').modal('show')
 
 
 
@@ -128,3 +124,27 @@ module.controller 'LocationSetCtrl', ($scope, CurrentUser) ->
   $scope.setLocation = ->
     CurrentUser.saveRemote()
     $('#set-location-modal').modal('hide')
+
+
+module.controller 'RatingModalCtrl', ($scope, $http, Toastr, CurrentRequest) ->
+  $scope.stars = [1,2,3,4,5]
+  $scope.hoverRating = 1
+  $scope.selectedRating = 1
+
+  $scope.hoverRating = (rating) ->
+    $scope.hoverRating = rating
+  
+  $scope.selectRating = (rating) ->
+    $scope.selectedRating = rating
+
+  $scope.submit = (rating) ->
+    $http.post("/api/errands/#{CurrentRequest.request_id}/acknowledge"
+      rating: $scope.selectedRating
+      comment: $scope.comment
+    ).success (resp) ->
+      Toastr.success 'Successfully rated your runner!'
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      $scope.$broadcast 'reload-errands'
+
