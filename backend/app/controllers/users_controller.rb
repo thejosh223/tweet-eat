@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     )
 
     if card.valid? or true
-      response = $gateway.purchase(amount, card)
+      response = $gateway.purchase(amount, card, :ip => '127.0.0.1')
       
       if response.success? or true
         render json: {'ok' => true}, status: :ok

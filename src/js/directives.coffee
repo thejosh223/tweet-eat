@@ -14,10 +14,15 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
       <img ng-src="{{errand.user.fb_id | photo}}"></img>
       <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
-      <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished()">
+      <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished() && !errand.errand_request_id">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
         <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
+        </button>
+      </div>
+      <div class="pending" ng-show="showManage && !errand.finished && errand.errand_request_id">
+        <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
+          Pending
         </button>
       </div>
       <div class="accept-reject" ng-show="showManage && !errand.finished && someFinished()">
