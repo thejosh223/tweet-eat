@@ -107,3 +107,4 @@ def test()
 
   puts encoded_signature
 end
+
