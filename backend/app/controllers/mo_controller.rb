@@ -2,6 +2,7 @@ require 'chikka'
 
 class MoController < ApplicationController
   def create
+    puts 'Please please plase san ka dumaan?????'
     if params[:body].start_with?("VERIFY ")
       user = User.where(:verification_code => params[:body].split(' ')[1]).first
       user.trans_id = params[:transid]
@@ -37,7 +38,9 @@ class MoController < ApplicationController
       runner = errand_request.user
       sms(runner.phone_number, runner.trans_id, "Sorry but #{requestor.first_name} #{requestor.last_name} found your job unsatisfactory.")
     else
+      puts 'sana di nageerrorrrrrrr'
       sms(params[:msisdn], params[:transid], "Invalid keywords entered.")
+      puts 'aba at hindi sana tama na?'
 #      sms(requestor.phone_number, requestor.phone_number, "#{runner.first_name} #{runner.last_name} will receive the payment shortly.")
     end
     render json: {"STATUS" => "OK"}
