@@ -29,3 +29,7 @@ and you're ready to go!
     package.json              - a description of this NodeJS application (see http://package.json.nodejitsu.com/)
     README.md                 - this readme file
     Vagrantfile               - the configuration file for Vagrant (http://www.vagrantup.com/)
+
+# Notes
+
+This project was scaffolded from [Angular Momentum](https://github.com/kalibrr/angular-momentum), the open-source start-up code for the MIT AITI Philippines 2013 class.
