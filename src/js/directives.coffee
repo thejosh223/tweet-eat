@@ -16,11 +16,11 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
       <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished() && !errand.errand_request_id">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
+        <button data-target="#offers-modal" ng-show="!errand.errand_request_id" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>
-      <div class="pending" ng-show="showManage && !errand.finished && !someFinished() && errand.errand_request_id">
+      <div class="pending" ng-show="showManage && !errand.finished && errand.errand_request_id && !someFinished()">
         <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           Pending
         </button>
@@ -30,7 +30,7 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
         <button class="btn btn-success mark-as-done-btn accept-btn" ng-click="_action('acknowledge')">
           Yes
         </button>
-        <button class="btn btn-danger mark-as-done-btn reject-btn" ng-click="_action('reject')">
+        <button class="btn btn-danger mark-as-done-btn reject-btn" ng-click="_action('reject', getRequest(errand.errand_request_id))">
           No
         </button>
       </div>
@@ -68,9 +68,12 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
     scope.showFinish = attrs.showFinish?
     scope.someFinished = ->
       _.some scope.errand.errand_requests, (request) -> request.finished
-    scope.userRequest = ->
-      _.find scope.errand.errand_requests, (request) -> request.user_id == scope.user.id
+    scope.getRequest = (id) ->
+      _.find(scope.errand.errand_requests, (request) -> request.id == id)
+    scope.userRequest = (id = scope.user.id) ->
+      _.find(scope.errand.errand_requests, (request) -> request.user_id == id)
     scope._action = (name, request = scope.userRequest()) ->
+      console.log "YO", scope.user, scope.errand, request, scope.userRequest()
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand

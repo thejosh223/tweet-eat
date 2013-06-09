@@ -186,23 +186,20 @@ html(ng-app="tamad")
         .modal-body
           .row-fluid
             .control-group.span12
-              | Please rate the runner below.
-          .row-fluid
-            .control-group.span12
               div
                 label
-                  | Rating
-                span.rating-star(
-                  ng-repeat='star in [1,2,3,4,5]'
-                  class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= hoverRating] }}\
-                  {{ {true: "hovered", false: ""}[star <= hoverRating] }}\
-                  {{ {true: "selected", false: ""}[star <= selectedRating] }}'
-                  ng-click='setSelectedRating(star)'
-                  ng-mouseover='setHoverRating(star)')
+                  | Rating &nbsp;
+                  span.rating-star(
+                    ng-repeat='star in [1,2,3,4,5]'
+                    class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= hoverRating] }}\
+                    {{ {true: "hovered", false: ""}[star <= hoverRating] }}\
+                    {{ {true: "selected", false: ""}[star <= selectedRating] }}'
+                    ng-click='setSelectedRating(star)'
+                    ng-mouseover='setHoverRating(star)')
               div
                 label
                   | Comments
-                span.muted (optional)
+                  span.optional &nbsp;(optional)
                 textarea(placeholder='Comments', ng-model='comment').input-block-level
         .modal-footer
           button(type='button', ng-click="closeRatings()").btn Cancel
