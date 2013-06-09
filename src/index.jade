@@ -54,7 +54,7 @@ html(ng-app="tamad")
                       i.icon-facebook-sign
                       |  Login With Facebook
                 .pull-right(ng-show='CurrentUser.loggedIn()')
-                  a(href="/#/profile", title='View profile').btn
+                  a(ng-href="/#/profile/{{CurrentUser.data().id}}", title='View profile').btn
                     i.icon-user
                   a.btn(ng-click='logOut()', title='Log out')
                     i.icon-off

@@ -109,13 +109,14 @@ module.value 'PublicRoutes', [
   '/'
   ''
   '/404'
+  '/profile'
 ]
 
 module.run [
  '$rootScope', '$location', 'CurrentUser', 'PublicRoutes', 
  ($rootScope, $location, CurrentUser, PublicRoutes) ->
   $rootScope.$on '$routeChangeStart', ->
-    if not CurrentUser.loggedIn() and $location.path() not in PublicRoutes
+    if not CurrentUser.loggedIn() and _.some(PublicRoutes, (route) -> $location.path().indexOf(route) == 0)
       # redirect path
       $location.path '/'
     
