@@ -71,7 +71,7 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope, $q, 
         $('#ratings-modal').modal 'show'
 
 
-module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location, Toastr) ->
+module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location, Toastr, $rootScope) ->
   $scope.errand =
     deadline: null
     location: CurrentUser.data()?.location
@@ -108,7 +108,7 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location,
       return false
     # save $scope.errand.latitude/longitude to user
     Errand.save $scope.errand, (success) ->
-      $scope.$broadcast 'reload-errands'
+      $rootScope.$broadcast 'reload-errands'
       $location.path('/my-errands')
       $('#new-errand').modal('hide')
 
