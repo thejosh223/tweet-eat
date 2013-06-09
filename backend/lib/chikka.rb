@@ -17,7 +17,7 @@ def sign(payload)
 end
 
 def create_payload(http_params)
-  URI.encode_www_form(http_params)
+  URI.encode(http_params)
 end
 
 def sms(number, trans_id, message, new=false)
