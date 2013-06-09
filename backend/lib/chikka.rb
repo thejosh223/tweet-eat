@@ -53,9 +53,9 @@ def sms(number, trans_id, message, new=false)
 
   puts to_sign
 
-#  payload = create_payload(to_sign)
+  payload = create_payload(to_sign)
 
-  payload = to_sign.to_a.collect{|k,v| k + '=' + v}.join('&')
+#  payload = to_sign.to_a.collect{|k,v| k + '=' + v}.join('&')
 
   signature = sign(payload)
   encoded_signature = Base64.encode64(signature).gsub(/\n/, '')
