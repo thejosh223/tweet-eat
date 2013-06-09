@@ -15,6 +15,7 @@ class ErrandsController < ApplicationController
 
     if params['exclude_self'] == 'true' and not env['warden'].user.nil?
       @errands = @errands.where('errands.user_id != ?', env['warden'].user.id)
+      @errands = @errands.include(:errand_requests).where('errand_requests.user_id != ?', env['warden'].user.id)
     end
 
     render json: @errands, :include => {:user => {}, :errand_requests => {:include => :user}}
@@ -107,6 +108,10 @@ class ErrandsController < ApplicationController
     if errand.user_id == env['warden'].user.id
       errand.finished = true
       errand.save!
+      request = ErrandRequest.find errand.errand_request_id
+      request.comment = params[:comment] or ''
+      request.rating = params[:rating] or 1
+      request.save!
       render json: {ok: true}
     else
       render json: "", status: 404

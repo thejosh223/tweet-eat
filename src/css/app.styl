@@ -3,7 +3,7 @@ border-width = 1px
 true_blue = #003399
 true_green = #669933
 fake_green = #eff2e3
-amber = color rgb(255,191,0)
+amber = rgb(255,191,0)
 
 
 
@@ -58,7 +58,7 @@ ul.errands
   display block
   border border-width solid border-color
   width 300px
-  height 250px
+  height 270px
   float left
   margin 12px 12px 12px 0
   padding 10px
@@ -71,7 +71,7 @@ ul.errands
     height 100%
     button
       background #f5f5f5
-      height 40px
+      height 60px
       padding 6px
       color true_blue
       text-align center
@@ -121,8 +121,10 @@ ul.errands
     left 0
     bottom 0
     width 100px
-    height 70px
+    height 95px
     font-size 110%
+    p
+      font-size 70%
     .accept-btn
       position relative
       margin-bottom 8px
@@ -148,7 +150,12 @@ ul.errands
       top -3px
       background true_green
       color #fff
-      
+
+#verification-code-modal
+  input
+    box-sizing border-box
+    width 100%
+
 #home-page
   display table
   .content
@@ -332,9 +339,16 @@ header.navbar
     .clearfix
       clear both
 
-#rating-modal
+#ratings-modal
   .rating-star
     color amber
+  .rating-star.selected
+    color darken(amber, 50%)//true_blue
+  .optional
+    color gray
+#credits-modal
+  input
+    height 30px
 
 
 /** Adapted from: http://twitter.github.com/bootstrap/examples/sticky-footer.html */
@@ -409,4 +423,5 @@ body {
 .muted {
   color: #fff;
 }
+
 

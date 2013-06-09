@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope, $q, Toastr) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -18,8 +18,10 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope) ->
 
   acceptAction = (errand, request) ->
     $http.put("/api/errand_requests/#{request.id}").success (response) ->
+      Toastr.success "You have successfully topped up your account!"
       console.log "successfully accepted", response
       $scope.$broadcast 'reload-errands'
+      $('#credits-modal').modal 'hide'
     .error (response) ->
       console.error "for some reason it failed", response
       $scope.$broadcast 'reload-errands'
@@ -64,26 +66,9 @@ module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser, $rootScope) ->
           console.error "for some reason it failed", response
           $scope.$broadcast 'reload-errands'
       when "acknowledge" # acknowledge that runner has indeed completed errand
-        $rootScope.ratingsSubmit = ->
-          # save ratings
-          acknowledgeAction(errand, request).then (response) ->
-            $('#ratings-modal').modal 'hide'
-            console.log "Successfully acknowledged", response
-          , (response) ->
-            console.error "Failed to save acknowledgment", response
+        $rootScope.ratingsErrand = errand
+        $rootScope.ratingsRequest = request
         $('#ratings-modal').modal 'show'
-
-  acknowledgeAction = (errand, request) ->
-    deferred = $q.defer()
-    $http.put("/api/errands/#{request.id}/acknowledge").success (response) ->
-      console.log "successfully acknowledged", response
-      deferred.resolve response
-      $scope.$broadcast 'reload-errands'
-    .error (response) ->
-      console.error "for some reason it failed", response
-      deferred.reject response
-      $scope.$broadcast 'reload-errands'
-    deferred.promise
 
 
 module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location, Toastr) ->
@@ -162,20 +147,22 @@ module.controller 'RatingModalCtrl', ($scope, $http, Toastr, CurrentRequest) ->
   $scope.hoverRating = 1
   $scope.selectedRating = 1
 
-  $scope.hoverRating = (rating) ->
+  $scope.setHoverRating = (rating) ->
     $scope.hoverRating = rating
   
-  $scope.selectRating = (rating) ->
+  $scope.setSelectedRating = (rating) ->
     $scope.selectedRating = rating
 
-  $scope.submit = (rating) ->
-    $http.post("/api/errands/#{CurrentRequest.request_id}/acknowledge"
+  $scope.ratingsSubmit = ->
+    console.log "hey we have", $scope.selectedRating, $scope.comment
+
+    $http.put("/api/errands/#{$scope.ratingsErrand.id}/acknowledge",
       rating: $scope.selectedRating
       comment: $scope.comment
-    ).success (resp) ->
+    ).success (response) ->
       Toastr.success 'Successfully rated your runner!'
       $scope.$broadcast 'reload-errands'
+      $("#ratings-modal").modal 'hide'
     .error (response) ->
       console.error "for some reason it failed", response
       $scope.$broadcast 'reload-errands'
-

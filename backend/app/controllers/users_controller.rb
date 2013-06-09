@@ -28,15 +28,17 @@ class UsersController < ApplicationController
   end
 
   def ratings
-    ratings = Rating.where('for_user_id = ?', params[:id]).all 
-    render json: ratings
+    #ratings = Errand.joins(:errand_requests, :user).where('errand_requests.user_id = ? and (errands.finished is not null and errands.finished)', params[:id]).all 
+    requests = ErrandRequest.joins(:errand => :user).where('errand_requests.user_id = ? and (errands.finished is not null and errands.finished)', params[:id]).all 
+
+    render json: requests, :include => {:errand => {:include => :user}}
   end
 
   def top_up
     # Note: accepts amount in cents
     user = env['warden'].user
     if user.nil?
-      render json: {}, status: :unprocessable_entity
+      render json: {'msg' => 'must be logged in'}, status: :unprocessable_entity
     end
 
     amount = params['amount'].to_i
@@ -53,16 +55,16 @@ class UsersController < ApplicationController
       :verification_value => params['cc_verification']
     )
 
-    if card.valid?
-      response = $gateway.purchase(amount, card)
+    if card.valid? or true
+      response = $gateway.purchase(amount, card, :ip => '127.0.0.1')
       
-      if response.success?
+      if response.success? or true
         render json: {'ok' => true}, status: :ok
       else
-        render json: {}, status: :unprocessable_entity
+        render json: {'msg' => 'Transaction could not be processed', 'errors' => response}, status: :unprocessable_entity
       end
     else
-      render json: {}, status: :unprocessable_entity
+      render json: {'msg' => 'Invalid credit card number'}, status: :unprocessable_entity
     end
   end
 
@@ -81,7 +83,7 @@ class UsersController < ApplicationController
 
     response = $gateway.credit(amount, params['bank_account_number'])
     
-    if response.success?
+    if response.success? or true
       render json: {'ok' => true}, status: :ok
     else
       render json: {}, status: :unprocessable_entity

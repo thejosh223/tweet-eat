@@ -14,18 +14,29 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
       <img ng-src="{{errand.user.fb_id | photo}}"></img>
       <div class="name">{{ errand.user.first_name }} {{ errand.user.last_name }}</div>
       <button class="btn btn-success" ng-click="_run()" ng-show="showApply">Help Out</button>
-      <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished()">
+      <div class="view-offers" ng-show="showManage && !errand.finished && !someFinished() && !errand.errand_request_id">
         <div class="offers-num" ng-show="errand.errand_requests.length > 0">{{ errand.errand_requests.length }}</div>
-        <button data-target="#offers-modal" ng-show="errand.errand_requests.length > 0" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
+        <button data-target="#offers-modal" ng-show="!errand.errand_request_id" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           View Offers
         </button>
       </div>
-      <div class="accept-reject" ng-show="showManage && !errand.finished && someFinished()">
-        <button class="btn btn-success mark-as-done-btn accept-btn" ng-click="_action('acknowledge')">
-          Accept
+      <div class="pending" ng-show="showManage && !errand.finished && errand.errand_request_id && !someFinished()">
+        <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
+          Pending
         </button>
-        <button class="btn btn-danger mark-as-done-btn reject-btn" ng-click="_action('reject')">
-          Reject
+      </div>
+      <div class="accept-reject" ng-show="showManage && !errand.finished && someFinished()">
+        <p>Errand completed?</p>
+        <button class="btn btn-success mark-as-done-btn accept-btn" ng-click="_action('acknowledge')">
+          Yes
+        </button>
+        <button class="btn btn-danger mark-as-done-btn reject-btn" ng-click="_action('reject', getRequest(errand.errand_request_id))">
+          No
+        </button>
+      </div>
+      <div class="done-group" ng-show="showManage && errand.finished">
+        <button disabled class="btn btn-success done-btn">
+          <i class="icon-check"></i> Done
         </button>
       </div>
       <div class="mark-as-done" ng-show="showFinish && !userRequest().finished">
@@ -57,9 +68,12 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
     scope.showFinish = attrs.showFinish?
     scope.someFinished = ->
       _.some scope.errand.errand_requests, (request) -> request.finished
-    scope.userRequest = ->
-      _.find scope.errand.errand_requests, (request) -> request.user_id == scope.user.id
+    scope.getRequest = (id) ->
+      _.find(scope.errand.errand_requests, (request) -> request.id == id)
+    scope.userRequest = (id = scope.user.id) ->
+      _.find(scope.errand.errand_requests, (request) -> request.user_id == id)
     scope._action = (name, request = scope.userRequest()) ->
+      console.log "YO", scope.user, scope.errand, request, scope.userRequest()
       scope.action errand: scope.errand, request: request, action: name
     scope._run = ->
       scope.run errand: scope.errand
@@ -81,14 +95,14 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
 
 module.directive 'rsRating', -> 
   scope:
-    rating: '='
+    request: '='
   template: '''
   <div class="rating-box">
-    <div class="title">{{ rating.title }}</div>
-    <div class="comment">{{ rating.comment }}</div>
-    <div class="pull-right muted">- {{ rating.citation }}</div>
+    <div class="title">{{ request.errand.title }}</div>
+    <div class="comment">{{ request.comment }}</div>
+    <div class="pull-right muted">- {{ request.errand.user.first_name }} {{ request.errand.user.last_name }}</div>
     <div class="score">
-      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= rating.score] }}'></span>
+      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= request.rating] }}'></span>
     </div>
     <div class='clearfix'></div>
   </div>

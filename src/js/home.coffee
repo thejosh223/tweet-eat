@@ -51,7 +51,6 @@ module.controller 'HomeLoggedInCtrl', ($scope, CurrentUser, $http, Errand, Toast
       console.log "didn't finish run successfully", response
 
 module.controller 'HomeAnonCtrl', ($scope, Errand) ->
-  console.log 'Foobar'
   for t in $('#targets li')
     do (t) ->
       $t = $(t)
