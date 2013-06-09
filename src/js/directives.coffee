@@ -20,7 +20,7 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
           View Offers
         </button>
       </div>
-      <div class="pending" ng-show="showManage && !errand.finished && errand.errand_request_id">
+      <div class="pending" ng-show="showManage && !errand.finished && !someFinished() && errand.errand_request_id">
         <button data-target="#offers-modal" ng-disabled="{{errand.errand_requests.length <= 0}}" data-toggle="modal" class="btn btn-success view-offers-btn" ng-click="_view()">
           Pending
         </button>
