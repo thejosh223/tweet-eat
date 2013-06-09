@@ -20,7 +20,7 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
           View Offers
         </button>
       </div>
-      <div class="accept-reject" ng-show="showAcceptReject">
+      <div class="accept-reject" ng-show="showManage && !errand.finished && someFinished()">
         <button class="btn btn-success mark-as-done-btn accept-btn">
           Accept
         </button>
@@ -55,7 +55,8 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
     scope.showApply = attrs.showApply?
     scope.showManage = attrs.showManage?
     scope.showFinish = attrs.showFinish?
-    scope.showAcceptReject = attrs.showAcceptReject?
+    scope.someFinished = ->
+      _.some scope.errand.errand_requests, (request) -> request.finished
     scope.userRequest = ->
       _.find scope.errand.errand_requests, (request) -> request.user_id == scope.user.id
     scope._action = (name, request = scope.userRequest()) ->
