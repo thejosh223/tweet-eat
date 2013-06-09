@@ -39,7 +39,7 @@ class MoController < ApplicationController
       sms(runner.phone_number, runner.trans_id, "Sorry but #{requestor.first_name} #{requestor.last_name} found your job unsatisfactory.")
     else
       puts 'sana di nageerrorrrrrrr'
-      sms(params[:msisdn], params[:transid], "Invalid keywords entered.")
+      sms(params[:msisdn], params[:transid], "Invalid keywords entered.", true)
       puts 'aba at hindi sana tama na?'
 #      sms(requestor.phone_number, requestor.phone_number, "#{runner.first_name} #{runner.last_name} will receive the payment shortly.")
     end

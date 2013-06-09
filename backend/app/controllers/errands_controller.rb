@@ -107,6 +107,10 @@ class ErrandsController < ApplicationController
     if errand.user_id == env['warden'].user.id
       errand.finished = true
       errand.save!
+      request = ErrandRequest.find errand.errand_request_id
+      request.comment = params[:comment] or ''
+      request.rating = params[:rating] or 1
+      request.save!
       render json: {ok: true}
     else
       render json: "", status: 404

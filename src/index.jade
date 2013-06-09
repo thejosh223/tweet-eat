@@ -176,7 +176,7 @@ html(ng-app="tamad")
               li
                 button.btn.btn-info(type="button", ng-show="request.declined", ng-click="currentBox._action('undodecline', request)") Undo Decline
 
-    #ratings-modal.rs-errand-modal.modal.hide.fade
+    #ratings-modal(ng-controller="RatingModalCtrl").rs-errand-modal.modal.hide.fade
       .modal-header
         button.btn.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
         h3 Ratings
@@ -191,7 +191,13 @@ html(ng-app="tamad")
               div
                 label
                   | Rating
-                span.rating-star(ng-repeat='star in stars', class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= temporaryRating] }}', ng-click='selectRating({{star}})', ng-mouseover='hoverRating({{star}})')
+                span.rating-star(
+                  ng-repeat='star in [1,2,3,4,5]'
+                  class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= hoverRating] }}\
+                  {{ {true: "hovered", false: ""}[star <= hoverRating] }}\
+                  {{ {true: "selected", false: ""}[star <= selectedRating] }}'
+                  ng-click='setSelectedRating(star)'
+                  ng-mouseover='setHoverRating(star)')
               div
                 label
                   | Comments

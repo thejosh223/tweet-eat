@@ -3,7 +3,7 @@ border-width = 1px
 true_blue = #003399
 true_green = #669933
 fake_green = #eff2e3
-amber = color rgb(255,191,0)
+amber = rgb(255,191,0)
 
 
 
@@ -332,9 +332,11 @@ header.navbar
     .clearfix
       clear both
 
-#rating-modal
+#ratings-modal
   .rating-star
     color amber
+  .rating-star.selected
+    color darken(amber, 50%)//true_blue
 
 #credits-modal
   input
