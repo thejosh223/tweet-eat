@@ -106,6 +106,17 @@ html(ng-app="tamad")
               
         .modal-footer
           button(type='submit').btn.btn-danger Submit
+    #credits-modal.modal.hide.fade
+      .modal-header
+        button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
+        h3 Post a new errand
+      form.modal-form(ng-submit='submit()')
+        .modal-body
+          div.row-fluid
+            .control-group.span12
+              | You need &#8369; {{currentBox.errand.price | number: 2}} but you only have &#8369; {{CurrentUser.data().credit | number: 2}}. Please pay, pal. 
+        .modal-footer
+          button(type='submit').btn.btn-danger Submit
 
     #verification-code-modal(ng-controller='VerificationModalCtrl').modal.hide.fade
       .modal-header
