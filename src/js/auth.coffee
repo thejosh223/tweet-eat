@@ -1,5 +1,5 @@
 module = angular.module 'tamad.auth', [
-
+  'tamad.services'
 ]
 
 module.service 'CurrentUser', ['$http', 'Facebook', 'User', '$q', ($http, Facebook, User, $q) ->
@@ -99,6 +99,10 @@ module.controller 'SessionCtrl', [
 
 module.controller 'VerificationModalCtrl', ($scope, CurrentUser) ->
   $scope.verification_code = CurrentUser.data().verification_code
+  $scope.submit = ->
+    CurrentUser.data().phone_number = $scope.phone_number
+    CurrentUser.saveRemote()
+    $('#verification-code-modal').modal('hide')
 
 module.value 'PublicRoutes', [
   '/home'

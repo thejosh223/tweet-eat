@@ -39,7 +39,8 @@ a:focus
       border-radius 10px
       width 20px
       height 20px
-      color true_blue
+      color lighten(true_green, 0.3)
+      text-align center
       background-color #ccc
       text-align center
 
@@ -229,6 +230,37 @@ header.navbar
 
 #banner
   box-shadow 2px 2px 5px #ccc
+
+#targets
+  list-style-type none
+  li
+    width 300px
+    position relative
+    float left
+    margin 10px
+    overflow hidden
+    box-shadow 2px 2px 5px #ccc
+    &:first-child
+      margin-left 0
+    &:last-child
+      margin-right 0
+    .desc
+      box-sizing border-box
+      position absolute
+      background #fff
+      opacity 0.9
+      padding 6px
+      left 0
+      right 0
+      &.young-professionals
+        bottom -43px
+      &.foreigners
+        bottom -63px
+      &.senior-citizens
+        bottom -63px
+      .name
+        font-size 125%
+        margin-bottom 2px
 
 #teasers
   list-style-type none
