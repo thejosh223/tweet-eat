@@ -10,7 +10,7 @@ class MoController < ApplicationController
       #verified is verification_code.nil?
       user.verification_code = nil
       user.save!
-      sms(user.phone_number, user.trans_id, "Congratulations registration successful", true)
+      sms(user.phone_number, user.trans_id, "Congratulations, registration was successful.", true)
     elsif params[:body].start_with?("COMPLETED ")
       errand_request = ErrandRequest.find(params[:body].split(' ')[1])
       errand_request.finished = true
