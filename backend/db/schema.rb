@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20130608221313) do
     t.string   "email"
     t.string   "password_digest"
     t.decimal  "credit"
-    t.text     "address"
+    t.text     "location"
     t.float    "latitude"
     t.float    "longitude"
     t.datetime "created_at",          :null => false
