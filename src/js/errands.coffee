@@ -160,6 +160,7 @@ module.controller 'RatingModalCtrl', ($scope, $http, Toastr, CurrentRequest) ->
     ).success (response) ->
       Toastr.success 'Successfully rated your runner!'
       $scope.$broadcast 'reload-errands'
+      $("#ratings-modal").modal 'hide'
     .error (response) ->
       console.error "for some reason it failed", response
       $scope.$broadcast 'reload-errands'
