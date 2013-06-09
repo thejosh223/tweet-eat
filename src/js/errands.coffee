@@ -3,7 +3,7 @@ module = angular.module 'tamad.errands', [
 ]
 
 
-module.controller 'MyErrandsCtrl', ($scope, $http) ->
+module.controller 'MyErrandsCtrl', ($scope, $http, CurrentUser) ->
   query = ->
     $http.get("/api/errands/mine").success (errands) ->
       $scope.errands = errands
@@ -16,16 +16,24 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
 
   query()
 
+  acceptAction = (errand, request) ->
+    $http.put("/api/errand_requests/#{request.id}").success (response) ->
+      console.log "successfully accepted", response
+      $scope.$broadcast 'reload-errands'
+    .error (response) ->
+      console.error "for some reason it failed", response
+      $scope.$broadcast 'reload-errands'
+
   $scope.doAction = (action, errand, request) ->
     # add toastr here!!!!
     switch action
       when "accept" # you want this runner to do your task
-        $http.put("/api/errand_requests/#{request.id}").success (response) ->
-          console.log "successfully accepted", response
-          $scope.$broadcast 'reload-errands'
-        .error (response) ->
-          console.error "for some reason it failed", response
-          $scope.$broadcast 'reload-errands'
+        # check muna credit
+        if CurrentUser.data().credit >= errand.price
+          acceptAction errand, request
+        else
+          $('#offers-modal').modal 'hide'
+          $('#credits-modal').modal 'show'
       when "decline" # you don't want this runner to do your task
         $http.put("/api/errand_requests/#{request.id}/decline").success (response) ->
           console.log "successfully decline", response
@@ -64,7 +72,7 @@ module.controller 'MyErrandsCtrl', ($scope, $http) ->
 
 
 
-module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location) ->
+module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location, Toastr) ->
   $scope.errand =
     deadline: null
     location: CurrentUser.data()?.location
@@ -89,9 +97,9 @@ module.controller 'ErrandCreationCtrl', ($scope, CurrentUser, Errand, $location)
           popup.setLatLng(e.latlng).addTo(map)
           $scope.errand.latitude = e.latlng.lat
           $scope.errand.longitude = e.latlng.lng
-       
-  $scope.today = new Date()
 
+
+  $scope.today = new Date()
 
   $scope.submit = ->
     unless $scope.errand?.latitude?
