@@ -9,6 +9,8 @@
   ul.span12.row.errands
     li(ng-repeat='errand in filteredErrands')
       div(rs-errand, ng-hide="errand.applied", errand="errand", user="CurrentUser.data()", run="run(errand)", show-apply="true")
+  .span12.row
+    p If you verified your phone number, you can also search for tasks by texting SEARCH &lt;location&gt; to 711 3884 (for example, SEARCH Quezon City).
   #set-location-modal.modal.hide.fade(ng-controller='LocationSetCtrl')
     .modal-header
       button.btn(type="button", data-dismiss="modal", aria-hidden="true").close &times;
