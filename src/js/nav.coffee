@@ -10,10 +10,10 @@ module.controller 'NavCtrl', ($scope, $http, $timeout, $location) ->
     $http.get('/api/errand_requests/pending')
       .success (resp) ->
         $scope.pendingRequests = resp
-        $timeout pollPending, 1000
+        $timeout pollPending, 5000
       .error (err) ->
         console.log err
-        $timeout pollPending, 1000
+        $timeout pollPending, 5000
 
   pollPending()
 
@@ -21,10 +21,10 @@ module.controller 'NavCtrl', ($scope, $http, $timeout, $location) ->
     $http.get('/api/errands/accepted')
       .success (resp) ->
         $scope.acceptedRequests = resp
-        $timeout pollAccepted, 1000
+        $timeout pollAccepted, 5000
       .error (err) ->
         console.log err
-        $timeout pollAccepted, 1000
+        $timeout pollAccepted, 5000
 
   pollAccepted()
 

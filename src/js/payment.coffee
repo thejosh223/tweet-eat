@@ -6,10 +6,10 @@ module.controller 'TopUpCtrl', ($scope, $http, CurrentUser, currentBox, Toastr) 
   $scope.cc = {}
   $scope.submit = ->
     $scope.cc.amount = +(((currentBox.errand.price - CurrentUser.data().credit) * 100).toFixed(0))
-    $http.post("/api/users/#{CurrentUser.data().id}/top_up", $scope.cc, ->
+    $http.post("/api/users/#{CurrentUser.data().id}/top_up", $scope.cc).success((resp) ->
       Toastr.success 'Successfully topped-up your wallet.'
       $('#credits-modal').modal('hide')
-    , ->
+    ).error((resp) ->
       Toastr.error 'Failed to top up your wallet.'
       $('#credits-modal').modal('hide')
     )
