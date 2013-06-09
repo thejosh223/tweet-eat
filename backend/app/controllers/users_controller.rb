@@ -28,8 +28,10 @@ class UsersController < ApplicationController
   end
 
   def ratings
-    ratings = Rating.where('for_user_id = ?', params[:id]).all 
-    render json: ratings
+    #ratings = Errand.joins(:errand_requests, :user).where('errand_requests.user_id = ? and (errands.finished is not null and errands.finished)', params[:id]).all 
+    requests = ErrandRequest.joins(:errand => :user).where('errand_requests.user_id = ? and (errands.finished is not null and errands.finished)', params[:id]).all 
+
+    render json: requests, :include => {:errand => {:include => :user}}
   end
 
   def top_up

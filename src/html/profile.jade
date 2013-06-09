@@ -11,5 +11,5 @@
       span.rating-count.muted {{ rating_count }} votes
   .row
     h3.errands-done Errands Done
-    div(ng-repeat='rating in ratings')
-      div(rs-rating, rating="rating")
+    div(ng-repeat='request in requests')
+      div(rs-rating, request="request")

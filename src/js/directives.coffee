@@ -81,14 +81,14 @@ module.directive 'rsErrand', (NumberStream, currentBox, $rootScope, Errand) ->
 
 module.directive 'rsRating', -> 
   scope:
-    rating: '='
+    request: '='
   template: '''
   <div class="rating-box">
-    <div class="title">{{ rating.title }}</div>
-    <div class="comment">{{ rating.comment }}</div>
-    <div class="pull-right muted">- {{ rating.citation }}</div>
+    <div class="title">{{ request.errand.title }}</div>
+    <div class="comment">{{ request.comment }}</div>
+    <div class="pull-right muted">- {{ request.errand.user.first_name }} {{ request.errand.user.last_name }}</div>
     <div class="score">
-      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= rating.score] }}'></span>
+      <span ng-repeat='star in stars' class='{{ {true: "icon-star", false: "icon-star-empty"}[star <= request.rating] }}'></span>
     </div>
     <div class='clearfix'></div>
   </div>
