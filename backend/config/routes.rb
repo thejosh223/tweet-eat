@@ -1,40 +1,58 @@
 Backend::Application.routes.draw do
-  scope :format => false do
+  # The priority is based upon order of creation:
+  # first created -> highest priority.
 
-    resource :session, :only => [:show, :create, :update, :destroy]
-    resources :errands do
-      collection do
-        get :accepted
-        get :mine
-      end
-      member do
-        post :apply
-        put :cancel
-        put :acknowledge
-      end
-    end
+  # Sample of regular route:
+  #   match 'products/:id' => 'catalog#view'
+  # Keep in mind you can assign values other than :controller and :action
 
-    resources :users do
-      member do
-        get :ratings
-        post :top_up
-      end
-    end
+  # Sample of named route:
+  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+  # This route can be invoked with purchase_url(:id => product.id)
 
-    resources :errand_requests do
-      collection do
-        get :pending
-      end
-      member do
-        put :decline
-        put :undodecline
-        put :reject
-        put :finish
-      end
-    end
+  # Sample resource route (maps HTTP verbs to controller actions automatically):
+  #   resources :products
 
-    resources :ratings
+  # Sample resource route with options:
+  #   resources :products do
+  #     member do
+  #       get 'short'
+  #       post 'toggle'
+  #     end
+  #
+  #     collection do
+  #       get 'sold'
+  #     end
+  #   end
 
-    resources :mo
-  end
+  # Sample resource route with sub-resources:
+  #   resources :products do
+  #     resources :comments, :sales
+  #     resource :seller
+  #   end
+
+  # Sample resource route with more complex sub-resources
+  #   resources :products do
+  #     resources :comments
+  #     resources :sales do
+  #       get 'recent', :on => :collection
+  #     end
+  #   end
+
+  # Sample resource route within a namespace:
+  #   namespace :admin do
+  #     # Directs /admin/products/* to Admin::ProductsController
+  #     # (app/controllers/admin/products_controller.rb)
+  #     resources :products
+  #   end
+
+  # You can have the root of your site routed with "root"
+  # just remember to delete public/index.html.
+  # root :to => 'welcome#index'
+
+  # See how all your routes lay out with "rake routes"
+
+  # This is a legacy wild controller route that's not recommended for RESTful applications.
+  # Note: This route will make all actions in every controller accessible via GET requests.
+  # match ':controller(/:action(/:id))(.:format)'
 end
