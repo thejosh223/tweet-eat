@@ -8,4 +8,8 @@ class RestaurantsController < ApplicationController
 
     def index
     end
+
+    def search
+      @restaurants = Restaurant.search params[:search]
+    end
 end
