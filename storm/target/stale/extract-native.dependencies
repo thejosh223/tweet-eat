@@ -1,0 +1,1 @@
+([:dependencies ([commons-collections/commons-collections "3.2.1"] [storm/storm "0.8.2"] [org.clojure/clojure "1.4.0"])])
