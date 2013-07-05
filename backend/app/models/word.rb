@@ -1,5 +1,3 @@
-class Restaurant
+class Word
   include Mongoid::Document
-end 
-
-
+end

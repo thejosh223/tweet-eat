@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
-gem 'mysql2'
+gem 'mongoid', '~> 3.1.4'
 gem 'simple_form'
 
 #rails generate bootstrap:install less
