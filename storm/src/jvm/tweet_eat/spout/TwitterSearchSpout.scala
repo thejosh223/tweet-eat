@@ -31,6 +31,9 @@ class TwitterSearchSpout extends BaseRichSpout {
     query = new Query(tweet_eat.Config.restaurants.map('"' + _ + '"').mkString(" OR "))
     query.setCount(100)
     query.setResultType(Query.RECENT)
+    if (earliestIdx != -1) {
+      query.setMaxId(earliestIdx-1)
+    }
     
     val fact: TwitterFactory = new TwitterFactory(new ConfigurationBuilder()
     	.setOAuthConsumerKey("krVmkXyrdU7SXwHYPsMPCQ")

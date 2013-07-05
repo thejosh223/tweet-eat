@@ -30,8 +30,8 @@ class NoisyLabelBolt extends BaseRichBolt {
       val body:String = stat.getText()
       val restaurant: String = tuple.getValue(1).asInstanceOf[String]
     
-      val nHappyMatches:Int = _happyRegex.findAllIn(body).size
-      val nSadMatches:Int = _sadRegex.findAllIn(body).size
+      val nHappyMatches:Int = _happyRegex.findAllIn(body.toLowerCase()).size
+      val nSadMatches:Int = _sadRegex.findAllIn(body.toLowerCase()).size
       if (nHappyMatches != nSadMatches) {
         val label: Int = (if (nHappyMatches > nSadMatches) 1 else 0)
         mongoClient("tweet_eat")("restaurants").update(MongoDBObject("name" -> restaurant),

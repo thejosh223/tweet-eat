@@ -26,6 +26,8 @@ class WordCountBolt extends BaseRichBolt {
 	  mongoClient = MongoClient(MongoClientURI(tweet_eat.Config.dbUri))
 	}
     
+    private def sigmoid(x: Double): Double = 1.0/(1.0 + Math.exp(-x))
+    
     override def execute(tuple: Tuple) {
       val stat: Status = tuple.getValue(0).asInstanceOf[Status]
       val body:String = stat.getText()
@@ -33,10 +35,12 @@ class WordCountBolt extends BaseRichBolt {
       val wordsColl = mongoClient("tweet_eat")("words")
       
       val words = splitterRegex.split(body)
+      val nFollowers = stat.getUser().getFollowersCount()
+      
       words.foreach((word) => {
-    	
-        wordsColl.update(MongoDBObject("restaurant" -> restaurant, "word" -> word), $setOnInsert("count" -> 0), upsert=true)
-        wordsColl.update(MongoDBObject("restaurant" -> restaurant, "word" -> word), $inc("count" -> 1))	
+    	val lowered = word.toLowerCase()
+        wordsColl.update(MongoDBObject("restaurant" -> restaurant, "word" -> lowered), $setOnInsert("count" -> 0), upsert=true)
+        wordsColl.update(MongoDBObject("restaurant" -> restaurant, "word" -> lowered), $inc("count" -> 1) ++ $inc("weight" -> sigmoid((nFollowers-1)/10.0)))	
         //_collector.emit(tuple, new Values(stat, restaurant, word, )
       })
         

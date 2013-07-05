@@ -1,26 +1,8 @@
-<!--<div class="container-fluid"> <!--
-  <%= form_tag restaurants_path, :method => 'get' do %>
-    <p>
-      <%= text_field_tag :search, params[:search] %>
-      <i class="icon-search"></i> 
-      <%= submit_tag "Search", :name => nil %>
-    </p>
-  <% end %> 
-</div>-->
 <% @restaurants.each do |resto| %>
-  <div class="container-fluid">
-    <hr />
+  <div class="container-fluid restaurant-listing">
     <div class="row-fluid">
-      <div class="span3">
-        <img src="tw_logo.png" style="width: 100px;"class="img-rounded"></img>
-              <!--Sidebar content-->
-      </div>
-      <div class="span6">
+      <div class="span9">
          <h4><%= link_to resto.name, restaurant_path(resto) %></h4>
-          <!--Body content-->
-      </div>
-      <div class="span2">
-          <a href="" class="btn btn-small btn-info">Reviews</a>
           <!--Body content-->
       </div>
     </div>

@@ -19,7 +19,6 @@
         <div class="navbar-inner">
           <ul class="nav">
             <li class="active"><a href="#">Home</a></li>
-            <li> <a href="">Top Rated</a> </li>
           </ul>
           <div class="navbar-search pull-right">
             <%= form_tag restaurants_path, :method => 'get' do %>
@@ -30,10 +29,8 @@
           </div>
         </div>
       </div>
-      <div class="well">
-        <div class="container-fluid">
-          <%= yield %>
-        </div>
+      <div class="container-fluid">
+        <%= yield %>
       </div>
       <div class="footer">
         <center><p class="muted"> <a href=""> About</a> | <a href="">Services</a>  | <a href="">Terms</a>  | <a href="">Contact us</a> <br>Copyright 2013. Vivace.</p>
