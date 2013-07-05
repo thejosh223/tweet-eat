@@ -11,63 +11,42 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130609025638) do
+ActiveRecord::Schema.define(:version => 20130629115153) do
 
-  create_table "errand_requests", :force => true do |t|
-    t.integer  "errand_id"
-    t.integer  "user_id"
-    t.datetime "deadline"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.boolean  "finished"
-    t.boolean  "declined"
-    t.text     "comment"
-    t.integer  "rating"
+  create_table "comments", :force => true do |t|
+    t.integer  "restaurant_id"
+    t.string   "name"
+    t.float    "comment"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
-  create_table "errands", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "title"
-    t.text     "body"
-    t.decimal  "price"
-    t.datetime "deadline"
-    t.integer  "errand_request_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.text     "location"
+  create_table "restaurant_words", :force => true do |t|
+    t.integer  "restaurant_id"
+    t.string   "word"
+    t.integer  "count"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "restaurants", :force => true do |t|
+    t.string   "name"
     t.float    "latitude"
     t.float    "longitude"
-    t.boolean  "finished"
+    t.integer  "happy_count"
+    t.integer  "neutral_count"
+    t.integer  "sad_count"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
-  create_table "ratings", :force => true do |t|
-    t.integer  "for_user_id"
-    t.integer  "by_user_id"
-    t.integer  "score"
-    t.text     "body"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "users", :force => true do |t|
-    t.string   "email"
-    t.string   "password_digest"
-    t.decimal  "credit"
-    t.text     "location"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
-    t.string   "fb_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "verification_code"
-    t.text     "trans_id"
-    t.string   "phone_number"
+  create_table "tweets", :force => true do |t|
+    t.integer  "restaurant_id"
+    t.string   "body"
+    t.float    "importance"
+    t.float    "sentiment"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
 end
