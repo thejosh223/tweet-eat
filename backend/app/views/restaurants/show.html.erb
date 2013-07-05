@@ -1,3 +1,27 @@
 <div class="page-header">
+  <% restaurant = @restaurant %>
+  <h1><%= restaurant.name %></h1>
+</div>
+<div>
+  <h2>Word Cloud</h2>
 
+  <h2>Tweets</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Tweet</th>
+        <th>Sentiment</th>
+      </tr>
+    </thead>
+      <tbody>
+        <% @tweets.each do |tweet| %>
+          <tr>
+            <td><%= tweet.body %></td>
+            <td><%= tweet.sentiment %></td>
+          </tr>
+        <% end %>
+      </tbody>
+  </table>
+
+  <h2>Comments</h2>
 </div>
