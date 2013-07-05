@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Backend</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body> 
-  <%= yield %>
+  <head>
+    <title>Backend</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
 
-</body>
+  <body style="background: url(<%= asset_path 'bg.jpg' %>);">
+    <div class="container">
+      <br>
+      <div class="typeahead">
+        <center><img src="<%= asset_path 'tw_logo.png' %>"></img>
+        <h3 class="lead">Real-time restaurant reviews from the Twitter Community!</p>
+        <center> 
+      </div> 
+      <div class="navbar">
+        <div class="navbar-inner">
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li> <a href="">Top Rated</a> </li>
+          </ul>
+          <div class="navbar-search pull-right">
+            <%= form_tag restaurants_path, :method => 'get' do %>
+              <i class="icon-search"></i> 
+              <%= text_field_tag :search, params[:search], :placeholder => "Search", :class => "search-query" %>
+              <%= submit_tag "Find", :name => nil, :class => "btn btn-small btn-primary" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="well">
+        <div class="container-fluid">
+          <%= yield %>
+        </div>
+      </div>
+      <div class="footer">
+        <center><p class="muted"> <a href=""> About</a> | <a href="">Services</a>  | <a href="">Terms</a>  | <a href="">Contact us</a> <br>Copyright 2013. Vivace.</p>
+      </div>
+    </div>
+  </body>
 </html>

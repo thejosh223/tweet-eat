@@ -1,27 +1,74 @@
-<div class="page-header">
-  <% restaurant = @restaurant %>
-  <h1><%= restaurant.name %></h1>
+<div class="row-fluid">
+  <div class="page-header">
+    <% restaurant = @restaurant %>
+    <h1><%= restaurant.name %></h1>
+  </div>
 </div>
-<div>
-  <h2>Word Cloud</h2>
 
-  <h2>Tweets</h2>
+<div class="row-fluid">
+  <div class="span8">
+    <h4 class="lead"><i class="icon-cloud"></i> Word Cloud</h2>
+    <script type="text/javascript">
+      console.log('Testing console');
+      var oldWordArray = <%=raw @restaurantwords.to_json %>;
+      var newWordArray = []
+      for (var i = 0; i < oldWordArray.length; ++i) newWordArray.push({text: oldWordArray[i].word, weight: oldWordArray[i].count});
+      $(function() {
+        $("#wordcloud").jQCloud(newWordArray);
+        console.log(newWordArray);
+      });
+    </script>
+    <div id="wordcloud" style="width: 550px; height: 350px;"></div> 
+  </div>
+
+  <!-- To check words in cloud, uncomment
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Tweet</th>
-        <th>Sentiment</th>
+        <th>Word</th>
+        <th>Count</th>
       </tr>
     </thead>
-      <tbody>
-        <% @tweets.each do |tweet| %>
-          <tr>
-            <td><%= tweet.body %></td>
-            <td><%= tweet.sentiment %></td>
-          </tr>
+    <tbody>
+        <% @restaurantwords.each do |resto| %>
+        <tr>
+          <td><%= resto.word %></td>
+          <td><%= resto.count %></td>
+        </tr>
         <% end %>
-      </tbody>
+    </tbody>
   </table>
+  -->
 
-  <h2>Comments</h2>
+  <div class="span4">
+    <h4 class="lead"><i class="icon-twitter"></i> Tweets</h2> 
+      <% @tweets.each do |tweet| %>
+        <div class="well">
+          <h5 class="lead">
+            <%= tweet.sentiment.to_i.times do %>
+              <i class="icon-smile"></i>
+            <% end %>
+          </h5>
+          <%= tweet.body %>
+        </div>
+      <% end %>
+
+    <h4 class="lead"><i class="icon-comment"></i> Comments</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+        <tbody>
+          <% @comments.each do |comment| %>
+            <tr>
+              <td><%= comment.name %></td>
+              <td><%= comment.comment %></td>
+            </tr>
+          <% end %>
+        </tbody>
+    </table>
+  </div>
 </div>

@@ -12,4 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require_tree .
+//= require jqcloud-1.0.4
+//= require twitter/bootstrap

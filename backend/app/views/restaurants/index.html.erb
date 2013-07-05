@@ -1,29 +1,46 @@
-<div class="page-header">
-  <h1>Welcome</h1>
-
+<!--<div class="container-fluid"> <!--
   <%= form_tag restaurants_path, :method => 'get' do %>
     <p>
       <%= text_field_tag :search, params[:search] %>
+      <i class="icon-search"></i> 
       <%= submit_tag "Search", :name => nil %>
     </p>
-  <% end %>
-
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @restaurants.each do |resto| %>
-        <tr>
-          <td><%= resto.name %></td>
-          <td>
-            <%= link_to "Show", restaurant_path(resto) %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-</div>
+  <% end %> 
+</div>-->
+<% @restaurants.each do |resto| %>
+  <div class="container-fluid">
+    <hr />
+    <div class="row-fluid">
+      <div class="span3">
+        <img src="tw_logo.png" style="width: 100px;"class="img-rounded"></img>
+              <!--Sidebar content-->
+      </div>
+      <div class="span6">
+         <h4><%= link_to resto.name, restaurant_path(resto) %></h4>
+          <!--Body content-->
+      </div>
+      <div class="span2">
+          <a href="" class="btn btn-small btn-info">Reviews</a>
+          <!--Body content-->
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span3">
+        <!--Sidebar content-->
+      </div>
+      <div class="span6">
+        <ul>
+          <li><p> Top Review! <p></li>
+          <li><p> Top Review! <p></li>
+        </ul>
+             <!--Body content-->
+      </div>
+      <div class="span2">
+      <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+              <!--Body content-->
+      </div>
+    </div>
+  </div>
+<% end %>
