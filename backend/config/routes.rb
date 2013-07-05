@@ -3,6 +3,7 @@ Backend::Application.routes.draw do
   resources :restaurants do
     collection do
       get 'search'
+      post 'search'
     end
   end
 end
