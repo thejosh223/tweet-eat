@@ -1,61 +1,61 @@
-<div class="row-fluid">
-  <div class="page-header">
-    <% restaurant = @restaurant %>
-    <h1><%= restaurant.name %></h1>
-  </div>
-</div>
-
-<div class="row-fluid">
-  <div class="span7">
-    <h4 class="lead"><i class="icon-cloud"></i> Word Cloud</h2>
-    <script type="text/javascript">
-      console.log('Testing console');
-      var oldWordArray = <%=raw @words.to_json %>;
-      var newWordArray = []
-      for (var i = 0; i < oldWordArray.length; ++i) newWordArray.push({text: oldWordArray[i].word, weight: oldWordArray[i].weight});
-      $(function() {
-        $("#wordcloud").jQCloud(newWordArray);
-        console.log(newWordArray);
-      });
-    </script>
-    <div id="wordcloud" style="width: 550px; height: 350px;"></div> 
+<div id="restaurant-page">
+  <script type="text/javascript">
+    var cloudWords = <%=raw @words.to_json %>;
+  </script>
+  <div class="row-fluid clear-fix" id="restaurant-page page">
+    <div class="page-header clear-fix">
+      <% restaurant = @restaurant %>
+      <h1><%= @restaurant.name %></h1>
+      <h2 class="sentiments"><i class="icon-smile text-success"></i> <%= restaurant.nHappy %> <i class="icon-frown text-error"></i> <%= restaurant.nSad %></h2>
+    </div>
   </div>
 
-  <!-- To check words in cloud, uncomment
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Word</th>
-        <th>Count</th>
-      </tr>
-    </thead>
-    <tbody>
-        <% @words.each do |resto| %>
-        <tr>
-          <td><%= resto.word %></td>
-          <td><%= resto.count %></td>
-        </tr>
+  <div class="row-fluid">
+    <div class="span7">
+      <h4 class="lead"><i class="icon-cloud"></i> Word Cloud</h2>
+      <div id="wordcloud"></div> 
+    </div>
+
+    <div class="span5">
+      <h4 class="lead"><i class="icon-twitter"></i> Tweets</h4> 
+      <ul class="tweets">
+        <% @tweets.each do |tweet| %>
+          <li>
+            <h5 class="lead">
+              <% if tweet.label == 1 %>
+                <i class="icon-smile pull-right"></i>
+              <% else %>
+                <i class="icon-frown pull-right"></i>
+              <% end %>
+            </h5>
+            <%= tweet.body %>
+          </li>
         <% end %>
-    </tbody>
-  </table>
-  -->
+      </ul>
 
-  <div class="span5">
-    <h4 class="lead"><i class="icon-twitter"></i> Tweets</h4> 
-    <ul class="tweets">
-      <% @tweets.each do |tweet| %>
+    </div>
+  </div>
+
+  <div class="row-fluid comments">
+    <h4 class="lead">Comments</h4>
+    <form method="POST" action="<%= restaurant._id %>/make_comment">
+      <input type="text" name="author" placeholder="Name">
+      <input type="hidden" name="restaurant_name" value="<%= @restaurant.name %>">
+      <textarea name="body" placeholder="Your comment"></textarea>
+      <button type="submit">Post comment</button>
+    </form>
+    <ul>
+      <% @comments.each do |comment| %>
         <li>
-          <h5 class="lead">
-            <% if tweet.label == 1 %>
-              <i class="icon-smile pull-right"></i>
-            <% else %>
-              <i class="icon-frown pull-right"></i>
-            <% end %>
-          </h5>
-          <%= tweet.body %>
+          <div class="meta">
+            <div class="author"><%= comment.author %></div>
+            <div class="date"><%= comment.date %></div>
+          </div>
+          <div class="body">
+            <%= comment.body %>
+          </div>
         </li>
       <% end %>
     </ul>
-
   </div>
 </div>

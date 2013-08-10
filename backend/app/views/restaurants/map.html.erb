@@ -1,0 +1,12 @@
+<div id="map-page">
+  <script type="text/javascript">
+    window.restaurants = <%=raw @restaurants.to_json %>;
+  </script>
+  <div class="container-fluid restaurant-listing">
+    <div class="row-fluid">
+      <div class="span12">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,27 +1,9 @@
 <% @restaurants.each do |resto| %>
   <div class="container-fluid restaurant-listing">
     <div class="row-fluid">
-      <div class="span9">
-         <h4><%= link_to resto.name, restaurant_path(resto) %></h4>
-          <!--Body content-->
-      </div>
-    </div>
-  </div>
-  <div class="container-fluid">
-    <div class="row-fluid">
-      <div class="span3">
-        <!--Sidebar content-->
-      </div>
-      <div class="span6">
-        <ul>
-          <li><p> Top Review! <p></li>
-          <li><p> Top Review! <p></li>
-        </ul>
-             <!--Body content-->
-      </div>
-      <div class="span2">
-      <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
-              <!--Body content-->
+      <div class="span12">
+         <h4 class="pull-left"><%= link_to resto.name, restaurant_path(resto) %></h4>
+         <h2 class="pull-right sentiments"><i class="icon-smile text-success"></i> <%= resto.nHappy %> <i class="icon-frown text-error"></i> <%= resto.nSad %></h2>
       </div>
     </div>
   </div>
